@@ -1,5 +1,7 @@
+import { Typography } from '@mui/material'
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import Footer from './components/Footer'
 import Home from './screens/Home'
 
 function App() {
@@ -11,7 +13,8 @@ function App() {
           <Route exact path='/' element={<Home />} />
         </Routes>
       </main>
-      {/* @TODO implement Footer */}
+
+      <Footer />
     </Router>
   )
 }
