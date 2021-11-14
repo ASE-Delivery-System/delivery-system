@@ -18,7 +18,10 @@ You will also see any lint errors in the console.
 
 After you have cloned the REPO and then go to frontend dir with ` cd frontend `
 
-Then run the command ` docker build -t deliveryfrontend:1.0.0-dev . ` now you have created new image ready to run on container.
+Then run the command ` docker build --target dev -t deliveryfrontend:1.0.0-dev . ` now you have created new image ready to run on container.
+
+` --target ` stands for targeting a specific stage such as dev
+
 You can check if you have the image named deliveryfrontend:1.0.0-dev by running ` docker images `
 
 Now in order to run this image inside a container you have to run this command
