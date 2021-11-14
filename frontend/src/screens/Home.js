@@ -1,10 +1,17 @@
 import React from 'react'
-import { Container, Paper } from '@mui/material'
+import { Container, CssBaseline, Paper } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import station from '../images/station.jpg' // Import using relative path
 import HomePageServices from '../components/HomePageServices'
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    minHeight: '100vh',
+    backgroundImage: `url(${station})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  },
   mainStyle: {
     position: 'relative',
     overflow: 'hidden',
@@ -28,14 +35,14 @@ const useStyles = makeStyles((theme) => ({
 function Home() {
   const classes = useStyles()
   return (
-    <main className={classes.mainStyle}>
-      <Paper variant='outlined' className={classes.imageStyle}>
+    <div className={classes.root}>
+      {/* <Paper variant='outlined'>
         <img alt='logo' src={station} className={classes.imageStyle} />
-      </Paper>
-      <Container maxWidth='xl' className={classes.containerHome}>
-        <HomePageServices />
-      </Container>
-    </main>
+      </Paper> */}
+      {/*  <Container maxWidth='xl' className={classes.containerHome}> */}
+      <HomePageServices />
+      {/* </Container> */}
+    </div>
   )
 }
 

@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MoreIcon from '@mui/icons-material/MoreVert'
+import { Button } from '@mui/material'
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -32,6 +33,8 @@ function Header() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
+
+  const handleLogout = () => {}
 
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
@@ -78,6 +81,11 @@ function Header() {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <Button variant='contained' edge='end' aria-label='account of current user' aria-controls={'logout-menu'} aria-haspopup='true' onClick={handleLogout}>
+          Logout
+        </Button>
+      </MenuItem>
     </Menu>
   )
 
@@ -90,10 +98,15 @@ function Header() {
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, marginRight: 5 }}>
             <IconButton size='large' edge='end' aria-label='account of current user' aria-controls={menuId} aria-haspopup='true' onClick={handleProfileMenuOpen} color='inherit'>
               <AccountCircle />
             </IconButton>
+          </Box>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Button variant='contained' edge='end' aria-label='account of current user' aria-controls={'logout-menu'} aria-haspopup='true' onClick={handleLogout}>
+              Logout
+            </Button>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton size='large' aria-label='show more' aria-controls={mobileMenuId} aria-haspopup='true' onClick={handleMobileMenuOpen} color='inherit'>

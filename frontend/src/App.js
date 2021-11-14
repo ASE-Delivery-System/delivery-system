@@ -8,14 +8,12 @@ import Home from './screens/Home'
 function App() {
   return (
     <Router>
-      {/* <Heade /> */}
       <Header />
       <main>
         <Routes>
           <Route exact path='/' element={<Home />} />
         </Routes>
       </main>
-
       <Footer />
     </Router>
   )
