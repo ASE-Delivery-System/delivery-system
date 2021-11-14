@@ -31,7 +31,7 @@ const cardPointOne = (
         Smart
       </Typography>
 
-      <Typography variant='body2'></Typography>
+      <Typography variant='body2'>You can track any order online in real time and check the status</Typography>
     </CardContent>
     <CardActions>
       <Button size='small'>Learn More</Button>
@@ -48,7 +48,7 @@ const cardPointTwo = (
         Fast
       </Typography>
 
-      <Typography variant='body2'>Pick up your deliveries without haveing to wait in line.</Typography>
+      <Typography variant='body2'>Pick up your deliveries without having to wait in line.</Typography>
     </CardContent>
     <CardActions>
       <Button size='small'>Learn More</Button>
@@ -65,7 +65,7 @@ const cardPointThree = (
         Reliable
       </Typography>
 
-      <Typography variant='body2'>ASE Delivery provides secure collection</Typography>
+      <Typography variant='body2'>ASE Delivery provides secure collection and secure authorization</Typography>
     </CardContent>
     <CardActions>
       <Button size='small'>Learn More</Button>
