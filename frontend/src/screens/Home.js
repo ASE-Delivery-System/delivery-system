@@ -16,10 +16,10 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     overflow: 'hidden',
   },
-  containerHome: {
-    // // height: '100vh',
-    // background: 'black',
-  },
+  // containerHome: {
+  //   // // height: '100vh',
+  //   // background: 'black',
+  // },
   imageStyle: {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
