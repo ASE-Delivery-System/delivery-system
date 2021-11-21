@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MoreIcon from '@mui/icons-material/MoreVert'
-import { Button } from '@mui/material'
+import { Button, Link } from '@mui/material'
 import { authStore } from '../store/authStore'
 
 function Header() {
@@ -125,7 +125,9 @@ function Header() {
       <AppBar position='static'>
         <Toolbar>
           <Typography variant='h6' noWrap component='div' sx={{ display: { sm: 'block' } }}>
-            ASEDelivery
+            <Link href='/' color='inherit' underline='none'>
+              ASEDelivery
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
