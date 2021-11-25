@@ -1,0 +1,38 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: asefrontendservice-dev
+spec:
+  selector:
+    app: ase-app
+  ports:
+    - protocol: 'TCP'
+      # Port accessible inside cluster
+      port: 3000
+      # Port to forward to inside the pod
+      targetPort: 3000
+      # Port accessible outside cluster
+      nodePort: 30001
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ase-appdeployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: ase-app
+  template:
+    metadata:
+      labels:
+        app: ase-app
+    spec:
+      containers:
+        - name: ase-app
+          image: tumbaboci/deliveryfrontend:1.0.0-dev
+          ports:
+            - containerPort: 3000
