@@ -1,7 +1,10 @@
 import { makeStyles } from '@mui/styles';
 import { Paper, Button, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react'
-import { minHeight, width } from '@mui/system';
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import {useNavigate, Redirect} from 'react-router-dom'
+import { login } from '../slices/auth';
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -51,32 +54,44 @@ const Signin = () => {
 
     const classes = useStyles();
 
+    const dispatch = useDispatch()
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    //set to false when component is rendered for the first time in order to skip error message from previous login
-    const [rendered, setRendered] = useState(false);
-    const [loginError, setLoginError] = useState('');
+
+    const { isLoggedIn } = useSelector((state) => state.auth);
+    const { message } = useSelector((state) => state.message);
+
+    const { user: currentUser } = useSelector((state) => state.auth);
+
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(email,password,'asdasd')
+        dispatch(login({ email, password }))
     }
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            // @TODO: handle the redirection after login to specific user ROLE
+            // if (isDispatcher) { navigate('/dispatcher')}
+            // else if (isDeliverer) { navigate('/deliverer') }
+            // else if (isCustomer) { navigate('/customer') }
+        }
+    }, [isLoggedIn]);
 
     return (
         <div className={classes.container}>
             <div className={classes.userLoginRoot}>
             <Paper className={classes.loginPaper} component="form">
                 <div className={classes.loginRow}>
-                    <TextField label="email" variant="outlined" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)} error={loginError !== ''} />
+                    <TextField label="email" variant="outlined" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)} />
                 </div>
                 <div className={classes.loginRow}>
-                    <TextField label="Password" variant="outlined" fullWidth value={password} onChange={(e)=>setPassword(e.target.value)} error={loginError !== ''} type="password" />
+                    <TextField label="Password" variant="outlined" fullWidth value={password} onChange={(e)=>setPassword(e.target.value)} type="password" />
                 </div>
-                {loginError !== '' ? (
-                    <div className={classes.loginRow}>
-                        <Typography color="error">{loginError}</Typography>
-                    </div>
-                ) : null}
+                
                 <div className={classes.loginRow + ' ' + classes.loginButtons}>
                     
                     <div>
@@ -86,6 +101,13 @@ const Signin = () => {
                     </div>
                 </div>
             </Paper>
+            {message && (
+                <div className="form-group">
+                    <div className="alert alert-danger" role="alert">
+                        {message}
+                    </div>
+                </div>
+            )}
         </div>
     </div>
       );
