@@ -9,17 +9,18 @@ import Menu from '@mui/material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import { Button, Link } from '@mui/material'
-import { authStore } from '../store/authStore'
+import { useNavigate } from 'react-router-dom'
 
-function Header() {
+function Header(prop) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
-  const auth = authStore.getState()
-  console.log(auth)
+  const navigate = useNavigate()
+
+  const auth = {user:null}
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -47,7 +48,7 @@ function Header() {
   }
 
   const handleLogin = () => {
-    console.log('Login')
+   navigate('/signin')
   }
 
   const menuId = 'primary-search-account-menu'

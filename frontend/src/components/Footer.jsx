@@ -25,7 +25,7 @@ function Footer() {
             <Grid item xs={12} sm={6}>
               <Box borderBottom={1}>Account</Box>
               <Box>
-                <Link href='/' color='inherit'>
+                <Link href='/signin' color='inherit'>
                   Login
                 </Link>
               </Box>
