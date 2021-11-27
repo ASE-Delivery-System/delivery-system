@@ -10,8 +10,14 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import { Button, Link } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from "react-redux";
+import { logout } from '../slices/auth'
+import { useDispatch } from 'react-redux'
 
-function Header(prop) {
+function Header() {
+
+  const dispatch = useDispatch()
+
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
 
@@ -20,7 +26,7 @@ function Header(prop) {
 
   const navigate = useNavigate()
 
-  const auth = {user:null}
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -40,7 +46,8 @@ function Header(prop) {
   }
 
   const handleLogout = () => {
-    console.log('Logout')
+    dispatch(logout())
+    navigate('/')
   }
 
   const handleSignUp = () => {
@@ -90,7 +97,7 @@ function Header(prop) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {auth.user ? (
+      {currentUser ? (
         <>
           <MenuItem onClick={handleProfileMenuOpen}>
             <IconButton size='large' aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
@@ -132,7 +139,7 @@ function Header(prop) {
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
-          {auth.user ? (
+          {currentUser ? (
             <>
               <Box sx={{ display: { xs: 'none', md: 'flex' }, marginRight: 5 }}>
                 <IconButton size='large' edge='end' aria-label='account of current user' aria-controls={menuId} aria-haspopup='true' onClick={handleProfileMenuOpen} color='inherit'>

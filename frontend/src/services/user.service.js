@@ -7,23 +7,23 @@ const getPublicContent = () => {
   return axios.get(API_URL + 'all')
 }
 
-const getUserBoard = () => {
-  return axios.get(API_URL + 'user', { headers: authHeader() })
+const getCustomerView = () => {
+  return axios.get(API_URL + 'customer', { headers: authHeader() })
 }
 
-const getModeratorBoard = () => {
-  return axios.get(API_URL + 'mod', { headers: authHeader() })
+const getDelivererView = () => {
+  return axios.get(API_URL + 'deliverer', { headers: authHeader() })
 }
 
-const getAdminBoard = () => {
-  return axios.get(API_URL + 'admin', { headers: authHeader() })
+const getDispatcherView = () => {
+  return axios.get(API_URL + 'dispatcher', { headers: authHeader() })
 }
 
 const userService = {
   getPublicContent,
-  getUserBoard,
-  getModeratorBoard,
-  getAdminBoard,
+  getCustomerView,
+  getDelivererView,
+  getDispatcherView,
 }
 
 export default userService

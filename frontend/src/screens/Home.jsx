@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, CssBaseline, Paper } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import station from '../images/station.jpg' // Import using relative path
 import HomePageServices from '../components/HomePageServices'
+import UserService from "../services/user.service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,25 @@ const useStyles = makeStyles((theme) => ({
 
 function Home() {
   const classes = useStyles()
+  // const [content, setContent] = useState("");
+
+
+  // useEffect(() => {
+  //   UserService.getPublicContent().then(
+  //     (response) => {
+  //       setContent(response.data);
+  //     },
+  //     (error) => {
+  //       const _content =
+  //         (error.response && error.response.data) ||
+  //         error.message ||
+  //         error.toString();
+
+  //       setContent(_content);
+  //     }
+  //   );
+  // }, []);
+
   return (
     <div className={classes.root}>
       {/* <Paper variant='outlined'>
