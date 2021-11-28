@@ -24,9 +24,21 @@ function Header() {
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
-  const navigate = useNavigate()
+  const { user: currentUser, isLoggedIn } = useSelector((state) => state.auth);
 
-  const { user: currentUser } = useSelector((state) => state.auth);
+  let isDispatcher = false
+  let isDeliverer = false
+  let isCustomer = false
+
+  try {
+    isDispatcher = currentUser.roles.includes('ROLE_DISPATCHER') && true
+    isDeliverer = currentUser.roles.includes('ROLE_DELIVERER') && true
+    isCustomer = currentUser.roles.includes('ROLE_CUSTOMER') && true
+  } catch (error) {
+    console.log(error)
+  }
+
+  const navigate = useNavigate()
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -41,6 +53,23 @@ function Header() {
     handleMobileMenuClose()
   }
 
+  const handleDeliveryManagement = () => {
+    navigate('/dispatcher')
+    handleMenuClose()
+  }
+
+  const handleBoxStatusManagement = () => {
+    navigate('/deliverer')
+    handleMenuClose()
+
+  }
+
+  const handleMyDeliveries = () => {
+    navigate('/customer')
+    handleMenuClose()
+
+  }
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
@@ -50,9 +79,9 @@ function Header() {
     navigate('/')
   }
 
-  const handleSignUp = () => {
-    console.log('Signup')
-  }
+  // const handleSignUp = () => {
+  //   console.log('Signup')
+  // }
 
   const handleLogin = () => {
    navigate('/signin')
@@ -75,8 +104,20 @@ function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {
+        isDispatcher ? (
+          <MenuItem onClick={handleDeliveryManagement}>Delivery Management</MenuItem>
+        )
+        : isDeliverer ? (
+          <MenuItem onClick={handleBoxStatusManagement}>Box status management</MenuItem>
+        )
+        : isCustomer ? (
+          <MenuItem onClick={handleMyDeliveries}>My Deliveries</MenuItem>
+        )
+        :(
+          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        )
+      }
     </Menu>
   )
 
@@ -118,11 +159,11 @@ function Header() {
               Login
             </Button>
           </MenuItem>
-          <MenuItem onClick={handleSignUp}>
+          {/* <MenuItem onClick={handleSignUp}>
             <Button color='info' variant='contained' edge='end' aria-label='account of current user' aria-controls={'signup-menu'} aria-haspopup='true'>
               SignUp
             </Button>
-          </MenuItem>
+          </MenuItem> */}
         </>
       )}
     </Menu>
@@ -159,11 +200,11 @@ function Header() {
                   Login
                 </Button>
               </Box>
-              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {/* <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <Button color='info' variant='contained' edge='end' aria-label='account of current user' aria-controls={'logout-menu'} aria-haspopup='true' onClick={handleSignUp}>
                   SignUp
                 </Button>
-              </Box>
+              </Box> */}
             </>
           )}
 
