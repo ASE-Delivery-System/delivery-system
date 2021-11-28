@@ -24,7 +24,7 @@ function Header() {
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
-  const { user: currentUser, isLoggedIn } = useSelector((state) => state.auth);
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   let isDispatcher = false
   let isDeliverer = false
@@ -61,13 +61,11 @@ function Header() {
   const handleBoxStatusManagement = () => {
     navigate('/deliverer')
     handleMenuClose()
-
   }
 
   const handleMyDeliveries = () => {
     navigate('/customer')
     handleMenuClose()
-
   }
 
   const handleMobileMenuOpen = (event) => {

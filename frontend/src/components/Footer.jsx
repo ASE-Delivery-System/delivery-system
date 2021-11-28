@@ -2,11 +2,29 @@ import { Container, Box, Link, Grid } from '@mui/material'
 import React from 'react'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { makeStyles } from '@mui/styles'
+
+const useStyles = makeStyles((theme) => ({
+  footerStyle:{
+    boxSizing: 'border-box',
+    marginBottom: '-100px',
+    borderTop: '1px'
+  },
+
+  // box-sizing: border-box;
+  // height: 100px;
+  // background-color: #eee;
+  // border-top: 1px solid #e0e0e0;
+  // padding-top: 35px;
+}))
 
 function Footer() {
+
+  const classes = useStyles()
+
   return (
-    <footer>
-      <Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 10 }} bgcolor='text.secondary' color='white'>
+    <footer className={classes.footerStyle}>
+      <Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 10 }} bgcolor='text.secondary' color='white' className={classes.boxStyle}>
         <Container maxWidth='lg'>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={6}>

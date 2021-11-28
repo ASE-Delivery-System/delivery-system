@@ -1,5 +1,5 @@
 import { makeStyles } from '@mui/styles'
-import { Paper, Button, TextField, Typography } from '@mui/material'
+import { Paper, Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Signin = (props) => {
+const Signin = () => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -79,24 +79,15 @@ const Signin = (props) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      // NAVIGATION WITH RESPECT TO USER ROLE
-      // isDispatcher = currentUser.roles.includes('DISPATCHER') ? true : false
-      // isDeliverer = currentUser.roles.includes('DELIVERER') ? true : false
-      // isCustomer = currentUser.roles.includes('CUSTOMER') ? true : false
       if (isDispatcher) {
-        // props.history.push('/dispatcher')
         navigate('/dispatcher')
       } else if (isDeliverer) {
-        // props.history.push('/deliverer')
-
         navigate('/deliverer')
       } else if (isCustomer) {
-        // props.history.push('/customer')
-
         navigate('/customer')
       }
     }
-  }, [isLoggedIn,isDispatcher,isDeliverer,isCustomer])
+  }, [isLoggedIn,isDispatcher,isDeliverer,isCustomer, navigate])
 
   const handleSubmit = (e) => {
     e.preventDefault()

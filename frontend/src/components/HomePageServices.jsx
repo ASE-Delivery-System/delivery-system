@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles'
-import { Container, Link, Grid } from '@mui/material'
+import { Container, Grid } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBrain, faChartLine, faUserLock } from '@fortawesome/free-solid-svg-icons'
 
