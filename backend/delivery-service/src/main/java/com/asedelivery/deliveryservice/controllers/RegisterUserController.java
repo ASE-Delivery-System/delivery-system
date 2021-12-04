@@ -3,7 +3,7 @@ package com.asedelivery.deliveryservice.controllers;
 import com.asedelivery.deliveryservice.models.ERole;
 import com.asedelivery.deliveryservice.models.Role;
 import com.asedelivery.deliveryservice.models.User;
-import com.asedelivery.deliveryservice.models.UserRegisterObj;
+import com.asedelivery.deliveryservice.payload.request.UserRegisterObj;
 import com.asedelivery.deliveryservice.payload.request.RegisterUserRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.RoleRepository;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -99,8 +98,8 @@ public class RegisterUserController {
 		UserRegisterObj user_to_be_registered = new UserRegisterObj(registerUserRequest.getUsername(),registerUserRequest.getEmail(),registerUserRequest.getPassword());
 		user_to_be_registered.setRoles(registerUserRequest.getRoles());
 
-		// HERE WE MAKE THE CALL TO THE IDENTITY SERVICE TO ACTUALLY SIGNUP THE USER THAT WE WANT TO REGISTER BUT ONLY WITH
-		// THE INFORMATIONS NEEDED TO LOGIN (IE. USERNAME PASSWORD EMAIL) NOTHING MORE THAN THOSE INFOS
+		// HERE WE MAKE THE CALL TO THE IDENTITY SERVICE TO ACTUALLY SIGN UP THE USER THAT WE WANT TO REGISTER BUT ONLY WITH
+		// THE INFORMATION NEEDED TO LOG IN (IE. USERNAME PASSWORD EMAIL) NOTHING MORE THAN THOSE INFOS
 		restTemplate.postForObject("http://localhost:8084/api/auth/signup", user_to_be_registered, String.class);
 
 		userRepository.save(user);
