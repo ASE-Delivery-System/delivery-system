@@ -3,6 +3,7 @@ package com.asedelivery.deliveryservice.controllers;
 import com.asedelivery.deliveryservice.models.ERole;
 import com.asedelivery.deliveryservice.models.Role;
 import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.models.UserRegisterObj;
 import com.asedelivery.deliveryservice.payload.request.RegisterUserRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.RoleRepository;
@@ -13,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +39,9 @@ public class RegisterUserController {
 
 	@Autowired
 	JwtUtils jwtUtils;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
@@ -89,8 +95,15 @@ public class RegisterUserController {
 		}
 
 		user.setRoles(roles);
-		userRepository.save(user);
 
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+		UserRegisterObj user_to_be_registered = new UserRegisterObj(registerUserRequest.getUsername(),registerUserRequest.getEmail(),registerUserRequest.getPassword());
+		user_to_be_registered.setRoles(registerUserRequest.getRoles());
+
+		// HERE WE MAKE THE CALL TO THE IDENTITY SERVICE TO ACTUALLY SIGNUP THE USER THAT WE WANT TO REGISTER BUT ONLY WITH
+		// THE INFORMATIONS NEEDED TO LOGIN (IE. USERNAME PASSWORD EMAIL) NOTHING MORE THAN THOSE INFOS
+		restTemplate.postForObject("http://localhost:8084/api/auth/signup", user_to_be_registered, String.class);
+
+		userRepository.save(user);
+		return ResponseEntity.ok(new MessageResponse("User to be registered registered successfully!"));
 	}
 }
