@@ -48,7 +48,7 @@ function Footer() {
                 </Link>
               </Box>
               <Box>
-                <Link href='/' color='inherit'>
+                <Link href='/customer' color='inherit'>
                   SignUp
                 </Link>
               </Box>
