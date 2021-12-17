@@ -13,7 +13,7 @@ const Dispatcher = () => {
         setContent(response.data);
       }
     ).catch(error => {
-        setContent(error.response.data.message);
+        setContent(error.message);
     });
   }, []);
     return (
