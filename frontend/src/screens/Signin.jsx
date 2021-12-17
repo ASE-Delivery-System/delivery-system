@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     color: 'secondary',
     alignItems: 'center',
-    width: 1,
+    flex: 1,
   },
   loginButton: {
-    width: 1,
+    flex: 1,
     textAlign: 'center',
     color: 'secondary',
   },
@@ -56,7 +56,7 @@ const Signin = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { isLoggedIn } = useSelector((state) => state.auth)
+  const { isLoggedIn, loading } = useSelector((state) => state.auth)
   const { message } = useSelector((state) => state.message)
 
   const { user: currentUser } = useSelector((state) => state.auth)
@@ -108,8 +108,8 @@ const Signin = () => {
 
           <div className={classes.loginRow + ' ' + classes.loginButtons}>
             <div>
-              <Button className={classes.loginButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
-                Login
+              <Button className={classes.loginButton} variant='contained' color='primary' onClick={handleSubmit} type='submit' lo>
+                {loading ? 'Loading...' : 'Login'}
               </Button>
             </div>
           </div>
