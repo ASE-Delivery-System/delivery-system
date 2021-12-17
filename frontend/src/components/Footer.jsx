@@ -49,7 +49,12 @@ function Footer() {
               </Box>
               <Box>
                 <Link href='/customer' color='inherit'>
-                  SignUp
+                  Customer
+                </Link>
+              </Box>
+              <Box>
+                <Link href='/dispatcher' color='inherit'>
+                                Dispatcher
                 </Link>
               </Box>
             </Grid>

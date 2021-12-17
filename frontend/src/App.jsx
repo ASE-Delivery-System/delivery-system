@@ -7,6 +7,9 @@ import Deliverer from './screens/Deliverer'
 import Dispatcher from './screens/Dispatcher'
 import Home from './screens/Home'
 import Signin from './screens/Signin'
+import CreateNewUser from './screens/CreateNewUser'
+import EditUser from './screens/EditUser'
+
 
 function App() {
   return (
@@ -19,6 +22,8 @@ function App() {
           <Route path='/dispatcher' element={<Dispatcher />} />
           <Route path='/deliverer' element={<Deliverer />} />
           <Route path='/customer' element={<Customer />} />
+          <Route path='/createnewuser' element={<CreateNewUser />} />
+          <Route path='/edituser' element={<EditUser />} />
         </Routes>
       </main>
       <Footer />
