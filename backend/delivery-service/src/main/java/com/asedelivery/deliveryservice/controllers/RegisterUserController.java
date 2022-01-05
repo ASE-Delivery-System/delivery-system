@@ -18,7 +18,9 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -44,7 +46,7 @@ public class RegisterUserController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
-		System.out.println(registerUserRequest.getRoles());
+
 		if (userRepository.existsByUsername(registerUserRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
@@ -60,7 +62,8 @@ public class RegisterUserController {
 		// Create new user's account
 		User user = new User(registerUserRequest.getUsername(),
 				registerUserRequest.getEmail(),
-							 encoder.encode(registerUserRequest.getPassword()));
+							 encoder.encode(registerUserRequest.getPassword()), registerUserRequest.getFirstName(),
+							 registerUserRequest.getLastName(), registerUserRequest.getAddress() );
 
 		Set<String> strRoles = registerUserRequest.getRoles();
 		System.out.println(strRoles);
@@ -95,12 +98,20 @@ public class RegisterUserController {
 
 		user.setRoles(roles);
 
+		List<String> authorities = user.getRoles().stream()
+				.map(role -> role.getName().name())
+				.collect(Collectors.toList());
+
+		if (authorities.contains("ROLE_DELIVERER") || authorities.contains("ROLE_CUSTOMER")){
+			user.setRfidToken(registerUserRequest.getRfidToken());
+		}
+
 		UserRegisterObj user_to_be_registered = new UserRegisterObj(registerUserRequest.getUsername(),registerUserRequest.getEmail(),registerUserRequest.getPassword());
 		user_to_be_registered.setRoles(registerUserRequest.getRoles());
 
 		// HERE WE MAKE THE CALL TO THE IDENTITY SERVICE TO ACTUALLY SIGN UP THE USER THAT WE WANT TO REGISTER BUT ONLY WITH
 		// THE INFORMATION NEEDED TO LOG IN (IE. USERNAME PASSWORD EMAIL) NOTHING MORE THAN THOSE INFOS
-		restTemplate.postForObject("http://localhost:8084/api/auth/signup", user_to_be_registered, String.class);
+		restTemplate.postForObject("https://ase-identity-service.herokuapp.com/api/auth/signup", user_to_be_registered, String.class);
 
 		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("User to be registered registered successfully!"));

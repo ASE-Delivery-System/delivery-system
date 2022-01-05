@@ -31,13 +31,60 @@ public class User {
   @DBRef
   private Set<Role> roles = new HashSet<>();
 
+  @NotBlank
+  private String firstName;
+
+  @NotBlank
+  private String lastName;
+
+  @Size(min = 4, max = 10)
+  private String rfidToken;
+
+  @NotBlank
+  private String address;
+
   public User() {
   }
 
-  public User(String username, String email, String password) {
+  public User(String username, String email, String password, String firstName, String lastName, String address) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.address = address;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getRfidToken() {
+    return rfidToken;
+  }
+
+  public void setRfidToken(String rfidToken) {
+    this.rfidToken = rfidToken;
   }
 
   public String getId() {

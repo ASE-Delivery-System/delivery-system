@@ -18,7 +18,55 @@ public class RegisterUserRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
-  
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @Size(min = 4, max = 10)
+    private String rfidToken;
+
+    @NotBlank
+    private String address;
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getRfidToken() {
+        return rfidToken;
+    }
+
+    public void setRfidToken(String rfidToken) {
+        this.rfidToken = rfidToken;
+    }
+
     public String getUsername() {
         return username;
     }

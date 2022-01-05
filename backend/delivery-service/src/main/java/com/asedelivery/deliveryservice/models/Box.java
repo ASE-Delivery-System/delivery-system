@@ -1,2 +1,4 @@
-package com.asedelivery.deliveryservice.models;public class Box {
+package com.asedelivery.deliveryservice.models;
+
+public class Box {
 }
