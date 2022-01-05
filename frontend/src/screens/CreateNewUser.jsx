@@ -1,7 +1,9 @@
 import { makeStyles } from '@mui/styles'
-import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio} from '@mui/material'
-import React, { useState} from 'react'
-
+import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio } from '@mui/material'
+import React, { useState } from 'react'
+import DispatcherService from '../services/dispatcher.service'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -48,119 +50,155 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const CreateNewUser = () => {
-    const classes = useStyles()
+  const classes = useStyles()
 
-    // registration
-    const [email, setEmail] = useState('')
-    const [address, setAddress] = useState('')
-    const [firstname, setFirstname] = useState('')
-    const [lastname, setLastname] = useState('')
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [rfidToken, setRfidToken] = useState('')
+  const navigate = useNavigate()
 
-    const [setSubmitted] = useState(false)
-    const [setError] = useState(false)
+  // registration
+  const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [rfidToken, setRfidToken] = useState('')
+  const [role, setRole] = useState([])
 
-    //changing input once already entered
-      const handleUsername = (e) => {
-        setUsername(e.target.value);
-        setSubmitted(false);
-      };
+  const [setSubmitted] = useState(false)
+  const [setError] = useState(false)
 
-      const handleEmail = (e) => {
-        setEmail(e.target.value);
-        setSubmitted(false);
-      };
+  const [loading, setLoading] = useState(false)
 
-      const handleLastname = (e) => {
-         setLastname(e.target.value);
-         setSubmitted(false);
-      };
+  //changing input once already entered
+  const handleUsername = (e) => {
+    setUsername(e.target.value)
+    setSubmitted(false)
+  }
 
-      const handleFirstname = (e) => {
-         setFirstname(e.target.value);
-         setSubmitted(false);
-      };
+  const handleEmail = (e) => {
+    setEmail(e.target.value)
+    setSubmitted(false)
+  }
 
-      const handlePassword = (e) => {
-        setPassword(e.target.value);
-        setSubmitted(false);
-      };
+  const handleLastname = (e) => {
+    setLastname(e.target.value)
+    setSubmitted(false)
+  }
 
-      const handleRfidToken = (e) => {
-        setRfidToken(e.target.value);
-        setSubmitted(false);
-      };
+  const handleFirstname = (e) => {
+    setFirstname(e.target.value)
+    setSubmitted(false)
+  }
 
-      const handleAddress = (e) => {
-         setAddress(e.target.value);
-         setSubmitted(false);
-       };
+  const handlePassword = (e) => {
+    setPassword(e.target.value)
+    setSubmitted(false)
+  }
 
-      const handleSubmit = (e) => {
-        e.preventDefault();
-          if (username === '' || email === '' || password === '') {
-            setError(true);
-          } else {
-            setSubmitted(true);
-            setError(false);
-          }
-        };
+  const handleRfidToken = (e) => {
+    setRfidToken(e.target.value)
+    setSubmitted(false)
+  }
 
+  const handleAddress = (e) => {
+    setAddress(e.target.value)
+    setSubmitted(false)
+  }
 
-    return (
-      <div className={classes.container}>
-        <h1>Create Users</h1>
-        <div className={classes.userManagementRoot}>
-          <Paper className={classes.userManagementPaper} component='form'>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">User Type</FormLabel>
-              <RadioGroup row aria-label="userType" name="row-radio-buttons-group">
-                <FormControlLabel value="customer" control={<Radio />} label="Customer" />
-                <FormControlLabel value="dispatcher" control={<Radio />} label="Dispatcher" />
-                <FormControlLabel value="deliverer" control={<Radio />} label="Deliverer" />
-              </RadioGroup>
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log('bla bla ')
+    setLoading(true)
+
+    if (username === '' || email === '' || password === '') {
+      setError(true)
+    } else {
+      const user = {
+        username: username,
+        password: password,
+        email: email,
+        firstName: firstname,
+        lastName: lastname,
+        rfidToken: rfidToken,
+        address: address,
+        role: role,
+      }
+
+      DispatcherService.registerNewUser(user)
+        .then(() => {
+          setLoading(false)
+          navigate('/dispatcher')
+        })
+        .catch((error) => {
+          setLoading(false)
+        })
+    }
+  }
+  console.log(role)
+
+  return (
+    <div className={classes.container}>
+      <h1>Create Users</h1>
+      <div className={classes.userManagementRoot}>
+        <Paper className={classes.userManagementPaper} component='form'>
+          <FormControl component='fieldset'>
+            <FormLabel component='legend'>User Type</FormLabel>
+            <RadioGroup
+              row
+              aria-label='userType'
+              name='row-radio-buttons-group'
+              onChange={(e) => {
+                setRole([e.currentTarget.value])
+              }}
+            >
+              <FormControlLabel value='customer' control={<Radio />} label='Customer' />
+              <FormControlLabel value='dispatcher' control={<Radio />} label='Dispatcher' />
+              <FormControlLabel value='deliverer' control={<Radio />} label='Deliverer' />
+            </RadioGroup>
           </FormControl>
           <div className={classes.userManagementRow}>
-              <TextField label='First name' variant='outlined' fullWidth value={firstname} onChange={(e) => setFirstname(e.target.value)} />
+            <TextField label='First name' variant='outlined' fullWidth value={firstname} onChange={(e) => setFirstname(e.target.value)} />
           </div>
           <div className={classes.userManagementRow}>
-               <TextField label='Last name' variant='outlined' fullWidth value={lastname} onChange={(e) => setLastname(e.target.value)} />
+            <TextField label='Last name' variant='outlined' fullWidth value={lastname} onChange={(e) => setLastname(e.target.value)} />
           </div>
           <div className={classes.userManagementRow}>
             <TextField label='Username' variant='outlined' fullWidth value={username} onChange={(e) => setUsername(e.target.value)} />
           </div>
           <div className={classes.userManagementRow}>
-            <TextField label='Email' variant='outlined' fullWidth value={email} onChange={(e) => setEmail(e.target.value)} type='password' />
+            <TextField label='Email' variant='outlined' fullWidth value={email} onChange={(e) => setEmail(e.target.value)} type='Email' />
           </div>
           <div className={classes.userManagementRow}>
-             <TextField label='Address' variant='outlined' fullWidth value={address} onChange={(e) => setAddress(e.target.value)} />
+            <TextField label='Address' variant='outlined' fullWidth value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
-          <div className={classes.userManagementRow}>
-            <TextField label='RFID Token' variant='outlined' fullWidth value={rfidToken} onChange={(e) => setRfidToken(e.target.value)} type='password' />
-          </div>
+          {!role.includes('dispatcher') ? (
+            <div className={classes.userManagementRow}>
+              <TextField label='RFID Token' variant='outlined' fullWidth value={rfidToken} onChange={(e) => setRfidToken(e.target.value)} type='text' />
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div className={classes.userManagementRow}>
             <TextField label='Password' variant='outlined' fullWidth value={password} onChange={(e) => setPassword(e.target.value)} type='password' />
           </div>
 
           <div className={classes.userManagementRow + ' ' + classes.submitButtons}>
-              <div>
-                <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
-                  Submit
-                </Button>
-              </div>
+            <div>
+              <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
+                {loading ? 'Loading...' : 'Submit'}
+              </Button>
             </div>
-          </Paper>
-          {(
-            <div className='form-group'>
-              <div className='alert alert-danger' role='alert'>
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        </Paper>
+        {
+          <div className='form-group'>
+            <div className='alert alert-danger' role='alert'></div>
+          </div>
+        }
       </div>
-    )
-  }
+    </div>
+  )
+}
 
 export default CreateNewUser

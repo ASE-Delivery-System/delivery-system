@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import DispatcherService from '../services/dispatcher.service';
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
@@ -34,10 +33,18 @@ const cardPointOne = (
       </Typography>
     </CardContent>
     <CardActions>
-       <Link to='/edituser' color='inherit' className="button"><Button size='small' variant='contained'>Edit users</Button></Link>
+      <Link to='/edituser' color='inherit' className='button'>
+        <Button size='small' variant='contained'>
+          Edit users
+        </Button>
+      </Link>
     </CardActions>
     <CardActions>
-       <Link to='/createnewuser' color='inherit' className="button"><Button size='small' variant='contained'>Create new users</Button></Link>
+      <Link to='/createnewuser' color='inherit' className='button'>
+        <Button size='small' variant='contained'>
+          Create new users
+        </Button>
+      </Link>
     </CardActions>
   </React.Fragment>
 )
@@ -52,10 +59,14 @@ const cardPointTwo = (
       </Typography>
     </CardContent>
     <CardActions>
-      <Button variant='contained' size='small'>Edit deliveries</Button>
+      <Button variant='contained' size='small'>
+        Edit deliveries
+      </Button>
     </CardActions>
     <CardActions>
-       <Button size='small' variant='contained'>Create new deliveries</Button>
+      <Button size='small' variant='contained'>
+        Create new deliveries
+      </Button>
     </CardActions>
   </React.Fragment>
 )
@@ -70,58 +81,43 @@ const cardPointThree = (
       </Typography>
     </CardContent>
     <CardActions>
-      <Button size='small' variant='contained'>Edit boxes</Button>
+      <Button size='small' variant='contained'>
+        Edit boxes
+      </Button>
     </CardActions>
     <CardActions>
-       <Button size='small' variant='contained'>Create newboxes</Button>
+      <Button size='small' variant='contained'>
+        Create newboxes
+      </Button>
     </CardActions>
   </React.Fragment>
 )
 
 const Dispatcher = () => {
-    const classes = useStyles()
-      return (
-        <Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 10 }} bgcolor='text.secondary' color='white' className={classes.boxStyle}>
-          <Container maxWidth='lg'>
-            <Grid container spacing={5}>
-              <Grid item xs={12} sm={4}>
-                <Card variant='outlined' className={classes.cardStyle}>
-                  {cardPointOne}
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Card variant='outlined' className={classes.cardStyle}>
-                  {cardPointTwo}
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Card variant='outlined' className={classes.cardStyle}>
-                  {cardPointThree}
-                </Card>
-              </Grid>
-            </Grid>
-          </Container>
-        </Box>
-      )
-    //const [content, setContent] = useState("");
-
-
-  //useEffect(() => {
-      // here you get the content from backend needed for dispatcher
-    /*DispatcherService.getDispatcherView().then(
-      (response) => {
-        setContent(response.data);
-      }
-    ).catch(error => {
-        setContent(error.message);
-    });
-  }, []); */
-    //return (
-      //  <div>
-        //    <p>dispatcherx</p>
-      //      <h1>{content}</h1>
-       // </div>
-   // )
+  const classes = useStyles()
+  return (
+    <Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 10 }} bgcolor='text.secondary' color='white' className={classes.boxStyle}>
+      <Container maxWidth='lg'>
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={4}>
+            <Card variant='outlined' className={classes.cardStyle}>
+              {cardPointOne}
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Card variant='outlined' className={classes.cardStyle}>
+              {cardPointTwo}
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Card variant='outlined' className={classes.cardStyle}>
+              {cardPointThree}
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  )
 }
 
 export default Dispatcher
