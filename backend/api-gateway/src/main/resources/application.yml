@@ -1,0 +1,29 @@
+
+spring:
+    application:
+        name: api-gateway
+
+    cloud:
+        gateway:
+            routes:
+                - id: identity-service
+                  uri: lb://IDENTITY-SERVICE
+                  predicates:
+                  - Path=/api/auth/**
+
+                - id: delivery-service
+                  uri: lb://DELIVERY-SERVICE
+                  predicates:
+                  - Path=/user/auth/**
+
+eureka:
+    instance:
+        hostname: localhost
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        serviceUrl:
+              defaultZone:  http://${eureka.instance.hostname}:8761/eureka
+
+server:
+    port: ${PORT:10789}

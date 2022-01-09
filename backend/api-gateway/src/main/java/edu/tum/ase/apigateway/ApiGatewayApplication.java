@@ -1,4 +1,4 @@
-package com.asedelivery.identityservice;
+package edu.tum.ase.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class IdentityServiceApplication {
+public class ApiGatewayApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(IdentityServiceApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ApiGatewayApplication.class, args);
+	}
 
 }

@@ -44,6 +44,12 @@ public class RegisterUserController {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@GetMapping("/test")
+	public String testDeliveryService() {
+		return "delivery service tested!";
+	}
+
+
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
 
