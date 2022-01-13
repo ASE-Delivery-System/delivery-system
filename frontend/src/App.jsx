@@ -9,7 +9,8 @@ import Home from './screens/Home'
 import Signin from './screens/Signin'
 import CreateNewUser from './screens/CreateNewUser'
 import EditUser from './screens/EditUser'
-
+import CreateNewDelivery from './screens/CreateNewDelivery'
+import ListBoxes from './screens/ListBoxes'
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
           <Route path='/customer' element={<Customer />} />
           <Route path='/createnewuser' element={<CreateNewUser />} />
           <Route path='/edituser' element={<EditUser />} />
+          <Route path='/createnewdelivery' element={<CreateNewDelivery />} />
+          <Route path='/listboxes' element={<ListBoxes/>} />
         </Routes>
       </main>
       <Footer />

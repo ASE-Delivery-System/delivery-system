@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+
 const cardPointOne = (
   <React.Fragment>
     <CardContent>
@@ -64,9 +65,11 @@ const cardPointTwo = (
       </Button>
     </CardActions>
     <CardActions>
-      <Button size='small' variant='contained'>
-        Create new deliveries
-      </Button>
+      <Link to='/createnewdelivery' color='inherit' className='button'>
+        <Button size='small' variant='contained'>
+            Create new deliveries
+        </Button>
+      </Link>
     </CardActions>
   </React.Fragment>
 )
@@ -81,21 +84,20 @@ const cardPointThree = (
       </Typography>
     </CardContent>
     <CardActions>
-      <Button size='small' variant='contained'>
-        Edit boxes
-      </Button>
+      <Link to='/listboxes' color='inherit' className='button'>
+        <Button size='small' variant='contained'>
+          List boxes
+        </Button>
+      </Link>
     </CardActions>
-    <CardActions>
-      <Button size='small' variant='contained'>
-        Create newboxes
-      </Button>
-    </CardActions>
+
   </React.Fragment>
 )
 
 const Dispatcher = () => {
   const classes = useStyles()
   return (
+
     <Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 10 }} bgcolor='text.secondary' color='white' className={classes.boxStyle}>
       <Container maxWidth='lg'>
         <Grid container spacing={5}>

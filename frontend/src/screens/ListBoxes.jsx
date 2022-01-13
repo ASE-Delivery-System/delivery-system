@@ -18,12 +18,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 
-function createData(username, email, firstname, lastname, address, password, rfidToken, role, actions) {
-  return { username, email, firstname, lastname, address, password, rfidToken, role, actions };
+function createData(boxId, boxName, boxAddress) {
+  return { boxId, boxName, boxAddress };
 }
 
 const rows = [
-  createData('Test', 'Test', 'Test', 'Test', 'Test', 'Test', 'Test', 'Test'),
+  createData('Test', 'Test', 'Test'),
 ];
 
 
@@ -35,18 +35,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'left',
     alignItems: 'center',
   },
-  userManagementRoot: {
+  boxManagementRoot: {
     margin: 'auto',
     height: '60vh',
     minHeight: '50vh',
     paddingTop: 10,
   },
-  userManagementPaper: {
+  boxManagementPaper: {
     width: '1000px',
     padding: theme.spacing(4),
   },
 
-  userManagementRow: {
+  boxManagementRow: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     '&:last-child': {
@@ -71,37 +71,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EditUser = () => {
+const ListBoxes = () => {
     const classes = useStyles()
 
-    const [email, setEmail] = useState('')
-    const [address, setAddress] = useState('')
-    const [firstname, setFirstname] = useState('')
-    const [lastname, setLastname] = useState('')
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [rfidToken, setRfidToken] = useState('')
-    const [role, setRole] = useState([])
+    const [boxId, setBoxId] = useState('')
+    const [boxAddress, setBoxAddress] = useState('')
+    const [boxName, setBoxName] = useState('')
 
     return (
       <div className={classes.container}>
-        <h1>Edit User</h1>
-        <h3>Please edit or delete the users information</h3>
-        <div className={classes.userManagementRoot}>
-          <Paper className={classes.userManagementPaper} component='form'>
+        <h1>List of Boxes</h1>
+        <h3>See assigned boxes and change the status of assigned deliveries</h3>
+        <div className={classes.boxManagementRoot}>
+          <Paper className={classes.boxManagementPaper} component='form'>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                       <TableRow>
-                        <TableCell align="right">Username</TableCell>
-                        <TableCell align="right">Email</TableCell>
-                        <TableCell align="right">First name</TableCell>
-                        <TableCell align="right">Last name</TableCell>
+                        <TableCell align="right">Box ID</TableCell>
+                        <TableCell align="right">Box Name</TableCell>
                         <TableCell align="right">Address</TableCell>
-                        <TableCell align="right">Password</TableCell>
-                        <TableCell align="right">RFID Token</TableCell>
-                        <TableCell align="right">Role</TableCell>
-                        <TableCell align="right">Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -114,15 +103,9 @@ const EditUser = () => {
                           {row.name}
                           {row.name}
                       </TableCell>
-                          <TableCell align="right">{row.username}</TableCell>
-                          <TableCell align="right">{row.email}</TableCell>
-                          <TableCell align="right">{row.firstname}</TableCell>
-                          <TableCell align="right">{row.lastname}</TableCell>
-                          <TableCell align="right">{row.address}</TableCell>
-                          <TableCell align="right">{row.password}</TableCell>
-                          <TableCell align="right">{row.rfidToken}</TableCell>
-                          <TableCell align="right">{row.role}</TableCell>
-                          <TableCell align="right">{row.actions}</TableCell>
+                          <TableCell align="right">{row.boxId}</TableCell>
+                          <TableCell align="right">{row.boxName}</TableCell>
+                          <TableCell align="right">{row.boxAddress}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -140,5 +123,5 @@ const EditUser = () => {
     )
   }
 
-export default EditUser
+export default ListBoxes
 
