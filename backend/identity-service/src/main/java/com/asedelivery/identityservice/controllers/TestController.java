@@ -1,10 +1,7 @@
 package com.asedelivery.identityservice.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,5 +28,10 @@ public class TestController {
 	@PreAuthorize("hasRole('DISPATCHER')")
 	public String adminAccess() {
 		return "DISPATCHER Board.";
+	}
+
+	@PostMapping("/alert")
+	public String alert() {
+		return "Alert alert.";
 	}
 }
