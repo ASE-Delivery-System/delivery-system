@@ -1,8 +1,19 @@
-import React from 'react'
-import ProjectTable from "../components/ProjectTable";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import {Button, Paper} from "@mui/material";
-import {makeStyles} from "@mui/styles";
+import { makeStyles } from '@mui/styles'
+import {
+    Paper,
+    Button,
+    TextField,
+    RadioGroup,
+    FormLabel,
+    FormControl,
+    FormControlLabel,
+    Radio,
+    ButtonGroup
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
+
+import ProjectTable from '/Users/wendy/Documents/GitHub/ase-delivery-system/frontend/src/components/ProjectTable.jsx'
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -48,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-
 const columns = [
     { field: 'targetBox', headerName: 'Target Box', type: 'number', width: 130 },
     { field: 'targetCustomer', headerName: 'Target Customer', width: 200 },
@@ -72,32 +82,32 @@ const rows = [
     { id: 9, targetBox: 9, orderedOn: 'Tuesday 18th', pickedOn: 'Today',status: 'delivered', targetCustomer: 'Roxie', deliverer: 'Harvey'},
 ];
 
-const Deliverer = () => {
+function ListDeliveries(){
     const classes = useStyles();
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
 
     return (<div className={classes.container}>
-        <h1> {title} </h1>
-        <h3> {description} </h3>
-        <ButtonToolbar>
-            <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
-                Create
-            </Button>{' '}
-            <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
-                Edit
-            </Button>{' '}
-            <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
-                Delete
-            </Button>{' '}
-            <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
-                Change Status
-            </Button>
-        </ButtonToolbar>
-        <Paper className={classes.boxManagementPaper} component='form'>
-            <ProjectTable title={title} description={description} columns={columns} rows={rows}/>
-        </Paper>
-    </div>);
+                <h1> {title} </h1>
+                <h3> {description} </h3>
+                    <ButtonToolbar>
+                        <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                            Create
+                        </Button>{' '}
+                        <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                            Edit
+                        </Button>{' '}
+                        <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                            Delete
+                        </Button>{' '}
+                        <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                            Change Status
+                        </Button>
+                    </ButtonToolbar>
+                <Paper className={classes.boxManagementPaper} component='form'>
+                    <ProjectTable title={title} description={description} columns={columns} rows={rows}/>
+                </Paper>
+            </div>);
 }
 
-export default Deliverer
+export default ListDeliveries
