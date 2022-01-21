@@ -14,13 +14,17 @@ spring:
           uri: lb://DELIVERY-SERVICE
           predicates:
             - Path=/user/auth/**
+            - Path=/users/**
+            - Path=/users
+            - Path=/deliveries
+            - Path=/deliveries/**
 
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
-#    serviceUrl:
-#      defaultZone:  https://ase-discovery-server.herokuapp.com/eureka
+    serviceUrl:
+      defaultZone:  https://ase-discovery-server.herokuapp.com/eureka
 
 
 server:
