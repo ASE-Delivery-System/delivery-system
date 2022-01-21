@@ -1,6 +1,7 @@
 package com.asedelivery.deliveryservice.controllers;
 
 import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,24 @@ public class UserController {
     public ResponseEntity<List<User>> getDeliverers(){
         List<User> deliverers = userService.findDeliverers();
         return ResponseEntity.ok(deliverers);
+    }
+
+    @GetMapping("/firstName/{firstName}")
+    public ResponseEntity<List<User>> getUsersByFirstName(@PathVariable String firstName){
+        System.out.println(firstName);
+        List<User> users = userService.findUsersByFirstName(firstName);
+        System.out.println(users);
+        return ResponseEntity.ok(users);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteUserById(@PathVariable String id){
+        userService.deleteUserById(id);
+        return ResponseEntity.ok(new MessageResponse("User was deleted successfully!"));
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<User> updateUserById(@PathVariable String id, @RequestBody User user){
+        return ResponseEntity.ok( userService.updateUser(id,user));
     }
 }

@@ -68,4 +68,28 @@ public class UserServiceImpl implements UserService{
     public User findUserById(String id) {
         return userRepository.findUserById(id);
     }
+
+    @Override
+    public void deleteUserById(String id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public User updateUser(String id, User user) {
+        User userTobeUpdated = findUserById(id);
+        userTobeUpdated.setFirstName(user.getFirstName());
+        userTobeUpdated.setLastName(user.getLastName());
+        userTobeUpdated.setAddress(user.getAddress());
+        userTobeUpdated.setRfidToken(user.getRfidToken());
+        userTobeUpdated.setRoles(user.getRoles());
+        userTobeUpdated.setUsername(user.getUsername());
+        userTobeUpdated.setEmail(user.getEmail());
+        return userRepository.save(userTobeUpdated);
+    }
+
+    @Override
+    public List<User> findUsersByFirstName(String firstName) {
+        System.out.println(firstName);
+        return userRepository.getUsersByFirstName(firstName);
+    }
 }
