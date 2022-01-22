@@ -11,6 +11,7 @@ import CreateNewUser from './screens/CreateNewUser'
 import EditUser from './screens/EditUser'
 import CreateNewDelivery from './screens/CreateNewDelivery'
 import ListBoxes from './screens/ListBoxes'
+import ListDeliveries from './screens/ListDeliveries'
 
 function App() {
   return (
@@ -18,15 +19,16 @@ function App() {
       <Header />
       <main>
         <Routes>
-          <Route exact path='/' element={<Home />} />
-          <Route path='/signin' element={<Signin />} />
-          <Route path='/dispatcher' element={<Dispatcher />} />
-          <Route path='/deliverer' element={<Deliverer />} />
-          <Route path='/customer' element={<Customer />} />
-          <Route path='/createnewuser' element={<CreateNewUser />} />
-          <Route path='/edituser' element={<EditUser />} />
-          <Route path='/createnewdelivery' element={<CreateNewDelivery />} />
-          <Route path='/listboxes' element={<ListBoxes/>} />
+            <Route exact path='/' element={<Home />} />
+            <Route path='/signin' element={<Signin />} />
+            <Route path='/dispatcher' element={<Dispatcher />} />
+            <Route path='/deliverer' element={<Deliverer />} />
+            <Route path='/customer' element={<Customer />} />
+            <Route path='/createnewuser' element={<CreateNewUser />} />
+            <Route path='/edituser' element={<EditUser />} />
+            <Route path='/createnewdelivery' element={<CreateNewDelivery />} />
+            <Route path='/listboxes' element={<ListBoxes/>} />
+            <Route path='/listdeliveries' element={<ListDeliveries/>} />
         </Routes>
       </main>
       <Footer />
