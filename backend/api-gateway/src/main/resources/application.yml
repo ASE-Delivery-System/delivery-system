@@ -1,7 +1,6 @@
 spring:
   application:
     name: api-gateway
-
   cloud:
     gateway:
       routes:
@@ -13,19 +12,20 @@ spring:
         - id: delivery-service
           uri: lb://DELIVERY-SERVICE
           predicates:
-            - Path=/user/auth/**
-            - Path=/users/**
-            - Path=/users
-            - Path=/deliveries
-            - Path=/deliveries/**
-
+            - Path=/user/auth/**, /users/**, /users, /deliveries, /deliveries/**
 eureka:
+  instance:
+    hostname: ase-api-gateway.herokuapp.com
+    homePageUrl: https://${eureka.instance.hostName}/
   client:
     register-with-eureka: true
     fetch-registry: true
     serviceUrl:
       defaultZone:  https://ase-discovery-server.herokuapp.com/eureka
 
-
 server:
-  port: 8080
+  port: ${PORT:8080}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE

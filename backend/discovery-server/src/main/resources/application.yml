@@ -3,14 +3,13 @@ spring:
     name: discovery-service
 
 server:
-  port: 8761
+  port: ${PORT:8761}
 
 eureka:
   instance:
-    non-secure-port: 80
-    non-secure-port-enabled: true
-    secure-port-enabled: false
-    secure-port: 443
+    hostname: ${ase-discovery-server.herokuapp.com:localhost}
   client:
     register-with-eureka: false
     fetch-registry: false
+    service-url:
+      defaultZone: https://ase-discovery-server.herokuapp.com/eureka
