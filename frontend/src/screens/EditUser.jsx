@@ -16,16 +16,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
-
-function createData(username, email, firstname, lastname, address, password, rfidToken, role, actions) {
-  return { username, email, firstname, lastname, address, password, rfidToken, role, actions };
-}
-
-const rows = [
-  createData('Test', 'Test', 'Test', 'Test', 'Test', 'Test', 'Test', 'Test'),
-];
-
+import DispatcherService from '../services/dispatcher.service'
+import CustomerService from '../services/customer.service'
+import DelivererService from '../services/deliverer.service'
+import ProjectTable from '/Users/clarissaanjani/ase-delivery-system/frontend/src/components/ProjectTable.jsx'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -37,18 +31,16 @@ const useStyles = makeStyles((theme) => ({
   },
   userManagementRoot: {
     margin: 'auto',
-    height: '60vh',
-    minHeight: '50vh',
     paddingTop: 10,
   },
   userManagementPaper: {
     width: '1000px',
-    padding: theme.spacing(4),
+    padding: theme.spacing(2),
   },
 
   userManagementRow: {
     paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(3),
     '&:last-child': {
       paddingBottom: theme.spacing(0),
     },
@@ -72,69 +64,46 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const EditUser = () => {
-    const classes = useStyles()
 
-    const [email, setEmail] = useState('')
-    const [address, setAddress] = useState('')
-    const [firstname, setFirstname] = useState('')
-    const [lastname, setLastname] = useState('')
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [rfidToken, setRfidToken] = useState('')
-    const [role, setRole] = useState([])
+
+    const classes = useStyles()
+    const title = "List of your Users";
+    const description = "Please edit or delete the users information";
+
+    const [loadingData, setLoadingData] = useState(true);
+    const [UserData, setUserData] = useState([])
+
+    const columns = [
+        {title: "Username", field : "username", headerName: "Username"},
+        {title: "Password", field : "password", headerName: "Password"},
+        {title: "Email", field : "email", headerName: "Email"},
+        {title: "First Name", field : "firstName", headerName: "First Name"},
+        {title: "Last Name", field : "lastName", headerName: "Last Name"},
+        {title: "Address", field : "address", width: 100, headerName: "Address"},
+        {title: "RFID Token", field : "rfidToken", headerName: "RFID Token"},
+        {title: "Role", field : "roles", headerName: "Roles"},
+    ]
+
+   const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwZWxsdW1iNyIsImlhdCI6MTY0Mjg3NTM2OCwiZXhwIjoxNjQyOTYxNzY4LCJSb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0RJU1BBVENIRVIifV19.wVSyo7C2Sl_nyjORXrPBDb84Z4lQ6xDUq_l5xhbufNiD_OmZs-DPmhPpRXQQDSINGddOuePXM12Mu70qUXF2hw";
+   useEffect(()=>{
+     fetch('https://ase-delivery-service.herokuapp.com/boxes', {
+     method: "GET",
+      headers: {"Authorization": `Bearer ${token}`}
+      }).then(response => response.json())
+      .then(response => {
+        console.log(response)
+        setUserData(response)
+        })
+   },[]);
 
     return (
       <div className={classes.container}>
-        <h1>Edit User</h1>
-        <h3>Please edit or delete the users information</h3>
+        <h1> {title} </h1>
+        <h3> {description} </h3>
         <div className={classes.userManagementRoot}>
-          <Paper className={classes.userManagementPaper} component='form'>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                      <TableRow>
-                        <TableCell align="right">Username</TableCell>
-                        <TableCell align="right">Email</TableCell>
-                        <TableCell align="right">First name</TableCell>
-                        <TableCell align="right">Last name</TableCell>
-                        <TableCell align="right">Address</TableCell>
-                        <TableCell align="right">Password</TableCell>
-                        <TableCell align="right">RFID Token</TableCell>
-                        <TableCell align="right">Role</TableCell>
-                        <TableCell align="right">Actions</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow
-                          key={row.name}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                        <TableCell component="th" scope="row">
-                          {row.name}
-                          {row.name}
-                      </TableCell>
-                          <TableCell align="right">{row.username}</TableCell>
-                          <TableCell align="right">{row.email}</TableCell>
-                          <TableCell align="right">{row.firstname}</TableCell>
-                          <TableCell align="right">{row.lastname}</TableCell>
-                          <TableCell align="right">{row.address}</TableCell>
-                          <TableCell align="right">{row.password}</TableCell>
-                          <TableCell align="right">{row.rfidToken}</TableCell>
-                          <TableCell align="right">{row.role}</TableCell>
-                          <TableCell align="right">{row.actions}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+           <Paper className={classes.userManagementPaper} component='form'>
+              <ProjectTable rows={UserData} title={title} description={description} columns={columns}/>
           </Paper>
-          {(
-            <div className='form-group'>
-              <div className='alert alert-danger' role='alert'>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     )

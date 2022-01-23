@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         height: '60vh',
         minHeight: '50vh',
-        paddingTop: 10,
+        paddingTop: 5,
     },
     boxManagementPaper: {
         width: '1000px',

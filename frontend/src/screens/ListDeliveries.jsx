@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 
-import ProjectTable from '/Users/wendy/Documents/GitHub/ase-delivery-system/frontend/src/components/ProjectTable.jsx'
+import ProjectTable from '/Users/clarissaanjani/ase-delivery-system/frontend/src/components/ProjectTable.jsx'
 
 const useStyles = makeStyles((theme) => ({
     container: {
