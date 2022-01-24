@@ -19,7 +19,7 @@ import TableRow from '@mui/material/TableRow';
 import DispatcherService from '../services/dispatcher.service'
 import CustomerService from '../services/customer.service'
 import DelivererService from '../services/deliverer.service'
-import ProjectTable from '/Users/clarissaanjani/ase-delivery-system/frontend/src/components/ProjectTable.jsx'
+import ProjectTable from "../components/ProjectTable";
 
 const useStyles = makeStyles((theme) => ({
   container: {

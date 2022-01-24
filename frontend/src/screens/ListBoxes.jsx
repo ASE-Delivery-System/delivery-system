@@ -16,7 +16,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import ProjectTable from '/Users/clarissaanjani/ase-delivery-system/frontend/src/components/ProjectTable.jsx'
+import ProjectTable from "../components/ProjectTable";
 
 
 const useStyles = makeStyles((theme) => ({
