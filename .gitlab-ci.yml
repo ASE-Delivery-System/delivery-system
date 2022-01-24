@@ -8,7 +8,7 @@ variables:
 stages:
   - build
 
-docker-build-frontend:
+docker-heroku-build-frontend:
   stage: build
   script:
   - cd frontend/
