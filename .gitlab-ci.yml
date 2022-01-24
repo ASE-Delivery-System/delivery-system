@@ -16,8 +16,6 @@ frontend-service:build:
       - frontend/build
       - frontend/node_modules
   only:
-    refs:
-      - main
     changes: 
       - frontend/**/*      
   
@@ -39,8 +37,6 @@ frontend-service:deploy:
     - heroku container:push web --app ase-delivery-system
     - heroku container:release web --app ase-delivery-system
   only:
-    refs:
-      - main
     changes: 
       - frontend/**/*
 
