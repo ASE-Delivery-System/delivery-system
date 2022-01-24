@@ -1,13 +1,46 @@
-image: docker:latest
-services:
-  - docker:dind
-
-variables:
-  DOCKER_DRIVER: overlay
+image: maven:3.8.4-jdk-11
 
 stages:
   - build
+  - deploy
   
-docker-build-frontend:
+frontend-service:build:
   stage: build
+  image: node:latest
+  script: 
+    - cd frontend/
+    - npm install
+    - npm install react-scripts
+  artifacts:
+    paths:
+      - frontend/build
+      - frontend/node_modules
+  only:
+    refs:
+      - main
+    changes: 
+      - frontend/**/*      
   
+frontend-service:deploy:
+  stage: deploy
+  image: ubuntu:20.04
+  script:
+    - cd frontend/
+    - |
+      cat > ~/.netrc <<EOF
+        machine api.heroku.com
+          login pellumbbaboci@gmail.com
+          password 4b3e3d30-dc6a-4054-8caa-657b722c3eb0
+        machine git.heroku.com
+          login pellumbbaboci@gmail.com
+          password 4b3e3d30-dc6a-4054-8caa-657b722c3eb0
+      EOF
+    - heroku container:login
+    - heroku container:push web --app ase-delivery-system
+    - heroku container:release web --app ase-delivery-system
+
+
+
+
+
+
