@@ -10,12 +10,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import { Button, Link } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux'
 import { logout } from '../slices/auth'
 import { useDispatch } from 'react-redux'
 
 function Header() {
-
   const dispatch = useDispatch()
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -24,7 +23,7 @@ function Header() {
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
-  const { user: currentUser } = useSelector((state) => state.auth);
+  const { user: currentUser } = useSelector((state) => state.auth)
 
   let isDispatcher = false
   let isDeliverer = false
@@ -82,7 +81,7 @@ function Header() {
   // }
 
   const handleLogin = () => {
-   navigate('/signin')
+    navigate('/signin')
   }
 
   const menuId = 'primary-search-account-menu'
@@ -102,20 +101,15 @@ function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {
-        isDispatcher ? (
-          <MenuItem onClick={handleDeliveryManagement}>Delivery Management</MenuItem>
-        )
-        : isDeliverer ? (
-          <MenuItem onClick={handleBoxStatusManagement}>Box status management</MenuItem>
-        )
-        : isCustomer ? (
-          <MenuItem onClick={handleMyDeliveries}>My Deliveries</MenuItem>
-        )
-        :(
-          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        )
-      }
+      {isDispatcher ? (
+        <MenuItem onClick={handleDeliveryManagement}>Delivery Management</MenuItem>
+      ) : isDeliverer ? (
+        <MenuItem onClick={handleBoxStatusManagement}>Box status management</MenuItem>
+      ) : isCustomer ? (
+        <MenuItem onClick={handleMyDeliveries}>My Deliveries</MenuItem>
+      ) : (
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      )}
     </Menu>
   )
 
@@ -173,7 +167,7 @@ function Header() {
         <Toolbar>
           <Typography variant='h6' noWrap component='div' sx={{ display: { sm: 'block' } }}>
             <Link href='/' color='inherit' underline='none'>
-              ASEDelivery
+              ASEDelivery-Test-CI/CD
             </Link>
           </Typography>
 

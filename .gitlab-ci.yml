@@ -7,7 +7,66 @@ variables:
 
 stages:
   - build
-  
-docker-build-frontend:
+
+docker-heroku-build-frontend:
   stage: build
+  script:
+  - cd frontend/
+  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-delivery-system/web .
+  - docker login -u _ -p 4b3e3d30-dc6a-4054-8caa-657b722c3eb0 registry.heroku.com
+  - docker push registry.heroku.com/ase-delivery-system/web
+  - apk add --no-cache curl
+  - echo "Docker Image ID is $(cat imageid.txt)"
+  - |-
+    curl -X PATCH https://api.heroku.com/apps/ase-delivery-system/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer 4b3e3d30-dc6a-4054-8caa-657b722c3eb0" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'
+
+
+
+
+
+# image: docker:latest
+
+# stages:
+#   - build
+#   - deploy
   
+# frontend-service:build:
+#   stage: build
+#   image: node:latest
+#   script: 
+#     - cd frontend/
+#     - npm install
+#     - npm install react-scripts
+#   artifacts:
+#     paths:
+#       - frontend/build
+#       - frontend/node_modules
+#   only:
+#     changes: 
+#       - frontend/**/*      
+  
+# frontend-service:deploy:
+#   stage: deploy
+#   image: ubuntu:20.04
+#   script:
+#     - cd frontend/
+#     - |
+#       cat > ~/.netrc <<EOF
+#         machine api.heroku.com
+#           login pellumbbaboci@gmail.com
+#           password 4b3e3d30-dc6a-4054-8caa-657b722c3eb0
+#         machine git.heroku.com
+#           login pellumbbaboci@gmail.com
+#           password 4b3e3d30-dc6a-4054-8caa-657b722c3eb0
+#       EOF
+#     - heroku container:login
+#     - heroku container:push web --app ase-delivery-system
+#     - heroku container:release web --app ase-delivery-system
+#   only:
+#     changes: 
+#       - frontend/**/*
+
+
+
+
+
