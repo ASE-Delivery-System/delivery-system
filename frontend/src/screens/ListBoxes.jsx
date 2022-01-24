@@ -16,15 +16,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
-
-function createData(boxId, boxName, boxAddress) {
-  return { boxId, boxName, boxAddress };
-}
-
-const rows = [
-  createData('Test', 'Test', 'Test'),
-];
+import ProjectTable from '/Users/clarissaanjani/ase-delivery-system/frontend/src/components/ProjectTable.jsx'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
   boxManagementRoot: {
     margin: 'auto',
-    height: '60vh',
-    minHeight: '50vh',
     paddingTop: 10,
   },
   boxManagementPaper: {
@@ -74,54 +64,30 @@ const useStyles = makeStyles((theme) => ({
 const ListBoxes = () => {
     const classes = useStyles()
 
-    const [boxId, setBoxId] = useState('')
-    const [boxAddress, setBoxAddress] = useState('')
-    const [boxName, setBoxName] = useState('')
+    const title = "List of your Boxes";
+    const description = "See assigned boxes and change the status of assigned deliveries";
+
+    const [loadingData, setLoadingData] = useState(true);
+    const [BoxData, setBoxData] = useState([])
+
+    const columns = [
+        {title: "Box ID", field : "boxId", headerName: "Box ID"},
+        {title: "Box Address", field : "boxAddress", headerName: "Box Address"},
+        {title: "Box Name", field : "boxName", headerName: "Box Name"},
+    ]
 
     return (
       <div className={classes.container}>
-        <h1>List of Boxes</h1>
-        <h3>See assigned boxes and change the status of assigned deliveries</h3>
+        <h1> {title} </h1>
+        <h3> {description} </h3>
         <div className={classes.boxManagementRoot}>
-          <Paper className={classes.boxManagementPaper} component='form'>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                      <TableRow>
-                        <TableCell align="right">Box ID</TableCell>
-                        <TableCell align="right">Box Name</TableCell>
-                        <TableCell align="right">Address</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow
-                          key={row.name}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                        <TableCell component="th" scope="row">
-                          {row.name}
-                          {row.name}
-                      </TableCell>
-                          <TableCell align="right">{row.boxId}</TableCell>
-                          <TableCell align="right">{row.boxName}</TableCell>
-                          <TableCell align="right">{row.boxAddress}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-          {(
-            <div className='form-group'>
-              <div className='alert alert-danger' role='alert'>
+                   <Paper className={classes.boxManagementPaper} component='form'>
+                      <ProjectTable rows={BoxData} title={title} description={description} columns={columns}/>
+                  </Paper>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  }
+            )
+          }
 
 export default ListBoxes
 
