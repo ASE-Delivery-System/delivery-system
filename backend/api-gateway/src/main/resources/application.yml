@@ -1,29 +1,31 @@
-
 spring:
-    application:
-        name: api-gateway
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: identity-service
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/api/auth/**
 
-    cloud:
-        gateway:
-            routes:
-                - id: identity-service
-                  uri: lb://IDENTITY-SERVICE
-                  predicates:
-                  - Path=/api/auth/**
-
-                - id: delivery-service
-                  uri: lb://DELIVERY-SERVICE
-                  predicates:
-                  - Path=/user/auth/**
-
+        - id: delivery-service
+          uri: lb://DELIVERY-SERVICE
+          predicates:
+            - Path=/user/auth/**, /users/**, /users, /deliveries, /deliveries/**
 eureka:
-    instance:
-        hostname: localhost
-    client:
-        register-with-eureka: true
-        fetch-registry: true
-        serviceUrl:
-              defaultZone:  http://${eureka.instance.hostname}:8761/eureka
+  instance:
+    hostname: ase-api-gateway.herokuapp.com
+    homePageUrl: https://${eureka.instance.hostName}/
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone:  https://ase-discovery-server.herokuapp.com/eureka
 
 server:
-    port: ${PORT:10789}
+  port: ${PORT:8080}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE

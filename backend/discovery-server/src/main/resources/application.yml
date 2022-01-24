@@ -1,16 +1,15 @@
-
-
 spring:
-    application:
-        name: discovery-service
+  application:
+    name: discovery-service
 
 server:
-    port: ${PORT:8761}
+  port: ${PORT:8761}
 
 eureka:
-    client:
-        register-with-eureka: false
-        fetch-registry: false
-    server:
-        waitTimeInMsWhenSyncEmpty: 0
-
+  instance:
+    hostname: ${ase-discovery-server.herokuapp.com:localhost}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: https://ase-discovery-server.herokuapp.com/eureka
