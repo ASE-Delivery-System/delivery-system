@@ -43,11 +43,6 @@ public class User {
   @NotBlank
   private String address;
 
-  /*
-   ----PLS check this because 1 user can open multiple boxes----
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<Box> box = new HashSet();
-   */
   public User() {
   }
 

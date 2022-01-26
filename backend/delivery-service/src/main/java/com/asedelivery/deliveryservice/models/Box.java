@@ -1,36 +1,37 @@
 package com.asedelivery.deliveryservice.models;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @Document(collection = "boxes")
 public class Box {
     @Id
-    @NotNull
-    @Column(name = "id")
     private String id;
-
-    @Id
-    @NotNull
-    @Column(name = "name")//name also unique
     private String name;
 
-    @NotNull
-    @Column(name = "status")//empty or contains deliveries from exactly one customer
-    private String status;
+    @NotBlank
+    private EBoxStatus status;
 
-    @NotNull
-    @Column(name = "address")//address of the box
+    @NotBlank//address of the box
     private String address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    //https://www.baeldung.com/hibernate-lazy-eager-loading
-    @JoinColumn(name="USER_ID") //no sure about column name
-    private UserLazy user;
+    @DBRef
+    private User customer;
 
-    public Box(String id, String name, String address, String status, UserLazy user) {
+    @DBRef
+    private User deliverer;
+
+    public Box() {
+    }
+
+    public Box(String id, String name, String address, EBoxStatus status, User customer, User deliverer) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.status = status;
-        this.user = user;
+        this.customer = customer;
+        this.deliverer = deliverer;
     }
 
     public String getName() {
@@ -57,18 +58,26 @@ public class Box {
         this.address = address;
     }
 
-    public String getStatus() { return status; }
+    public EBoxStatus getStatus() { return status; }
 
-    public void setStatus(String status) {
+    public void setStatus(EBoxStatus status) {
         this.status = status;
     }
 
-    public UserLazy getUser() {
-        return user;
+    public User getCustomer() {
+        return customer;
     }
 
-    public void setUser(UserLazy user) {
-        this.user = user;
+    public void setCustomer(User customer) {
+        this.customer = customer;
+    }
+
+    public User getDeliverer() {
+        return deliverer;
+    }
+
+    public void setDeliverer(User deliverer) {
+        this.deliverer = deliverer;
     }
 
 }

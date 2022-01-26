@@ -1,14 +1,8 @@
 package com.asedelivery.deliveryservice.controllers;
-import com.asedelivery.deliveryservice.models.ERole;
-import com.asedelivery.deliveryservice.models.Role;
-import com.asedelivery.deliveryservice.models.User;
+
 import com.asedelivery.deliveryservice.models.Box;
-import com.asedelivery.deliveryservice.payload.request.UserRegisterObj;
-import com.asedelivery.deliveryservice.payload.request.RegisterUserRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
-import com.asedelivery.deliveryservice.repository.RoleRepository;
-import com.asedelivery.deliveryservice.repository.UserRepository;
-import com.asedelivery.deliveryservice.repository.BoxRepository;
+import com.asedelivery.deliveryservice.service.BoxService;
 import com.asedelivery.deliveryservice.security.jwt.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,59 +20,42 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/menu/boxes")
+@RequestMapping("/boxes")
 public class BoxController {
-    private final BoxService service;
 
-    public BoxController(BoxService service) {
-        this.service = service;
-    }
+    @Autowired
+    BoxService boxService;
 
-    @GetMapping //GET /api/boxes
-    public ResponseEntity<List<Box>> findAll() {
-        List<Box> boxes = service.findAll();
+    @GetMapping("") //GET /api/boxes
+    public ResponseEntity<List<Box>> getAllBoxes() {
+        List<Box> boxes = boxService.findAllBoxes();
         return ResponseEntity.ok().body(boxes);
     }
 
     @GetMapping("/{id}") //GET /api/boxes/{id}
-    public ResponseEntity<Box> find(@PathVariable("id") String id) {
-        Optional<Box> box = service.find(id);
-        return ResponseEntity.of(box);
+    public ResponseEntity<Box> getBoxById(@PathVariable String id){
+        Box box = boxService.findBoxById(id);
+        return ResponseEntity.ok(box);
     }
 
-    @PostMapping
-    public ResponseEntity<Box> create(@RequestBody Box box) {
-        Box created = service.create(box);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(created);
-    }
+//    @PostMapping
+//    public ResponseEntity<Box> create(@RequestBody Box box) {
+//        Box created = service.create(box);
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(created.getId())
+//                .toUri();
+//        return ResponseEntity.created(location).body(created);
+//    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Box> update(
-            @PathVariable("id") String id,
-            @RequestBody Box updatedBox) {
-
-        Optional<Box> updated = service.update(id, updatedBox);
-
-        return updated
-                .map(value -> ResponseEntity.ok().body(value))
-                .orElseGet(() -> {
-                    Box created = service.create(updatedBox);
-                    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                            .path("/{id}")
-                            .buildAndExpand(created.getId())
-                            .toUri();
-                    return ResponseEntity.created(location).body(created);
-                });
+    @PostMapping("/{id}")
+    public ResponseEntity<Box> updateBoxById(@PathVariable String id, @RequestBody Box box){
+        return ResponseEntity.ok( boxServiceervice.updateBox(id,box));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Box> delete(@PathVariable("id") String id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<MessageResponse> deleteBoxbyId (@PathVariable String id, @RequestBody Box box){
+        return ResponseEntity.ok(boxService.updateBox(id,box));
     }
 }
 }
