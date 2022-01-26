@@ -23,6 +23,6 @@ public class DeliveryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteTestApiById1(@PathVariable String id){
-        return ResponseEntity.ok(new MessageResponse("Test api of deliveries delete test nothing by id 1."));
+        return ResponseEntity.ok(new MessageResponse("Test api of deliveries delete test nothing by id"));
     }
 }
