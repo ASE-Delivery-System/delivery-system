@@ -29,6 +29,7 @@ heroku-build-frontend:
       - frontend/**/*  
 
 delivery-service:package:
+  image: maven:3.8.4-jdk-11
   stage: package
   script: cd backend/delivery-service && mvn package
   artifacts:
@@ -59,6 +60,7 @@ heroku-deploy-delivery:
       - backend/delivery-service/**/* 
 
 identity-service:package:
+  image: maven:3.8.4-jdk-11
   stage: package
   script: cd backend/identity-service && mvn package
   artifacts:
