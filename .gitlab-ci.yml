@@ -7,8 +7,11 @@ variables:
 
 stages:
   - build
+  - package
+  - deploy
 
-docker-heroku-build-frontend:
+
+heroku-build-frontend:
   stage: build
   script:
   - cd frontend/
@@ -19,3 +22,68 @@ docker-heroku-build-frontend:
   - echo "Docker Image ID is $(cat imageid.txt)"
   - |-
     curl -X PATCH https://api.heroku.com/apps/ase-delivery-system/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer 4b3e3d30-dc6a-4054-8caa-657b722c3eb0" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'
+  only:
+    refs:
+      - main
+    changes:
+      - frontend/**/*  
+
+delivery-service:package:
+  stage: package
+  script: cd backend/delivery-service && mvn package
+  artifacts:
+    paths:
+      - backend/delivery-service/target/*.jar
+  only:
+    refs:
+      - main
+    changes:
+      - backend/delivery-service/**/*    
+
+
+heroku-deploy-delivery:
+  stage: deploy
+  script:
+  - cd backend/delivery-service
+  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-delivery-service/web .
+  - docker login -u _ -p 4b3e3d30-dc6a-4054-8caa-657b722c3eb0 registry.heroku.com
+  - docker push registry.heroku.com/ase-delivery-service/web
+  - apk add --no-cache curl
+  - echo "Docker Image ID is $(cat imageid.txt)"
+  - |-
+    curl -X PATCH https://api.heroku.com/apps/ase-delivery-service/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer 4b3e3d30-dc6a-4054-8caa-657b722c3eb0" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
+  only:
+    refs:
+      - main
+    changes:
+      - backend/delivery-service/**/* 
+
+identity-service:package:
+  stage: package
+  script: cd backend/identity-service && mvn package
+  artifacts:
+    paths:
+      - backend/identity-service/target/*.jar
+  only:
+    refs:
+      - main
+    changes:
+      - backend/identity-service/**/*    
+
+
+heroku-deploy-identity:
+  stage: deploy
+  script:
+  - cd backend/identity-service
+  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-identity-service/web .
+  - docker login -u _ -p 4b3e3d30-dc6a-4054-8caa-657b722c3eb0 registry.heroku.com
+  - docker push registry.heroku.com/ase-identity-service/web
+  - apk add --no-cache curl
+  - echo "Docker Image ID is $(cat imageid.txt)"
+  - |-
+    curl -X PATCH https://api.heroku.com/apps/ase-identity-service/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer 4b3e3d30-dc6a-4054-8caa-657b722c3eb0" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
+  only:
+    refs:
+      - main
+    changes:
+      - backend/identity-service/**/*  
