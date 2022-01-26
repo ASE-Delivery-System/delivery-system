@@ -52,7 +52,11 @@ heroku-deploy-delivery:
   - echo "Docker Image ID is $(cat imageid.txt)"
   - |-
     curl -X PATCH https://api.heroku.com/apps/ase-delivery-service/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer 4b3e3d30-dc6a-4054-8caa-657b722c3eb0" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
-
+  only:
+    refs:
+      - main
+    changes:
+      - backend/delivery-service/**/* 
 
 identity-service:package:
   stage: package
@@ -78,4 +82,8 @@ heroku-deploy-identity:
   - echo "Docker Image ID is $(cat imageid.txt)"
   - |-
     curl -X PATCH https://api.heroku.com/apps/ase-identity-service/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer 4b3e3d30-dc6a-4054-8caa-657b722c3eb0" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
-
+  only:
+    refs:
+      - main
+    changes:
+      - backend/identity-service/**/*  
