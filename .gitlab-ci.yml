@@ -11,7 +11,7 @@ stages:
 docker-heroku-build-frontend:
   stage: build
   script:
-  - cd frontend/
+  - cd ./
   - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-delivery-system/web .
   - docker login -u _ -p 4b3e3d30-dc6a-4054-8caa-657b722c3eb0 registry.heroku.com
   - docker push registry.heroku.com/ase-delivery-system/web
