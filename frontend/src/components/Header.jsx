@@ -167,7 +167,7 @@ function Header() {
         <Toolbar>
           <Typography variant='h6' noWrap component='div' sx={{ display: { sm: 'block' } }}>
             <Link href='/' color='inherit' underline='none'>
-              ASEDelivery-Test-CI/CD
+              ASEDelivery-Test-Env
             </Link>
           </Typography>
 
