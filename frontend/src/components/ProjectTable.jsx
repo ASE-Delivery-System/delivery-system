@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio} from '@mui/material'
 
 import {makeStyles} from "@mui/styles";
@@ -67,6 +67,9 @@ function ProjectTable(props) {
                         rowsPerPageOptions={[10]}
                         checkboxSelection
                         HorizontalAlign="Center"
+                        components={{
+                            Toolbar: GridToolbar,
+                        }}
                     />
                 </div>
         </div>

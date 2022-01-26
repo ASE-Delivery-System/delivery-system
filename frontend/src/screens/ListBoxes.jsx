@@ -71,9 +71,9 @@ const ListBoxes = () => {
     const [BoxData, setBoxData] = useState([])
 
     const columns = [
-        {title: "Box ID", field : "boxId", headerName: "Box ID"},
-        {title: "Box Address", field : "boxAddress", headerName: "Box Address"},
-        {title: "Box Name", field : "boxName", headerName: "Box Name"},
+        {title: "Box ID", field : "boxId", headerName: "Box ID", width:150},
+        {title: "Box Address", field : "boxAddress", headerName: "Box Address", width:150},
+        {title: "Box Name", field : "boxName", headerName: "Box Name", width:150},
     ]
 
     return (
