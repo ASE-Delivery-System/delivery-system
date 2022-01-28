@@ -1,6 +1,8 @@
 package com.asedelivery.deliveryservice.controllers;
 
 import com.asedelivery.deliveryservice.models.Box;
+import com.asedelivery.deliveryservice.models.EBoxStatus;
+import com.asedelivery.deliveryservice.payload.request.RegisterNewBoxRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.service.BoxService;
 import com.asedelivery.deliveryservice.security.jwt.JwtUtils;
@@ -38,24 +40,33 @@ public class BoxController {
         return ResponseEntity.ok(box);
     }
 
-//    @PostMapping
-//    public ResponseEntity<Box> create(@RequestBody Box box) {
-//        Box created = service.create(box);
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(created.getId())
-//                .toUri();
-//        return ResponseEntity.created(location).body(created);
-//    }
+    @PostMapping()
+    public ResponseEntity<?> createBox(@RequestBody RegisterNewBoxRequest newBoxRequest) {
+
+        if (boxService.existsByName(newBoxRequest.getName())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Name of RPI is already taken!"));
+        }
+
+
+        System.out.println(newBoxRequest.getStatus());
+        Box newBox = new Box(newBoxRequest.getName(),newBoxRequest.getAddress(), newBoxRequest.getStatus());
+        System.out.println(newBox.getId());
+
+        Box created = boxService.createBox(newBox);
+        System.out.println(created.getId());
+        return ResponseEntity.ok().body(created);
+    }
 
     @PostMapping("/{id}")
     public ResponseEntity<Box> updateBoxById(@PathVariable String id, @RequestBody Box box){
-        return ResponseEntity.ok( boxServiceervice.updateBox(id,box));
+        return ResponseEntity.ok( boxService.updateBox(id,box));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MessageResponse> deleteBoxbyId (@PathVariable String id, @RequestBody Box box){
-        return ResponseEntity.ok(boxService.updateBox(id,box));
+    public ResponseEntity<MessageResponse> deleteBoxById (@PathVariable String id){
+        boxService.deleteBoxById(id);
+        return ResponseEntity.ok(new MessageResponse("Box with id: "+id+" has been deleted!"));
     }
-}
 }

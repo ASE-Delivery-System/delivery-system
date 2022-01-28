@@ -1,19 +1,27 @@
 package com.asedelivery.deliveryservice.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Document(collection = "boxes")
 public class Box {
     @Id
     private String id;
+
+    @Indexed(unique=true)
+    @NotBlank
     private String name;
 
     @NotBlank
     private EBoxStatus status;
 
-    @NotBlank//address of the box
+    @NotBlank
     private String address;
 
     @DBRef
@@ -22,16 +30,24 @@ public class Box {
     @DBRef
     private User deliverer;
 
+    private List<Delivery> deliveries;
+
     public Box() {
     }
 
-    public Box(String id, String name, String address, EBoxStatus status, User customer, User deliverer) {
-        this.id = id;
+    public Box(String name, String address, EBoxStatus status) {
+        this.name = name;
+        this.address = address;
+        this.status = status;
+    }
+
+    public Box(String name, String address, EBoxStatus status, User customer, User deliverer, List<Delivery> deliveries) {
         this.name = name;
         this.address = address;
         this.status = status;
         this.customer = customer;
         this.deliverer = deliverer;
+        this.deliveries = deliveries;
     }
 
     public String getName() {
@@ -80,4 +96,11 @@ public class Box {
         this.deliverer = deliverer;
     }
 
+    public List<Delivery> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<Delivery> deliveries) {
+        this.deliveries = deliveries;
+    }
 }

@@ -1,10 +1,8 @@
 package com.asedelivery.deliveryservice.service;
 
 import com.asedelivery.deliveryservice.models.Box;
-import com.asedelivery.deliveryservice.models.EBoxStatus;
 import com.asedelivery.deliveryservice.repository.BoxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,7 +20,7 @@ public class BoxServiceImpl implements BoxService{
 
     @Override
     public Box findBoxById(String id) {
-        return BoxRepository.findBoxById(id);
+        return boxRepository.findBoxById(id);
     }
 
     @Override
@@ -39,6 +37,16 @@ public class BoxServiceImpl implements BoxService{
         boxTobeUpdated.setCustomer(box.getCustomer());
         boxTobeUpdated.setDeliverer(box.getDeliverer());
         return boxRepository.save(boxTobeUpdated);
+    }
+
+    @Override
+    public Box createBox(Box box) {
+        return boxRepository.save(box);
+    }
+
+    @Override
+    public Boolean existsByName(String name) {
+        return boxRepository.existsByName(name);
     }
 
 }

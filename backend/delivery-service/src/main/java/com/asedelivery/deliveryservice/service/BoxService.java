@@ -10,4 +10,6 @@ public interface BoxService {
     Box findBoxById(String id);
     void deleteBoxById(String id);
     Box updateBox(String id, Box box);
+    Box createBox(Box box);
+    Boolean existsByName(String name);
 }
