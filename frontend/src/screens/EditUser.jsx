@@ -16,10 +16,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import DispatcherService from '../services/dispatcher.service'
-import CustomerService from '../services/customer.service'
-import DelivererService from '../services/deliverer.service'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import ProjectTable from "../components/ProjectTable";
+import DispatcherService from '../services/dispatcher.service'
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -65,17 +65,18 @@ const useStyles = makeStyles((theme) => ({
 
 const EditUser = () => {
 
-
     const classes = useStyles()
     const title = "List of your Users";
     const description = "Please edit or delete the users information";
 
     const [loadingData, setLoadingData] = useState(true);
     const [UserData, setUserData] = useState([])
+    const [deletedRows, setDeletedRows] = useState([]);
+    const [purgeMode, setPurgeMode] = useState(true);
 
     const columns = [
         {title: "Username", field : "username", headerName: "Username"},
-        {title: "Password", field : "password", headerName: "Password"},
+        // {title: "Password", field : "password", headerName: "Password"},
         {title: "Email", field : "email", headerName: "Email"},
         {title: "First Name", field : "firstName", headerName: "First Name"},
         {title: "Last Name", field : "lastName", headerName: "Last Name"},
@@ -84,23 +85,36 @@ const EditUser = () => {
         {title: "Role", field : "roles", headerName: "Roles"},
     ]
 
-   const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwZWxsdW1iNyIsImlhdCI6MTY0Mjg3NTM2OCwiZXhwIjoxNjQyOTYxNzY4LCJSb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0RJU1BBVENIRVIifV19.wVSyo7C2Sl_nyjORXrPBDb84Z4lQ6xDUq_l5xhbufNiD_OmZs-DPmhPpRXQQDSINGddOuePXM12Mu70qUXF2hw";
    useEffect(()=>{
-     fetch('https://ase-delivery-service.herokuapp.com/boxes', {
-     method: "GET",
-      headers: {"Authorization": `Bearer ${token}`}
-      }).then(response => response.json())
-      .then(response => {
-        console.log(response)
-        setUserData(response)
-        })
-   },[]);
+     DispatcherService.getUsers()
+     .then((data) => {
+        setUserData(data.data)
+     })
+     .catch((error) => {
+        console.log(error)
+     })
+   }, [])
+   console.log(UserData)
 
     return (
       <div className={classes.container}>
         <h1> {title} </h1>
         <h3> {description} </h3>
         <div className={classes.userManagementRoot}>
+            <ButtonToolbar>
+              <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                 Create
+              </Button>{' '}
+              <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                 Edit
+              </Button>{' '}
+                <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                  Delete
+                </Button>{' '}
+                <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                   Change Status
+                </Button>
+              </ButtonToolbar>
            <Paper className={classes.userManagementPaper} component='form'>
               <ProjectTable rows={UserData} title={title} description={description} columns={columns}/>
           </Paper>
