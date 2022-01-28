@@ -24,11 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
 const cardPointOne = (
   <React.Fragment>
     <CardContent>
-      <FontAwesomeIcon icon={faBrain} />
       <Typography sx={{ fontSize: 20 }} color='text.secondary' gutterBottom>
         User Management
       </Typography>
@@ -53,8 +51,6 @@ const cardPointOne = (
 const cardPointTwo = (
   <React.Fragment>
     <CardContent>
-      <FontAwesomeIcon icon={faChartLine} />
-
       <Typography sx={{ fontSize: 20 }} color='text.secondary' gutterBottom>
         Delivery Management
       </Typography>
@@ -67,7 +63,7 @@ const cardPointTwo = (
     <CardActions>
       <Link to='/createnewdelivery' color='inherit' className='button'>
         <Button size='small' variant='contained'>
-            Create new deliveries
+          Create new deliveries
         </Button>
       </Link>
     </CardActions>
@@ -77,8 +73,6 @@ const cardPointTwo = (
 const cardPointThree = (
   <React.Fragment>
     <CardContent>
-      <FontAwesomeIcon icon={faUserLock} />
-
       <Typography sx={{ fontSize: 20 }} color='text.secondary' gutterBottom>
         Box management
       </Typography>
@@ -90,14 +84,12 @@ const cardPointThree = (
         </Button>
       </Link>
     </CardActions>
-
   </React.Fragment>
 )
 
 const Dispatcher = () => {
   const classes = useStyles()
   return (
-
     <Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 10 }} bgcolor='text.secondary' color='white' className={classes.boxStyle}>
       <Container maxWidth='lg'>
         <Grid container spacing={5}>

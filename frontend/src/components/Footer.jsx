@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles((theme) => ({
-  footerStyle:{
+  footerStyle: {
     boxSizing: 'border-box',
     marginBottom: '-100px',
-    borderTop: '1px'
+    borderTop: '1px',
   },
 
   // box-sizing: border-box;
@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function Footer() {
-
   const classes = useStyles()
 
   return (
@@ -35,7 +34,7 @@ function Footer() {
                 </Link>
               </Box>
               <Box>
-                <Link href='https://github.com/Pellumbengineer' color='inherit'>
+                <Link href='https://github.com/ASE-Delivery-System' color='inherit'>
                   <FontAwesomeIcon icon={faGithub} />
                 </Link>
               </Box>
@@ -54,7 +53,7 @@ function Footer() {
               </Box>
               <Box>
                 <Link href='/dispatcher' color='inherit'>
-                                Dispatcher
+                  Dispatcher
                 </Link>
               </Box>
             </Grid>
