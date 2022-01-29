@@ -4,6 +4,7 @@ import com.asedelivery.deliveryservice.models.EBoxStatus;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 public class RegisterNewBoxRequest {
@@ -12,7 +13,6 @@ public class RegisterNewBoxRequest {
     @NotBlank
     private String name;
 
-    @NotBlank
     private EBoxStatus status;
 
     @NotBlank

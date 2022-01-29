@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/boxes")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class BoxController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class BoxController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createBox(@RequestBody RegisterNewBoxRequest newBoxRequest) {
+    public ResponseEntity<?> createBox(@Valid @RequestBody RegisterNewBoxRequest newBoxRequest) {
 
         if (boxService.existsByName(newBoxRequest.getName())) {
             return ResponseEntity

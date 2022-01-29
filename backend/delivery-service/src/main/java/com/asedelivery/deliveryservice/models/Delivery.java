@@ -19,12 +19,15 @@ public class Delivery {
     @DBRef
     private User deliverer;
 
+    private EDeliveryStatus status;
+
     public Delivery(){}
 
-    public Delivery(Box targetBox, User customer, User deliverer) {
+    public Delivery(Box targetBox, User customer, User deliverer, EDeliveryStatus status) {
         this.targetBox = targetBox;
         this.customer = customer;
         this.deliverer = deliverer;
+        this.status = status;
     }
 
     public String getId() {
@@ -57,5 +60,13 @@ public class Delivery {
 
     public void setDeliverer(User deliverer) {
         this.deliverer = deliverer;
+    }
+
+    public EDeliveryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EDeliveryStatus status) {
+        this.status = status;
     }
 }
