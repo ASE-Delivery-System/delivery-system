@@ -6,6 +6,7 @@ import com.asedelivery.deliveryservice.models.EBoxStatus;
 import com.asedelivery.deliveryservice.models.User;
 import com.asedelivery.deliveryservice.payload.request.DeliveryRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
+import com.asedelivery.deliveryservice.repository.BoxRepository;
 import com.asedelivery.deliveryservice.service.BoxService;
 import com.asedelivery.deliveryservice.service.DeliveryService;
 import com.asedelivery.deliveryservice.service.UserService;
@@ -30,11 +31,6 @@ public class DeliveryController {
 
     @Autowired
     UserService userService;
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MessageResponse> deleteTestApiById1(@PathVariable String id){
-        return ResponseEntity.ok(new MessageResponse("Test api of deliveries delete test nothing by id"));
-    }
 
     @GetMapping("")
     public ResponseEntity<List<Delivery>> getAllDeliveries(){
@@ -63,18 +59,44 @@ public class DeliveryController {
         }
 
         if (targetBox.getStatus() == EBoxStatus.TAKEN) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Target Box already taken!"));
+
+            if (!Objects.equals(targetBox.getCustomer().getId(), customer.getId())){
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: Target Box already taken by another customer!"));
+            }
         }
 
+        Delivery createdDelivery  = deliveryService.createDelivery(deliveryRequest);
 
-        Delivery newDelivery = new Delivery(targetBox,customer,deliverer,deliveryRequest.getStatus());
-        System.out.println(newDelivery.getStatus().name());
-        System.out.println(newDelivery.getId());
-
-        Delivery created = deliveryService.createDelivery(newDelivery);
-        System.out.println(created.getId());
-        return ResponseEntity.ok().body(created);
+        return ResponseEntity.ok().body(createdDelivery);
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<List<Delivery>> getDeliveryById(@PathVariable String id){
+        return ResponseEntity.ok( deliveryService.getAllDeliveries());
+    }
+
+    @PostMapping("{id}")
+    public ResponseEntity<List<Delivery>> deleteDeliveryById(@PathVariable String id){
+        return ResponseEntity.ok( deliveryService.getAllDeliveries());
+    }
+
+    @PostMapping("/status/{id}")
+    public ResponseEntity<?> updateDeliveryStatus(@RequestBody DeliveryRequest deliveryRequest, @PathVariable String id){
+
+        Delivery delivery = deliveryService.findDeliveryById(id);
+
+        if (Objects.isNull(delivery)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body( new MessageResponse("Delivery Not Found"));
+        }
+
+        Delivery updatedDelivery = deliveryService.updateDeliveryStatus(id,deliveryRequest);
+
+        return ResponseEntity.ok(updatedDelivery);
+    }
+
+
 }

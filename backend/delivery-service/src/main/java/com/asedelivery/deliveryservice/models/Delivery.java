@@ -1,5 +1,6 @@
 package com.asedelivery.deliveryservice.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -38,6 +39,7 @@ public class Delivery {
         this.id = id;
     }
 
+    @JsonBackReference
     public Box getTargetBox() {
         return targetBox;
     }
