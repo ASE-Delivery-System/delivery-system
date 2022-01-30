@@ -5,12 +5,15 @@ import com.asedelivery.deliveryservice.models.Delivery;
 import com.asedelivery.deliveryservice.models.EBoxStatus;
 import com.asedelivery.deliveryservice.models.User;
 import com.asedelivery.deliveryservice.payload.request.DeliveryRequest;
+import com.asedelivery.deliveryservice.payload.request.EmailRequest;
+import com.asedelivery.deliveryservice.payload.request.UserRegisterObj;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.BoxRepository;
 import com.asedelivery.deliveryservice.repository.DeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,9 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Autowired
     BoxRepository boxRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public Delivery createDelivery(DeliveryRequest deliveryRequest) {
@@ -57,6 +63,14 @@ public class DeliveryServiceImpl implements DeliveryService{
         targetBox.setDeliveries(deliveryList);
 
         boxRepository.save(targetBox);
+
+        // TODO: Uncomment and adapt after the emailing service is ready
+//        EmailRequest emailToBeSend = new EmailRequest();
+//        emailToBeSend.setTo(customer.getEmail());
+//        emailToBeSend.setStatus("New delivery Created");
+//
+//        // Do e post request to email service!
+//        restTemplate.postForObject("https://ase-emailing-service.herokuapp.com/api/email/send", emailToBeSend, String.class);
 
         return createDelivery;
     }
