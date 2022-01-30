@@ -89,3 +89,67 @@ heroku-deploy-identity:
       - main
     changes:
       - backend/identity-service/**/*  
+
+
+api-gateway:package:
+  image: maven:3.8.4-jdk-11
+  stage: package
+  script: cd backend/api-gateway && mvn package
+  artifacts:
+    paths:
+      - backend/api-gateway/target/*.jar
+  only:
+    refs:
+      - main
+    changes:
+      - backend/api-gateway/**/*    
+
+
+heroku-deploy-api-gateway:
+  stage: deploy
+  script:
+  - cd backend/api-gateway
+  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-api-gateway/web .
+  - docker login -u _ -p $HEROKU_TOKEN_97 registry.heroku.com
+  - docker push registry.heroku.com/ase-api-gateway/web
+  - apk add --no-cache curl
+  - echo "Docker Image ID is $(cat imageid.txt)"
+  - |-
+    curl -X PATCH https://api.heroku.com/apps/ase-api-gateway/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer $HEROKU_TOKEN_97" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
+  only:
+    refs:
+      - main
+    changes:
+      - backend/api-gateway/**/*  
+
+discovery-server:package:
+  image: maven:3.8.4-jdk-11
+  stage: package
+  script: cd backend/discovery-server && mvn package
+  artifacts:
+    paths:
+      - backend/discovery-server/target/*.jar
+  only:
+    refs:
+      - main
+    changes:
+      - backend/discovery-server/**/*    
+
+
+heroku-deploy-discovery-server:
+  stage: deploy
+  script:
+  - cd backend/discovery-server
+  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-discovery-server/web .
+  - docker login -u _ -p $HEROKU_TOKEN_97 registry.heroku.com
+  - docker push registry.heroku.com/ase-discovery-server/web
+  - apk add --no-cache curl
+  - echo "Docker Image ID is $(cat imageid.txt)"
+  - |-
+    curl -X PATCH https://api.heroku.com/apps/ase-discovery-server/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer $HEROKU_TOKEN_97" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
+  only:
+    refs:
+      - main
+    changes:
+      - backend/discovery-server/**/*  
+
