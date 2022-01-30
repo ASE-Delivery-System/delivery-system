@@ -10,4 +10,6 @@ public interface DeliveryService {
     List<Delivery> getAllDeliveries();
     Delivery findDeliveryById(String id);
     Delivery updateDeliveryStatus(String id, DeliveryRequest deliveryRequest);
+    List<Delivery> getAllDeliveriesOfDeliverer(String delivererId);
+    List<Delivery> getAllDeliveriesOfCustomer(String customerId);
 }

@@ -98,5 +98,9 @@ public class DeliveryController {
         return ResponseEntity.ok(updatedDelivery);
     }
 
+    @GetMapping("/deliverer")
+    public ResponseEntity<List<Delivery>> getAllDeliveriesOfDeliverer(@RequestBody String id){
+        return  ResponseEntity.ok().body(deliveryService.getAllDeliveriesOfDeliverer(id));
+    }
 
 }

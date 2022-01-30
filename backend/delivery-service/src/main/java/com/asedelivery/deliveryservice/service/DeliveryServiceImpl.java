@@ -1,16 +1,13 @@
 package com.asedelivery.deliveryservice.service;
 
-import com.asedelivery.deliveryservice.models.Box;
-import com.asedelivery.deliveryservice.models.Delivery;
-import com.asedelivery.deliveryservice.models.EBoxStatus;
-import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.models.*;
 import com.asedelivery.deliveryservice.payload.request.DeliveryRequest;
 import com.asedelivery.deliveryservice.payload.request.EmailRequest;
-import com.asedelivery.deliveryservice.payload.request.UserRegisterObj;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.BoxRepository;
 import com.asedelivery.deliveryservice.repository.DeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -37,8 +34,8 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Autowired
     BoxRepository boxRepository;
 
-    @Autowired
-    private RestTemplate restTemplate;
+//    @Autowired
+//    private RestTemplate restTemplate;
 
     @Override
     public Delivery createDelivery(DeliveryRequest deliveryRequest) {
@@ -50,7 +47,6 @@ public class DeliveryServiceImpl implements DeliveryService{
         Delivery newDelivery = new Delivery(targetBox,customer,deliverer,deliveryRequest.getStatus());
         Delivery createDelivery = deliveryRepository.save(newDelivery);
 
-        // TODO: Update target box *******************
         List<Delivery> deliveryList = new ArrayList<>();
         deliveryList.add(createDelivery);
 
@@ -90,5 +86,23 @@ public class DeliveryServiceImpl implements DeliveryService{
         Delivery delivery = findDeliveryById(id);
         delivery.setStatus(deliveryRequest.getStatus());
         return deliveryRepository.save(delivery);
+    }
+
+    @Override
+    public List<Delivery> getAllDeliveriesOfDeliverer(String delivererId) {
+        User deliverer = userService.findUserById(delivererId);
+
+        Delivery newDelivery = new Delivery();
+        newDelivery.setDeliverer(deliverer);
+//        deliveryRepository.findAll(Example.of(newDelivery));
+
+//        deliveryRepository.findDeliveriesByDeliverer_Id(delivererId);
+
+        return deliveryRepository.findDeliveriesByDelivererIdAndStatus(delivererId, EDeliveryStatus.IN_DEPOT);
+    }
+
+    @Override
+    public List<Delivery> getAllDeliveriesOfCustomer(String customerId) {
+        return null;
     }
 }
