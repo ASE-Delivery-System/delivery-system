@@ -13,6 +13,11 @@ spring:
           uri: lb://DELIVERY-SERVICE
           predicates:
             - Path=/user/auth/**, /users/**, /users, /deliveries, /deliveries/**
+
+        - id: email-service
+          uri: lb://EMAIL-SERVICE
+          predicates:
+            - Path=/api/send
 eureka:
   instance:
     hostname: ase-api-gateway.herokuapp.com
