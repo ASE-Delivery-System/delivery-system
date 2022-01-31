@@ -11,5 +11,6 @@ public interface DeliveryService {
     Delivery findDeliveryById(String id);
     Delivery updateDeliveryStatus(String id, DeliveryRequest deliveryRequest);
     List<Delivery> getAllDeliveriesOfDeliverer(String delivererId);
-    List<Delivery> getAllDeliveriesOfCustomer(String customerId);
+    List<Delivery> getAllActiveDeliveries(String customerId);
+    List<Delivery> getAllPastDeliveries(String customerId);
 }

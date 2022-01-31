@@ -90,19 +90,24 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public List<Delivery> getAllDeliveriesOfDeliverer(String delivererId) {
-        User deliverer = userService.findUserById(delivererId);
+          // first way to find
 
-        Delivery newDelivery = new Delivery();
-        newDelivery.setDeliverer(deliverer);
+//        User deliverer = userService.findUserById(delivererId);
+//        Delivery newDelivery = new Delivery();
+//        newDelivery.setDeliverer(deliverer);
 //        deliveryRepository.findAll(Example.of(newDelivery));
-
 //        deliveryRepository.findDeliveriesByDeliverer_Id(delivererId);
 
         return deliveryRepository.findDeliveriesByDelivererIdAndStatus(delivererId, EDeliveryStatus.IN_DEPOT);
     }
 
     @Override
-    public List<Delivery> getAllDeliveriesOfCustomer(String customerId) {
-        return null;
+    public List<Delivery> getAllActiveDeliveries(String customerId) {
+        return deliveryRepository.findAllActiveDeliveries(customerId, EDeliveryStatus.PICKED_UP);
+    }
+
+    @Override
+    public List<Delivery> getAllPastDeliveries(String customerId) {
+        return deliveryRepository.findAllPastDeliveries(customerId,EDeliveryStatus.PICKED_UP);
     }
 }

@@ -77,7 +77,7 @@ public class DeliveryController {
         return ResponseEntity.ok( deliveryService.getAllDeliveries());
     }
 
-    @PostMapping("{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<List<Delivery>> deleteDeliveryById(@PathVariable String id){
         return ResponseEntity.ok( deliveryService.getAllDeliveries());
     }
@@ -101,6 +101,16 @@ public class DeliveryController {
     @GetMapping("/deliverer")
     public ResponseEntity<List<Delivery>> getAllDeliveriesOfDeliverer(@RequestBody String id){
         return  ResponseEntity.ok().body(deliveryService.getAllDeliveriesOfDeliverer(id));
+    }
+
+    @GetMapping("/customer/active")
+    public ResponseEntity<List<Delivery>> getAllActiveDeliveries(@RequestBody String id){
+        return  ResponseEntity.ok().body(deliveryService.getAllActiveDeliveries(id));
+    }
+
+    @GetMapping("/customer/past")
+    public ResponseEntity<List<Delivery>> getAllPastDeliveries(@RequestBody String id){
+        return  ResponseEntity.ok().body(deliveryService.getAllPastDeliveries(id));
     }
 
 }

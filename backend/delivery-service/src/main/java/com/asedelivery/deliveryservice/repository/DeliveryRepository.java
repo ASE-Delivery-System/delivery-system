@@ -14,16 +14,13 @@ public interface DeliveryRepository extends MongoRepository<Delivery, String> {
 
     Delivery findDeliveryById(String id);
 
-    List<Delivery> findDeliveriesByDeliverer_Id(String deliverer_id);
-
-    List<Delivery> findDeliveriesByCustomer_Id(String customer_id);
-
     @Query("{'deliverer' : ?0, 'status' : ?1}")
     List<Delivery> findDeliveriesByDelivererIdAndStatus(@Param("deliverer") String customer_id, @Param("status") EDeliveryStatus status);
 
-    @Query("{'customer' : ?0, 'status' : ?1}")
-    List<Delivery> findDeliveriesByCustomerIdAndStatus(@Param("customer") String customer_id, @Param("status") EDeliveryStatus status);
+    @Query("{'customer' : ?0, 'status' : { $ne: ?1 }}")
+    List<Delivery> findAllActiveDeliveries(@Param("customer") String customer_id, @Param("status") EDeliveryStatus status);
 
-
+    @Query("{'customer' : ?0, 'status' : ?1 }")
+    List<Delivery> findAllPastDeliveries(@Param("customer") String customer_id, @Param("status") EDeliveryStatus status);
 
 }
