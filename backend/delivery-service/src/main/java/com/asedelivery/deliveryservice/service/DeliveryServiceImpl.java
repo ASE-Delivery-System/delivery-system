@@ -110,4 +110,9 @@ public class DeliveryServiceImpl implements DeliveryService{
     public List<Delivery> getAllPastDeliveries(String customerId) {
         return deliveryRepository.findAllPastDeliveries(customerId,EDeliveryStatus.PICKED_UP);
     }
+
+    @Override
+    public void deleteDeliveryById(String id) {
+        deliveryRepository.deleteById(id);
+    }
 }

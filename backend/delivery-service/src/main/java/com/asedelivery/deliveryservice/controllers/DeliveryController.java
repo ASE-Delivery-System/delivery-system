@@ -73,13 +73,20 @@ public class DeliveryController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<List<Delivery>> getDeliveryById(@PathVariable String id){
-        return ResponseEntity.ok( deliveryService.getAllDeliveries());
+    public ResponseEntity<?> getDeliveryById(@PathVariable String id){
+        Delivery delivery = deliveryService.findDeliveryById(id);
+        if (Objects.isNull(delivery)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body( new MessageResponse("Delivery box Not Found"));
+        }
+        return ResponseEntity.ok( delivery);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<List<Delivery>> deleteDeliveryById(@PathVariable String id){
-        return ResponseEntity.ok( deliveryService.getAllDeliveries());
+    public ResponseEntity<?> deleteDeliveryById(@PathVariable String id){
+        deliveryService.deleteDeliveryById(id);
+        return ResponseEntity.ok( new MessageResponse("Delivery deleted") );
     }
 
     @PostMapping("/status/{id}")
