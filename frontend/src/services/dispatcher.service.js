@@ -12,14 +12,23 @@ const registerNewUser = async (user) => {
   return await axios.post(API_URL + 'register', user,  { headers: authHeader() })
 }
 
+const postUser = async (user) => {
+  return await axios.post(API_URL, user,  { headers: authHeader() })
+}
+
 const getUsers = async () => {
   return await axios.get(API_URL_GET_USER,  { headers: authHeader() })
+}
+
+const deleteUsers = async (user) => {
+  return await axios.delete(API_URL_GET_USER, user, { headers: authHeader() })
 }
 
 const DispatcherService = {
   getDispatcherView,
   registerNewUser,
-  getUsers
+  getUsers,
+  deleteUsers
 }
 
 export default DispatcherService

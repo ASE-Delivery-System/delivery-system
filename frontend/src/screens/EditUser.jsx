@@ -19,7 +19,13 @@ import TableRow from '@mui/material/TableRow';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import ProjectTable from "../components/ProjectTable";
 import DispatcherService from '../services/dispatcher.service'
-
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
+import IconButton from "@mui/material/IconButton";
+import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -63,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+
 const EditUser = () => {
 
     const classes = useStyles()
@@ -71,18 +78,44 @@ const EditUser = () => {
 
     const [loadingData, setLoadingData] = useState(true);
     const [UserData, setUserData] = useState([])
-    const [deletedRows, setDeletedRows] = useState([]);
-    const [purgeMode, setPurgeMode] = useState(true);
+    const [rows, setRows] = React.useState();
+    const [selectedRows, setSelectedRows] = useState([])
 
-    const columns = [
-        {title: "Username", field : "username", headerName: "Username"},
+    const [editRowsModel, setEditRowsModel] = React.useState({});
+
+    const handleEditRowsModelChange = React.useCallback((model) => {
+        setEditRowsModel(model);
+      }, []);
+
+    const columns: GridColDef[] = [
+        {title: "Username", field : "username", headerName: "Username", editable: true},
         // {title: "Password", field : "password", headerName: "Password"},
-        {title: "Email", field : "email", headerName: "Email"},
-        {title: "First Name", field : "firstName", headerName: "First Name"},
-        {title: "Last Name", field : "lastName", headerName: "Last Name"},
-        {title: "Address", field : "address", width: 100, headerName: "Address"},
-        {title: "RFID Token", field : "rfidToken", headerName: "RFID Token"},
-        {title: "Role", field : "roles", headerName: "Roles"},
+        {title: "Email", field : "email", headerName: "Email", editable: true},
+        {title: "First Name", field : "firstName", headerName: "First Name", editable: true},
+        {title: "Last Name", field : "lastName", headerName: "Last Name", editable: true},
+        {title: "Address", field : "address", width: 100, headerName: "Address", editable: true},
+        {title: "RFID Token", field : "rfidToken", headerName: "RFID Token", editable: true},
+        {title: "Role", field : "roles", headerName: "Roles", editable: true},
+        {
+              field: "delete",
+              width: 75,
+              sortable: false,
+              disableColumnMenu: true,
+              renderHeader: () => {
+                return (
+                  <IconButton
+                    onClick={() => {
+                      const selectedIDs = new Set(selectedRows);
+                      console.log(selectedIDs)
+                      DispatcherService.deleteUsers(selectedIDs)
+                      setUserData((r) => r.filter((x) => !selectedIDs.has(x.id)));
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                );
+              }
+            }
     ]
 
    useEffect(()=>{
@@ -105,7 +138,10 @@ const EditUser = () => {
               <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                  Create
               </Button>{' '}
-              <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+              <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'
+              onClick={() => {
+                DispatcherService.postUser(UserData)
+              }}>
                  Edit
               </Button>{' '}
                 <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
@@ -116,7 +152,16 @@ const EditUser = () => {
                 </Button>
               </ButtonToolbar>
            <Paper className={classes.userManagementPaper} component='form'>
-              <ProjectTable rows={UserData} title={title} description={description} columns={columns}/>
+              <ProjectTable rows={UserData}
+              title={title}
+              description={description}
+              onSelectionModelChange={(ids) => {
+                        setSelectedRows(ids);
+                      }}
+              columns={columns}
+              onEditRowsModelChange={handleEditRowsModelChange}
+              editMode="row"
+              editRowsModel={editRowsModel}/>
           </Paper>
         </div>
       </div>

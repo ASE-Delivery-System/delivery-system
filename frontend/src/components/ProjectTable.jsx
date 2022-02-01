@@ -4,8 +4,7 @@ import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormContr
 
 import {makeStyles} from "@mui/styles";
 
-//make columns and rows customable
-
+import { useEffect, useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -63,12 +62,13 @@ function ProjectTable(props) {
                     <DataGrid
                         rows={rows}
                         columns={columns}
+                        editMode="row"
                         pageSize={10}
                         rowsPerPageOptions={[10]}
                         checkboxSelection
                         HorizontalAlign="Center"
                         components={{
-                            Toolbar: GridToolbar,
+                          Toolbar: GridToolbar,
                         }}
                     />
                 </div>

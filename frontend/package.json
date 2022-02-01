@@ -16,6 +16,8 @@
     "@mui/material": "^5.1.0",
     "@mui/styles": "^5.1.0",
     "@mui/x-data-grid": "^5.2.2",
+    "@mui/x-data-grid-generator": "^5.4.0",
+    "@mui/x-data-grid-pro": "^5.4.0",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
