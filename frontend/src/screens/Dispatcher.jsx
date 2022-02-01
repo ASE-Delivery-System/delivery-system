@@ -56,9 +56,11 @@ const cardPointTwo = (
       </Typography>
     </CardContent>
     <CardActions>
-      <Button variant='contained' size='small'>
-        Edit deliveries
-      </Button>
+        <Link to='/listdeliveries' color='inherit' className='button'>
+          <Button variant='contained' size='small'>
+            Edit deliveries
+          </Button>
+        </Link>
     </CardActions>
     <CardActions>
       <Link to='/createnewdelivery' color='inherit' className='button'>
