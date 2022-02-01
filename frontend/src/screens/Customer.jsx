@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import ProjectTable from "../components/ProjectTable";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import {Button, Paper} from "@mui/material";
 import {makeStyles} from "@mui/styles";
+import DispatcherService from "../services/dispatcher.service";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -67,11 +68,73 @@ const rows = [
     { id: 9,box: 9, trackingCode: 'Roxie', deliveryDate: 'Harvey'},
 ];
 
+function getDeliveries(data) {
+    let newRows = [];
+
+    data.map( (item) => {
+        let box = item.box;
+        let trackingCode = item.trackingCode;
+        let deliveryDate =  item.deliveryDate;
+        let status = "";
+
+        switch(item.status) {
+            case "OUT_FOR_DELIVERY":
+                status = "Out for Delivery"
+                break;
+            case "IN_DEPOT":
+                status = "In Deposit"
+                break;
+            case "DELIVERED":
+                status = "Delivered"
+                break;
+            default:
+                status = "undefined"
+        }
+        let itemInfo = { "id": item.id,
+            "box": box.name,
+            "trackingCode": trackingCode,
+            "deliveryDate": deliveryDate,
+            "status": status,
+        };
+        newRows.push(itemInfo)});
+
+    return newRows;
+}
+
+
 
 const Customer = () => {
     const classes = useStyles();
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
+
+    const [loadingData, setLoadingData] = useState(true);
+    const [UserData, setUserData] = useState([])
+
+    function activeDeliveriesHandler() {
+
+    }
+
+    function pastDeliveriesHandler() {
+
+    }
+
+    try {
+        useEffect(()=>{
+            DispatcherService.getDeliveries()
+                .then((data) => {
+                    setUserData(data.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }, [])
+        console.log(UserData)
+    }
+    catch (e) {
+
+    }
+
 
     return (<div className={classes.container}>
         <h1> {title} </h1>
