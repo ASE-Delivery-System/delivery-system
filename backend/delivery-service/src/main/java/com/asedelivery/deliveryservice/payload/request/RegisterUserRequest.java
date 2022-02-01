@@ -20,15 +20,18 @@ public class RegisterUserRequest {
     private String password;
 
     @NotBlank
+    @Size(min = 1, max = 20)
     private String firstName;
 
     @NotBlank
+    @Size(min = 1, max = 20)
     private String lastName;
 
     @Size(min = 4, max = 10)
     private String rfidToken;
 
     @NotBlank
+    @Size(min = 1, max = 50)
     private String address;
 
     public void setRoles(Set<String> roles) {

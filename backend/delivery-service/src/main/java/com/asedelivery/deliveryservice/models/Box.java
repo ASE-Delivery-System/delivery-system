@@ -1,5 +1,6 @@
 package com.asedelivery.deliveryservice.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -96,6 +97,7 @@ public class Box {
         this.deliverer = deliverer;
     }
 
+    @JsonManagedReference
     public List<Delivery> getDeliveries() {
         return deliveries;
     }

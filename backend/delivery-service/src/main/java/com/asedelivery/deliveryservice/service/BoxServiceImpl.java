@@ -36,6 +36,7 @@ public class BoxServiceImpl implements BoxService{
         boxTobeUpdated.setStatus(box.getStatus());
         boxTobeUpdated.setCustomer(box.getCustomer());
         boxTobeUpdated.setDeliverer(box.getDeliverer());
+        boxTobeUpdated.setDeliveries(box.getDeliveries());
         return boxRepository.save(boxTobeUpdated);
     }
 

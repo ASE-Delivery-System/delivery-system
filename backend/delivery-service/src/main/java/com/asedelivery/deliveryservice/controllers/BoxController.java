@@ -18,11 +18,13 @@ import java.net.URI;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/boxes")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class BoxController {
 
     @Autowired
@@ -41,7 +43,7 @@ public class BoxController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createBox(@RequestBody RegisterNewBoxRequest newBoxRequest) {
+    public ResponseEntity<?> createBox(@Valid @RequestBody RegisterNewBoxRequest newBoxRequest) {
 
         if (boxService.existsByName(newBoxRequest.getName())) {
             return ResponseEntity
@@ -60,7 +62,14 @@ public class BoxController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Box> updateBoxById(@PathVariable String id, @RequestBody Box box){
+    public ResponseEntity<?> updateBoxById(@PathVariable String id, @RequestBody Box box){
+        Box boxToBeUpdated = boxService.findBoxById(id);
+
+        if (Objects.isNull(boxToBeUpdated)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body( new MessageResponse("Box Not Found"));
+        }
         return ResponseEntity.ok( boxService.updateBox(id,box));
     }
 

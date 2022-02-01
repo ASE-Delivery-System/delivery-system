@@ -1,5 +1,6 @@
 package com.asedelivery.deliveryservice.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,12 +20,15 @@ public class Delivery {
     @DBRef
     private User deliverer;
 
+    private EDeliveryStatus status;
+
     public Delivery(){}
 
-    public Delivery(Box targetBox, User customer, User deliverer) {
+    public Delivery(Box targetBox, User customer, User deliverer, EDeliveryStatus status) {
         this.targetBox = targetBox;
         this.customer = customer;
         this.deliverer = deliverer;
+        this.status = status;
     }
 
     public String getId() {
@@ -35,6 +39,7 @@ public class Delivery {
         this.id = id;
     }
 
+    @JsonBackReference
     public Box getTargetBox() {
         return targetBox;
     }
@@ -57,5 +62,13 @@ public class Delivery {
 
     public void setDeliverer(User deliverer) {
         this.deliverer = deliverer;
+    }
+
+    public EDeliveryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EDeliveryStatus status) {
+        this.status = status;
     }
 }
