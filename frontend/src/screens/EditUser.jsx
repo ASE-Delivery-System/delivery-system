@@ -69,6 +69,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+function TableItem(data) {
+    var newrows = [];
+
+    data.map( (item) => {
+        var itemInfo = { "id": item.id,
+            "username": item.username,
+            "email": item.email,
+            "firstName": item.firstName,
+            "lastName": item.lastName,
+            "address": item.address,
+            "roles" : item.roles.map((roles) => {
+                switch (roles.name) {
+                    case "ROLE_DELIVERER":
+                        return "Deliverer";
+                    case "ROLE_CUSTOMER":
+                        return "Customer";
+                    case "ROLE_DISPATCHER":
+                        return "Dispatcher";
+                }
+            })};
+        newrows.push(itemInfo)});
+
+    return newrows;
+}
 
 const EditUser = () => {
 
