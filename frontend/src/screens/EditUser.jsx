@@ -176,7 +176,7 @@ const EditUser = () => {
                 </Button>
               </ButtonToolbar>
            <Paper className={classes.userManagementPaper} component='form'>
-              <ProjectTable rows={UserData}
+              <ProjectTable rows={TableItem(UserData)}
               title={title}
               description={description}
               onSelectionModelChange={(ids) => {
