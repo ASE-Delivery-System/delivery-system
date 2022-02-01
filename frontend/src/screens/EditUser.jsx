@@ -79,6 +79,7 @@ function TableItem(data) {
             "firstName": item.firstName,
             "lastName": item.lastName,
             "address": item.address,
+            "rfidToken": item.rfidToken,
             "roles" : item.roles.map((roles) => {
                 switch (roles.name) {
                     case "ROLE_DELIVERER":

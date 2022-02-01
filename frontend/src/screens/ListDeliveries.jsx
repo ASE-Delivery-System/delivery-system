@@ -66,8 +66,6 @@ const columns = [
     { field: 'status', headerName: 'Status', width: 130 },
     { field: 'orderedOn', headerName: 'Ordered On', width: 130 },
     { field: 'pickedOn', headerName: 'Picked On', width: 130 },
-
-
 ];
 
 const rows = [
