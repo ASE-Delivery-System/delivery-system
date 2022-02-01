@@ -56,6 +56,11 @@ function Footer() {
                   Dispatcher
                 </Link>
               </Box>
+              <Box>
+                <Link href='/deliverer' color='inherit'>
+                  Deliverer
+                </Link>
+              </Box>
             </Grid>
           </Grid>
           <Box textAlign='center' pt={{ xs: 5, sm: 10 }} pb={{ xs: 5, sm: 0 }}>
