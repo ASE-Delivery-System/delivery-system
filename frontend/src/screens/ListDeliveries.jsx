@@ -2,18 +2,12 @@ import { makeStyles } from '@mui/styles'
 import {
     Paper,
     Button,
-    TextField,
-    RadioGroup,
-    FormLabel,
-    FormControl,
-    FormControlLabel,
-    Radio,
-    ButtonGroup
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 
 import ProjectTable from "../components/ProjectTable";
+import DispatcherService from "../services/dispatcher.service";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -68,22 +62,72 @@ const columns = [
     { field: 'pickedOn', headerName: 'Picked On', width: 130 },
 ];
 
-const rows = [
-    { id: 1, targetBox: 1, orderedOn: 'Tuesday 18th', pickedOn: 'Today',status: 'delivered', targetCustomer: 'Snow', deliverer: 'Jon'},
-    { id: 2, targetBox: 2, orderedOn: 'Tuesday 11th', pickedOn: 'Today',status: 'to be delivered', targetCustomer: 'Lannister', deliverer: 'Cersei'},
-    { id: 3, targetBox: 3, orderedOn: 'Tuesday 18th', pickedOn: 'Yesterday',status: 'delivered', targetCustomer: 'Lannister', deliverer: 'Jaime'},
-    { id: 4, targetBox: 4, orderedOn: 'Tuesday 18th', pickedOn: 'Today',status: 'to be delivered', targetCustomer: 'Stark', deliverer: 'Arya'},
-    { id: 5, targetBox: 5, orderedOn: 'Tuesday 18th', pickedOn: 'Yesterday',status: 'to be delivered', targetCustomer: 'Targaryen', deliverer: 'Daenerys'},
-    { id: 6, targetBox: 6, orderedOn: 'Tuesday 04th', pickedOn: 'Today',status: 'to be delivered', targetCustomer: 'Melisandre', deliverer: null},
-    { id: 7, targetBox: 7, orderedOn: 'Tuesday 11th', pickedOn: 'Yesterday',status: 'delivered', targetCustomer: 'Clifford', deliverer: 'Ferrara'},
-    { id: 8, targetBox: 8, orderedOn: 'Tuesday 18th', pickedOn: 'Yesterday',status: 'delivered', targetCustomer: 'Frances', deliverer: 'Rossini'},
-    { id: 9, targetBox: 9, orderedOn: 'Tuesday 18th', pickedOn: 'Today',status: 'delivered', targetCustomer: 'Roxie', deliverer: 'Harvey'},
-];
+function getDeliveries(data) {
+    let newRows = [];
+
+    try {
+        data.map( (item) => {
+            let customer = item.customer;
+            let status = "";
+            let deliverer =  item.deliverer;
+            let box = item.box;
+
+            switch(item.status) {
+                case "OUT_FOR_DELIVERY":
+                    status = "Out for Delivery"
+                    break;
+                case "IN_DEPOT":
+                    status = "In Deposit"
+                    break;
+                case "DELIVERED":
+                    status = "Delivered"
+                    break;
+                default:
+                    status = "undefined"
+            }
+            let itemInfo = { "id": item.id,
+                //"targetBox": box.name,
+                "targetCustomer": customer.firstName + " " + customer.lastName,
+                "deliverer": deliverer.firstName + " " + deliverer.lastName,
+                "status": status,
+                //"orderedOn": item.address,
+                //"pickedOn": item.address,
+            };
+            newRows.push(itemInfo)});
+    }
+    catch (e) {
+        console.error(e);
+    }
+
+
+    return newRows;
+}
+
 
 function ListDeliveries(){
     const classes = useStyles();
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
+
+    const [loadingData, setLoadingData] = useState(true);
+    const [UserData, setUserData] = useState([])
+
+    try {
+        useEffect(()=>{
+            DispatcherService.getDeliveries()
+                .then((data) => {
+                    setUserData(data.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }, [])
+        console.log(UserData)
+    }
+    catch (e) {
+        console.error(e);
+    }
+
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>
@@ -103,7 +147,7 @@ function ListDeliveries(){
                         </Button>
                     </ButtonToolbar>
                 <Paper className={classes.boxManagementPaper} component='form'>
-                    <ProjectTable title={title} description={description} columns={columns} rows={rows}/>
+                    <ProjectTable title={title} description={description} columns={columns} rows={getDeliveries(UserData)}/>
                 </Paper>
             </div>);
 }
