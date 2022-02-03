@@ -12,7 +12,7 @@ spring:
         - id: delivery-service
           uri: lb://DELIVERY-SERVICE
           predicates:
-            - Path=/user/auth/**, /users/**, /users, /deliveries, /deliveries/**
+            - Path=/user/auth/**, /users/**, /users, /deliveries, /deliveries/**, /boxes, /boxes/**
 eureka:
   instance:
     hostname: ase-api-gateway.herokuapp.com
