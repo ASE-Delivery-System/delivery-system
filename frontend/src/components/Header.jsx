@@ -29,7 +29,6 @@ function Header() {
   let isDeliverer = false
   let isCustomer = false
 
-  // this is causing an error
   try {
     isDispatcher = currentUser.roles.includes('ROLE_DISPATCHER') && true
     isDeliverer = currentUser.roles.includes('ROLE_DELIVERER') && true
@@ -115,6 +114,7 @@ function Header() {
   )
 
   const mobileMenuId = 'primary-search-account-menu-mobile'
+  // Menu is causing an error
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}

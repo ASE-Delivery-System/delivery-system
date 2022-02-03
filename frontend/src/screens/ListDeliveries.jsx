@@ -1,11 +1,9 @@
-import {makeStyles} from '@mui/styles'
-import {Button, Paper, Stack,} from '@mui/material'
-import React, {useEffect, useState} from 'react'
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
+import {makeStyles} from '@mui/styles';
+import {Button, Paper, Stack,} from '@mui/material';
+import React, {useEffect, useState} from 'react';
 
 import DispatcherService from "../services/dispatcher.service";
 import NewDeliveryModal from "../components/Deliveries/NewDeliveryModal";
-import DeliveriesTable from "../components/Deliveries/DeliveriesTable";
 import DeleteDeliveryModal from "../components/Deliveries/DeleteDeliveryModal";
 import ChangeStatusModal from "../components/Deliveries/ChangeStatusModal";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
@@ -55,14 +53,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-    { field: 'targetBox', headerName: 'Target Box', type: 'number', width: 130 },
+    { field: 'targetBox', headerName: 'Target Box', width: 200 },
     { field: 'targetCustomer', headerName: 'Target Customer', width: 200 },
-    { field: 'deliverer', headerName: 'Deliverer', width: 130 },
-    { field: 'status', headerName: 'Status', width: 130 },
-    { field: 'orderedOn', headerName: 'Ordered On', width: 130 },
-    { field: 'pickedOn', headerName: 'Picked On', width: 130 },
+    { field: 'deliverer', headerName: 'Deliverer', width: 200 },
+    { field: 'status', headerName: 'Status', width: 200 },
 ];
 
+
+//    console.log(dispatcherId);
 function ListDeliveries(){
     const classes = useStyles();
     const title = "List of your Deliveries";
@@ -77,14 +75,13 @@ function ListDeliveries(){
         let status = "";
         let deliverer =  "";
         let box = "";
-        let orderedOn = "";
-        let pickedOn = "";
+
 
         try {
             newRows = data.map( (item) => {
                 customer = item.customer;
                 deliverer =  item.deliverer;
-                box = item.box;
+                box = item.targetBox.name;
 
                 switch(item.status) {
                     case "OUT_FOR_DELIVERY":
@@ -105,8 +102,6 @@ function ListDeliveries(){
                     "targetCustomer": customer.firstName + " " + customer.lastName,
                     "deliverer": deliverer.firstName + " " + deliverer.lastName,
                     "status": status,
-                    "orderedOn": orderedOn,
-                    "pickedOn": pickedOn,
                 }
                 //newRows.push(itemInfo)
             });
@@ -114,7 +109,6 @@ function ListDeliveries(){
         catch (e) {
             console.error(e);
         }
-
 
         return newRows;
     }

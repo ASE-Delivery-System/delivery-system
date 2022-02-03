@@ -1,9 +1,10 @@
 import { makeStyles } from '@mui/styles'
 import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio } from '@mui/material'
-import React, { useState } from 'react'
+import React, {useRef, useState} from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import dispatcherService from "../services/dispatcher.service";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -52,64 +53,63 @@ const useStyles = makeStyles((theme) => ({
 const CreateNewDelivery = () => {
   const classes = useStyles()
 
-  const navigate = useNavigate()
-
-  // registration
-  const [targetBox, setTargetBox] = useState('')
-  const [targetCustomer, setTargetCustomer] = useState('')
-  const [deliverer, setDeliverer] = useState('')
-
-  const [setSubmitted] = useState(false)
-  const [setError] = useState(false)
-
   const [loading, setLoading] = useState(false)
 
-  //changing input once already entered
-  const handleTargetBox = (e) => {
-    setTargetBox(e.target.value)
-    setSubmitted(false)
-  }
 
-  const handleTargetCustomer = (e) => {
-    setTargetCustomer(e.target.value)
-    setSubmitted(false)
-  }
-
-  const handleDeliverer = (e) => {
-    setDeliverer(e.target.value)
-    setSubmitted(false)
-  }
-
+  const boxIdRef = useRef();
+  const customerIdIdRef = useRef();
+  const delivererIdRef = useRef();
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('bla bla ')
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
-    if (targetBox === '' || targetCustomer === '' || deliverer === '') {
-      setError(true)
-    } else {
-      const user = {
-        targetBox: targetBox,
-        targetCustomer: targetCustomer,
-        deliverer: deliverer,
-      }
+    const enteredBoxId = boxIdRef.current.value;
+    const enteredCustomerId = customerIdIdRef.current.value;
+    const enteredDelivererId = delivererIdRef.current.value;
+
+    let delivery = null;
+
+    delivery = {
+      targetBoxId: enteredBoxId,
+      customerId: enteredCustomerId,
+      delivererId: enteredDelivererId,
+      status: "IN_DEPOT"
     }
-  }
+    console.log(delivery)
+    console.log(JSON.stringify(delivery));
 
+    try {
+      dispatcherService.createNewDelivery(JSON.stringify(delivery));
+      setLoading(false)
+    }
+    catch (e) {
+      console.error(e)
+    }
+    /*fetch('https://ase-delivery-service.herokuapp.com/deliveries',
+        {
+            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            body: JSON.stringify(delivery)
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));;*/
+
+
+  }
   return (
     <div className={classes.container}>
       <h1>Create New Delivery</h1>
       <div className={classes.deliveryManagementRoot}>
         <Paper className={classes.deliveryManagementPaper} component='form'>
           <div className={classes.deliveryManagementRow}>
-            <TextField label='Target Box' variant='outlined' fullWidth value={targetBox} onChange={(e) => setTargetBox(e.target.value)} />
+            <TextField label='Target Box' variant='outlined' fullWidth inputRef={boxIdRef} />
           </div>
           <div className={classes.deliveryManagementRow}>
-            <TextField label='Target Customer' variant='outlined' fullWidth value={targetCustomer} onChange={(e) => setTargetCustomer(e.target.value)} />
+            <TextField label='Target Customer' variant='outlined' fullWidth inputRef={customerIdIdRef} />
           </div>
           <div className={classes.deliveryManagementRow}>
-            <TextField label='Deliverer' variant='outlined' fullWidth value={deliverer} onChange={(e) => setDeliverer(e.target.value)} />
+            <TextField label='Deliverer' variant='outlined' fullWidth inputRef={delivererIdRef} />
           </div>
           <div className={classes.deliveryManagementRow + ' ' + classes.submitButtons}>
             <div>
