@@ -63,13 +63,19 @@ const columns = [
 
 function getDeliveries(data) {
     let newRows = [];
+    let customer = "";
+    let status = "";
+    let deliverer =  "";
+    let box = "";
+    let orderedOn = "";
+    let pickedOn = "";
 
     try {
         data.map( (item) => {
-            let customer = item.customer;
-            let status = "";
-            let deliverer =  item.deliverer;
-            let box = item.box;
+            customer = item.customer;
+            status = "";
+            deliverer =  item.deliverer;
+            box = item.box;
 
             switch(item.status) {
                 case "OUT_FOR_DELIVERY":
@@ -85,12 +91,12 @@ function getDeliveries(data) {
                     status = "undefined"
             }
             let itemInfo = { "id": item.id,
-                //"targetBox": box.name,
+                "targetBox": box,
                 "targetCustomer": customer.firstName + " " + customer.lastName,
                 "deliverer": deliverer.firstName + " " + deliverer.lastName,
                 "status": status,
-                //"orderedOn": item.address,
-                //"pickedOn": item.address,
+                "orderedOn": orderedOn,
+                "pickedOn": pickedOn,
             };
             newRows.push(itemInfo)});
     }
@@ -106,7 +112,6 @@ const Deliverer = () => {
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
 
-    const [loadingData, setLoadingData] = useState(true);
     const [UserData, setUserData] = useState([])
 
     try {

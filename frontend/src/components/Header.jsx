@@ -29,6 +29,7 @@ function Header() {
   let isDeliverer = false
   let isCustomer = false
 
+  // this is causing an error
   try {
     isDispatcher = currentUser.roles.includes('ROLE_DISPATCHER') && true
     isDeliverer = currentUser.roles.includes('ROLE_DELIVERER') && true

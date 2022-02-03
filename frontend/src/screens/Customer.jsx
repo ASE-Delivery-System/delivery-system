@@ -56,49 +56,50 @@ const columns = [
 
 ];
 
-const rows = [
-    { id: 1,box: 1, trackingCode: 'Snow', deliveryDate: 'Jon'},
-    { id: 2,box: 2, trackingCode: 'Lannister', deliveryDate: 'Cersei'},
-    { id: 3,box: 3, trackingCode: 'Lannister', deliveryDate: 'Jaime'},
-    { id: 4,box: 4, trackingCode: 'Stark', deliveryDate: 'Arya'},
-    { id: 5,box: 5, trackingCode: 'Targaryen', deliveryDate: 'Daenerys'},
-    { id: 6,box: 6, trackingCode: 'Melisandre', deliveryDate: null},
-    { id: 7,box: 7, trackingCode: 'Clifford', deliveryDate: 'Ferrara'},
-    { id: 8,box: 8, trackingCode: 'Frances', deliveryDate: 'Rossini'},
-    { id: 9,box: 9, trackingCode: 'Roxie', deliveryDate: 'Harvey'},
-];
-
 function getDeliveries(data) {
     let newRows = [];
 
-    data.map( (item) => {
-        let box = item.box;
-        let trackingCode = item.trackingCode;
-        let deliveryDate =  item.deliveryDate;
-        let status = "";
+    let box = "";
+    let trackingCode = "";
+    let deliveryDate =  "";
+    let status = "";
 
-        switch(item.status) {
-            case "OUT_FOR_DELIVERY":
-                status = "Out for Delivery"
-                break;
-            case "IN_DEPOT":
-                status = "In Deposit"
-                break;
-            case "DELIVERED":
-                status = "Delivered"
-                break;
-            default:
-                status = "undefined"
-        }
-        let itemInfo = { "id": item.id,
-            "box": box.name,
-            "trackingCode": trackingCode,
-            "deliveryDate": deliveryDate,
-            "status": status,
-        };
-        newRows.push(itemInfo)});
+    try {
+        data.map( (item) => {
+            box = item.box;
+            trackingCode = item.trackingCode;
+            deliveryDate =  item.deliveryDate;
+
+            switch(item.status) {
+                case "OUT_FOR_DELIVERY":
+                    status = "Out for Delivery"
+                    break;
+                case "IN_DEPOT":
+                    status = "In Deposit"
+                    break;
+                case "DELIVERED":
+                    status = "Delivered"
+                    break;
+                default:
+                    status = "undefined"
+            }
+
+            let itemInfo = { "id": item.id,
+                "box": box,
+                "trackingCode": trackingCode,
+                "deliveryDate": deliveryDate,
+                "status": status,
+            };
+            newRows.push(itemInfo)});
+
+
+    }
+    catch (e) {
+        console.error(e);
+    }
 
     return newRows;
+
 }
 
 
@@ -108,7 +109,6 @@ const Customer = () => {
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
 
-    const [loadingData, setLoadingData] = useState(true);
     const [UserData, setUserData] = useState([])
 
     function activeDeliveriesHandler() {
@@ -148,7 +148,7 @@ const Customer = () => {
             </Button>
         </ButtonToolbar>
         <Paper className={classes.boxManagementPaper} component='form'>
-            <ProjectTable title={title} description={description} columns={columns} rows={rows}/>
+            <ProjectTable title={title} description={description} columns={columns} rows={getDeliveries(UserData)}/>
         </Paper>
     </div>);
 }
