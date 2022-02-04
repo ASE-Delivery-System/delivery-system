@@ -27,7 +27,6 @@ public class RegisterUserRequest {
     @Size(min = 1, max = 20)
     private String lastName;
 
-    @Size(min = 4, max = 10)
     private String rfidToken;
 
     @NotBlank

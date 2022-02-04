@@ -34,8 +34,8 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Autowired
     BoxRepository boxRepository;
 
-//    @Autowired
-//    private RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public Delivery createDelivery(DeliveryRequest deliveryRequest) {
@@ -60,14 +60,13 @@ public class DeliveryServiceImpl implements DeliveryService{
 
         boxRepository.save(targetBox);
 
-        // TODO: Uncomment and adapt after the emailing service is ready
-//        EmailRequest emailToBeSend = new EmailRequest();
-//        emailToBeSend.setTo(customer.getEmail());
-//        emailToBeSend.setStatus("New delivery Created");
-//
-//        // Do e post request to email service!
-//        restTemplate.postForObject("https://ase-emailing-service.herokuapp.com/api/email/send", emailToBeSend, String.class);
+        EmailRequest emailToBeSend = new EmailRequest();
+        emailToBeSend.setTo("pellumbbaboci97@gmail.com");
+        emailToBeSend.setStatus("newDelivery");
 
+        // Do e post request to email service!
+        restTemplate.postForObject("https://ase-email-service.herokuapp.com/api/send", emailToBeSend, String.class);
+        System.out.println("sent success");
         return createDelivery;
     }
 
@@ -90,14 +89,6 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public List<Delivery> getAllDeliveriesOfDeliverer(String delivererId) {
-          // first way to find
-
-//        User deliverer = userService.findUserById(delivererId);
-//        Delivery newDelivery = new Delivery();
-//        newDelivery.setDeliverer(deliverer);
-//        deliveryRepository.findAll(Example.of(newDelivery));
-//        deliveryRepository.findDeliveriesByDeliverer_Id(delivererId);
-
         return deliveryRepository.findDeliveriesByDelivererIdAndStatus(delivererId, EDeliveryStatus.IN_DEPOT);
     }
 
