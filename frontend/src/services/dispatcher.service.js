@@ -4,6 +4,8 @@ import authHeader from './auth-header'
 const API_URL = 'https://ase-delivery-service.herokuapp.com/user/auth/' // 'http://localhost:8083/user/auth/'
 const API_URL_GET_USER = 'https://ase-delivery-service.herokuapp.com/users'
 const API_URL_DELIVERIES = 'https://ase-delivery-service.herokuapp.com/deliveries'
+const API_URL_GET_BOXES = 'https://ase-delivery-service.herokuapp.com/boxes'
+
 
 const getDispatcherView = () => {
   return axios.get(API_URL + 'dispatcher', { headers: authHeader() })
@@ -19,6 +21,14 @@ const postUser = async (user) => {
 
 const getUsers = async () => {
   return await axios.get(API_URL_GET_USER,  { headers: authHeader() })
+}
+
+const getBoxes = async (box) => {
+  return await axios.get(API_URL_GET_BOXES, box, { headers: authHeader() })
+}
+
+const createNewBox = async (box) => {
+  return await axios.post(API_URL_GET_BOXES, box, { headers: authHeader() }, )
 }
 
 const deleteUsers = async (user) => {
@@ -74,6 +84,8 @@ const DispatcherService = {
     createNewDelivery,
     changeStatusDelivery,
     deleteDelivery,
+    getBoxes,
+    createNewBox
 }
 
 export default DispatcherService

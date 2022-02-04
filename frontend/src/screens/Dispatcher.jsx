@@ -85,6 +85,11 @@ const cardPointThree = (
           List boxes
         </Button>
       </Link>
+       <Link to='/createnewboxes' color='inherit' className='button'>
+         <Button size='small' variant='contained'>
+           Create New Boxes
+         </Button>
+       </Link>
     </CardActions>
   </React.Fragment>
 )

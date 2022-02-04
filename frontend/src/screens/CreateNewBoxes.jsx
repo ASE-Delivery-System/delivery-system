@@ -4,7 +4,6 @@ import React, {useRef, useState} from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import dispatcherService from "../services/dispatcher.service";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -14,18 +13,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'left',
     alignItems: 'center',
   },
-  deliveryManagementRoot: {
+  boxManagementRoot: {
     margin: 'auto',
-    height: '50vh',
+    height: '30vh',
     minHeight: '30vh',
     paddingTop: 10,
   },
-  deliveryManagementPaper: {
-    width: '500px',
+  boxManagementPaper: {
+    width: '300px',
     padding: theme.spacing(2),
   },
 
-  deliveryManagementRow: {
+  boxManagementRow: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     '&:last-child': {
@@ -58,21 +57,21 @@ const CreateNewBoxes = () => {
   const [loading, setLoading] = useState(false)
 
   // registration
-  const [boxName, setBoxName] = useState('')
-  const [boxAddress, setBoxAddress] = useState('')
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
   const [role, setRole] = useState([])
 
   const [setSubmitted] = useState(false)
   const [setError] = useState(false)
 
   //changing input once already entered
-  const handleBoxName = (e) => {
-    setBoxName(e.target.value)
+  const handleName = (e) => {
+    setName(e.target.value)
     setSubmitted(false)
   }
 
-  const handleBoxAddress = (e) => {
-    setBoxAddress(e.target.value)
+  const handleAddress = (e) => {
+    setAddress(e.target.value)
     setSubmitted(false)
   }
 
@@ -81,12 +80,12 @@ const CreateNewBoxes = () => {
       console.log('bla bla ')
       setLoading(true)
 
-      if (boxName === '' || boxAddress === '') {
+      if (name === '' || address === '') {
         setError(true)
       } else {
         const box = {
-          boxName: boxName,
-          boxAddress: boxAddress,
+          name: name,
+          address: address,
         }
 
         DispatcherService.createNewBox(box)
@@ -95,6 +94,7 @@ const CreateNewBoxes = () => {
             navigate('/listboxes')
           })
           .catch((error) => {
+            console.log('response: ', error.response.data)
             setLoading(false)
           })
       }
@@ -102,17 +102,17 @@ const CreateNewBoxes = () => {
 
   return (
     <div className={classes.container}>
-      <h1>Create Users</h1>
-      <div className={classes.userManagementRoot}>
-        <Paper className={classes.userManagementPaper} component='form'>
-          <div className={classes.userManagementRow}>
-            <TextField label='Box name' variant='outlined' fullWidth value={boxName} onChange={(e) => setBoxName(e.target.value)} />
+      <h1>Create New Boxes </h1>
+      <div className={classes.boxManagementRoot}>
+        <Paper className={classes.boxManagementPaper} component='form'>
+          <div className={classes.boxManagementRow}>
+            <TextField label='Box name' variant='outlined' fullWidth value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className={classes.userManagementRow}>
-            <TextField label='Box address' variant='outlined' fullWidth value={boxAddress} onChange={(e) => setBoxAddress(e.target.value)} />
+            <TextField label='Box address' variant='outlined' fullWidth value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
 
-          <div className={classes.userManagementRow + ' ' + classes.submitButtons}>
+          <div className={classes.boxManagementRow + ' ' + classes.submitButtons}>
             <div>
               <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
                 {loading ? 'Loading...' : 'Submit'}

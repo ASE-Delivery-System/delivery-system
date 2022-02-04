@@ -17,7 +17,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ProjectTable from "../components/ProjectTable";
-
+import DispatcherService from '../services/dispatcher.service'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -61,6 +62,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+
+
+function TableItem(data) {
+    var newrows = [];
+    data.map( (item) => {
+            var itemInfo = { "id": item.id,
+                "name": item.name,
+                "status": item.status,
+                "address": item.address,
+                };
+            newrows.push(itemInfo)});
+    return newrows;
+}
+
+
 const ListBoxes = () => {
     const classes = useStyles()
 
@@ -71,18 +87,46 @@ const ListBoxes = () => {
     const [BoxData, setBoxData] = useState([])
 
     const columns = [
-        {title: "Box ID", field : "boxId", headerName: "Box ID", width:150},
-        {title: "Box Address", field : "boxAddress", headerName: "Box Address", width:150},
-        {title: "Box Name", field : "boxName", headerName: "Box Name", width:150},
+        {title: "Box ID", field : "id", headerName: "Box ID", width:150},
+        {title: "Box Status", field : "status", headerName: "Box Status", width:150},
+        {title: "Box Address", field : "address", headerName: "Box Address", width:150},
+        {title: "Box Name", field : "name", headerName: "Box Name", width:150},
     ]
+
+     // get the users data
+       useEffect(()=>{
+         DispatcherService.getBoxes()
+         .then((data) => {
+            setBoxData(data.data)
+         })
+         .catch((error) => {
+            console.log(error)
+         })
+       }, [])
+       console.log(BoxData)
 
     return (
       <div className={classes.container}>
         <h1> {title} </h1>
         <h3> {description} </h3>
         <div className={classes.boxManagementRoot}>
+                    <ButtonToolbar>
+                      <Link to='/createnewboxes' color='inherit' className='button'>
+                        <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                            Create
+                         </Button>{' '}
+                      </Link>
+                      <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'
+                       type='submit'>
+                         Edit
+                      </Button>{' '}
+                      <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'
+                         type='submit'>
+                         Delete
+                     </Button>{' '}
+                     </ButtonToolbar>
                    <Paper className={classes.boxManagementPaper} component='form'>
-                      <ProjectTable rows={BoxData} title={title} description={description} columns={columns}/>
+                      <ProjectTable rows={TableItem(BoxData)} title={title} description={description} columns={columns}/>
                   </Paper>
                 </div>
               </div>

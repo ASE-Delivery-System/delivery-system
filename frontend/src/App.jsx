@@ -12,6 +12,7 @@ import EditUser from './screens/EditUser'
 import CreateNewDelivery from './screens/CreateNewDelivery'
 import ListBoxes from './screens/ListBoxes'
 import ListDeliveries from './screens/ListDeliveries'
+import CreateNewBoxes from './screens/CreateNewBoxes'
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             <Route path='/edituser' element={<EditUser />} />
             <Route path='/createnewdelivery' element={<CreateNewDelivery />} />
             <Route path='/listboxes' element={<ListBoxes/>} />
+            <Route path='/createnewboxes' element={<CreateNewBoxes/>} />
             <Route path='/listdeliveries' element={<ListDeliveries/>} />
         </Routes>
       </main>
