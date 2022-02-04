@@ -114,6 +114,7 @@ function Header() {
   )
 
   const mobileMenuId = 'primary-search-account-menu-mobile'
+  // Menu is causing an error
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}

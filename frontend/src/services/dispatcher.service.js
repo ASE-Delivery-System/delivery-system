@@ -3,7 +3,7 @@ import authHeader from './auth-header'
 
 const API_URL = 'https://ase-delivery-service.herokuapp.com/user/auth/' // 'http://localhost:8083/user/auth/'
 const API_URL_GET_USER = 'https://ase-delivery-service.herokuapp.com/users'
-const API_URL_GET_DELIVERIES = 'https://ase-delivery-service.herokuapp.com/deliveries'
+const API_URL_DELIVERIES = 'https://ase-delivery-service.herokuapp.com/deliveries'
 
 const getDispatcherView = () => {
   return axios.get(API_URL + 'dispatcher', { headers: authHeader() })
@@ -24,18 +24,56 @@ const getUsers = async () => {
 const deleteUsers = async (user) => {
   return await axios.delete(API_URL_GET_USER, user, { headers: authHeader() })
 }
-
+// Manage deliveries apis
 const getDeliveries = async () => {
-  return await axios.get(API_URL_GET_DELIVERIES,  { headers: authHeader() })
+  return await axios.get(API_URL_DELIVERIES,  { headers: authHeader() })
+}
+
+const headers = {
+  'Content-Type': 'application/json',
+  //authHeader()
+}
+
+const createNewDelivery = async (delivery) => {
+  return await axios.post(API_URL_DELIVERIES, delivery ,{ headers: headers })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
+const changeStatusDelivery = async (id, body) => {
+  return await axios.post(API_URL_DELIVERIES + id, body,{ headers: headers })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
+const deleteDelivery = async (id) => {
+  return await axios.delete(API_URL_DELIVERIES + id,{ headers: authHeader() })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 }
 
 const DispatcherService = {
-  getDispatcherView,
-  registerNewUser,
-  postUser,
-  getUsers,
-  deleteUsers,
-  getDeliveries,
+    getDispatcherView,
+    registerNewUser,
+    postUser,
+    getUsers,
+    deleteUsers,
+    getDeliveries,
+    createNewDelivery,
+    changeStatusDelivery,
+    deleteDelivery,
 }
 
 export default DispatcherService

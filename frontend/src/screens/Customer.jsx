@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import ProjectTable from "../components/ProjectTable";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import {Button, Paper} from "@mui/material";
+import {Button, Paper, Stack} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import DispatcherService from "../services/dispatcher.service";
+import {DataGrid, GridToolbar} from "@mui/x-data-grid";
+import CustomerService from "../services/customer.service";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -50,78 +49,73 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-    { field: 'box', headerName: 'Box', type: 'number', width: 150 },
-    { field: 'trackingCode', headerName: 'Tracking Code', width: 200 },
-    { field: 'deliveryDate', headerName: 'Delivery Date', width: 200 },
+    { field: 'box', headerName: 'Box', width: 200 },
+    { field: 'trackingCode', headerName: 'Tracking Code', width: 250 },
+    { field: 'status', headerName: 'Status', width: 250 },
 
 ];
 
-const rows = [
-    { id: 1,box: 1, trackingCode: 'Snow', deliveryDate: 'Jon'},
-    { id: 2,box: 2, trackingCode: 'Lannister', deliveryDate: 'Cersei'},
-    { id: 3,box: 3, trackingCode: 'Lannister', deliveryDate: 'Jaime'},
-    { id: 4,box: 4, trackingCode: 'Stark', deliveryDate: 'Arya'},
-    { id: 5,box: 5, trackingCode: 'Targaryen', deliveryDate: 'Daenerys'},
-    { id: 6,box: 6, trackingCode: 'Melisandre', deliveryDate: null},
-    { id: 7,box: 7, trackingCode: 'Clifford', deliveryDate: 'Ferrara'},
-    { id: 8,box: 8, trackingCode: 'Frances', deliveryDate: 'Rossini'},
-    { id: 9,box: 9, trackingCode: 'Roxie', deliveryDate: 'Harvey'},
-];
+let customerId = '61d63a54b4b0ec48de7ad888';
 
-function getDeliveries(data) {
-    let newRows = [];
-
-    data.map( (item) => {
-        let box = item.box;
-        let trackingCode = item.trackingCode;
-        let deliveryDate =  item.deliveryDate;
-        let status = "";
-
-        switch(item.status) {
-            case "OUT_FOR_DELIVERY":
-                status = "Out for Delivery"
-                break;
-            case "IN_DEPOT":
-                status = "In Deposit"
-                break;
-            case "DELIVERED":
-                status = "Delivered"
-                break;
-            default:
-                status = "undefined"
-        }
-        let itemInfo = { "id": item.id,
-            "box": box.name,
-            "trackingCode": trackingCode,
-            "deliveryDate": deliveryDate,
-            "status": status,
-        };
-        newRows.push(itemInfo)});
-
-    return newRows;
+try {
+    customerId = JSON.parse(localStorage.getItem('user')).id;
 }
-
-
+catch (e) {
+    console.log(e)
+}
 
 const Customer = () => {
     const classes = useStyles();
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
+    let selectedIDs = new Set();
+    let rows = []
 
-    const [loadingData, setLoadingData] = useState(true);
     const [UserData, setUserData] = useState([])
+    function getDeliveries(data) {
+        let newRows = [];
+        let status = "";
+        let tracking =  "";
+        let box = "";
 
-    function activeDeliveriesHandler() {
 
-    }
+        try {
+            newRows = data.map( (item) => {
+                tracking =  item.id;
+                box = item.targetBox.name;
 
-    function pastDeliveriesHandler() {
+                switch(item.status) {
+                    case "OUT_FOR_DELIVERY":
+                        status = "Out for Delivery"
+                        break;
+                    case "IN_DEPOT":
+                        status = "In Deposit"
+                        break;
+                    case "DELIVERED":
+                        status = "Delivered"
+                        break;
+                    default:
+                        status = "undefined"
+                }
+                return {
+                    "id": item.id,
+                    "box": box,
+                    "trackingCode": tracking,
+                    "status": status,
+                }
+                //newRows.push(itemInfo)
+            });
+        }
+        catch (e) {
+            console.error(e);
+        }
 
+        return newRows;
     }
 
     try {
         useEffect(()=>{
-            DispatcherService.getDeliveries()
+            CustomerService.getActiveDeliveries(customerId)
                 .then((data) => {
                     setUserData(data.data)
                 })
@@ -130,25 +124,80 @@ const Customer = () => {
                 })
         }, [])
         console.log(UserData)
+        rows = getDeliveries(UserData);
     }
     catch (e) {
+        console.error(e);
+    }
+
+    function activeDeliveriesHandler() {
+        // change data shown
 
     }
 
+    function pastDeliveriesHandler() {
+        // change data shown
+
+    }
+
+    //const [rows, setRows] = useState(getDeliveries(UserData));
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [deletedRows, setDeletedRows] = useState([]);
+    const [purgeMode, setPurgeMode] = useState(true);
+
+    const handleSelectionChange = (selection) => {
+        setSelectedRows(selection.rows);
+        console.log(selectedRows)
+    };
+
+    const handlePurge = () => {
+        /* setDeletedRows([
+             ...deletedRows,
+             ...rows.filter(
+                 (r) => selectedRows.filter((sr) => sr.id === r.id).length < 1
+             )
+         ]);
+         setRows(selectedRows);
+         setPurgeMode(false);*/
+    };
 
     return (<div className={classes.container}>
         <h1> {title} </h1>
         <h3> {description} </h3>
-        <ButtonToolbar>
-            <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+        <Stack spacing={2} direction="row">
+            <Button onClick={activeDeliveriesHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                 Active Deliveries
-            </Button>{' '}
-            <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+            </Button>
+            <Button onClick={pastDeliveriesHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                 Past Deliveries
             </Button>
-        </ButtonToolbar>
+        </Stack>
         <Paper className={classes.boxManagementPaper} component='form'>
-            <ProjectTable title={title} description={description} columns={columns} rows={rows}/>
+            <div className={classes.container}>
+                <div style={{ height: 800, width: '100%' }}>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        editMode="row"
+                        pageSize={15}
+                        rowsPerPageOptions={[15]}
+                        checkboxSelection
+                        //onSelectionModelChange={handleSelectionChange}
+                        /*{(ids) => {
+                        selectedIDs = new Set(ids);
+                        const selectedRowData = rows.filter((row) =>
+                            selectedIDs.has(row.id.toString());
+                    );
+                        console.log(selectedIDs);
+                    }}*/
+
+                        HorizontalAlign="Center"
+                        components={{
+                            Toolbar: GridToolbar,
+                        }}
+                    />
+                </div>
+            </div>
         </Paper>
     </div>);
 }
