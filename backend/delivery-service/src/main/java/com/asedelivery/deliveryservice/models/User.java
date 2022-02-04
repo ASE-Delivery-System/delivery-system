@@ -37,7 +37,6 @@ public class User {
   @NotBlank
   private String lastName;
 
-  @Size(min = 4, max = 10)
   private String rfidToken;
 
   @NotBlank
