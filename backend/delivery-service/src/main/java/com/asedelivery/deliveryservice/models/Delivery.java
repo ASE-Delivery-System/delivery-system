@@ -1,10 +1,15 @@
 package com.asedelivery.deliveryservice.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Document(collection = "deliveries")
 public class Delivery {
 
@@ -39,7 +44,6 @@ public class Delivery {
         this.id = id;
     }
 
-    @JsonBackReference
     public Box getTargetBox() {
         return targetBox;
     }

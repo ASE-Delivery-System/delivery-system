@@ -105,18 +105,19 @@ public class DeliveryController {
         return ResponseEntity.ok(updatedDelivery);
     }
 
-    @GetMapping("/deliverer")
-    public ResponseEntity<List<Delivery>> getAllDeliveriesOfDeliverer(@RequestBody String id){
+    @GetMapping("/deliverer/{id}")
+    public ResponseEntity<List<Delivery>> getAllDeliveriesOfDeliverer(@PathVariable String id){
         return  ResponseEntity.ok().body(deliveryService.getAllDeliveriesOfDeliverer(id));
     }
 
-    @GetMapping("/customer/active")
-    public ResponseEntity<List<Delivery>> getAllActiveDeliveries(@RequestBody String id){
+    @GetMapping("/customer/active/{id}")
+    public ResponseEntity<List<Delivery>> getAllActiveDeliveries(@PathVariable String id){
         return  ResponseEntity.ok().body(deliveryService.getAllActiveDeliveries(id));
     }
 
-    @GetMapping("/customer/past")
-    public ResponseEntity<List<Delivery>> getAllPastDeliveries(@RequestBody String id){
+    @GetMapping("/customer/past/{id}")
+    public ResponseEntity<List<Delivery>> getAllPastDeliveries(@PathVariable String id){
+        System.out.println(id);
         return  ResponseEntity.ok().body(deliveryService.getAllPastDeliveries(id));
     }
 

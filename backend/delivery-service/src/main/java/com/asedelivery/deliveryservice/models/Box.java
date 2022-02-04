@@ -1,6 +1,8 @@
 package com.asedelivery.deliveryservice.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -10,6 +12,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Document(collection = "boxes")
 public class Box {
     @Id
@@ -97,7 +102,6 @@ public class Box {
         this.deliverer = deliverer;
     }
 
-    @JsonManagedReference
     public List<Delivery> getDeliveries() {
         return deliveries;
     }

@@ -140,16 +140,48 @@ heroku-deploy-discovery-server:
   stage: deploy
   script:
   - cd backend/discovery-server
-  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-discovery-server/web .
+  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-email-service/web .
   - docker login -u _ -p $HEROKU_TOKEN_97 registry.heroku.com
-  - docker push registry.heroku.com/ase-discovery-server/web
+  - docker push registry.heroku.com/ase-email-service/web
   - apk add --no-cache curl
   - echo "Docker Image ID is $(cat imageid.txt)"
   - |-
-    curl -X PATCH https://api.heroku.com/apps/ase-discovery-server/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer $HEROKU_TOKEN_97" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
+    curl -X PATCH https://api.heroku.com/apps/ase-email-service/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer $HEROKU_TOKEN_97" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
   only:
     refs:
       - main
     changes:
       - backend/discovery-server/**/*  
+
+
+email-service:package:
+  image: maven:3.8.4-jdk-11
+  stage: package
+  script: cd backend/email-service && mvn package
+  artifacts:
+    paths:
+      - backend/email-service/target/*.jar
+  only:
+    refs:
+      - main
+    changes:
+      - backend/email-service/**/*    
+
+
+heroku-deploy-email-service:
+  stage: deploy
+  script:
+  - cd backend/email-service
+  - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/ase-email-service/web .
+  - docker login -u _ -p $HEROKU_TOKEN_97 registry.heroku.com
+  - docker push registry.heroku.com/ase-email-service/web
+  - apk add --no-cache curl
+  - echo "Docker Image ID is $(cat imageid.txt)"
+  - |-
+    curl -X PATCH https://api.heroku.com/apps/ase-email-service/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer $HEROKU_TOKEN_97" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'        
+  only:
+    refs:
+      - main
+    changes:
+      - backend/email-service/**/*        
 
