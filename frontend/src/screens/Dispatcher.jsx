@@ -32,7 +32,7 @@ const cardPointOne = (
       </Typography>
     </CardContent>
     <CardActions>
-      <Link to='/edituser' color='inherit' className='button'>
+      <Link to='/listusers' color='inherit' className='button'>
         <Button size='small' variant='contained'>
           Edit users
         </Button>

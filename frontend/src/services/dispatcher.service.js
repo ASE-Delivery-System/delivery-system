@@ -27,17 +27,27 @@ const getBoxes = async () => {
   return await axios.get(API_URL_GET_BOXES, { headers: authHeader() })
 }
 
-const createNewBox = async (box) => {
-  return await axios.post(API_URL_GET_BOXES, box, { headers: authHeader() }, )
+const getBoxById = async (id) => {
+  return await axios.get(API_URL_GET_BOXES + "/" + id,{ headers: authHeader() })
 }
 
-const deleteUsers = async (user) => {
-  return await axios.delete(API_URL_GET_USER, user, { headers: authHeader() })
+const createNewBox = async (box) => {
+  return await axios.post(API_URL_GET_BOXES, box, { headers: authHeader() })
+}
+
+const postBox = async (id) => {
+  return await axios.post(API_URL_GET_BOXES + "/" + id, { headers: authHeader() })
 }
 
 const deleteBox = async (id) => {
-  return await axios.delete(API_URL_GET_BOXES + "/" + id,{ headers: authHeader() })
+  return await axios.delete(API_URL_GET_BOXES + "/" + id, { headers: authHeader() })
 }
+
+const deleteUsers = async (id) => {
+  return await axios.delete(API_URL_GET_USER + "/" + id, { headers: authHeader() })
+}
+
+
 // Manage deliveries apis
 const getDeliveries = async () => {
   return await axios.get(API_URL_DELIVERIES,  { headers: authHeader() })
@@ -72,7 +82,9 @@ const DispatcherService = {
     deleteDelivery,
     getBoxes,
     createNewBox,
-    deleteBox
+    deleteBox,
+    getBoxById,
+    postBox
 }
 
 export default DispatcherService

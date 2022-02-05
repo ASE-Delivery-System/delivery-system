@@ -8,7 +8,7 @@ import Dispatcher from './screens/Dispatcher'
 import Home from './screens/Home'
 import Signin from './screens/Signin'
 import CreateNewUser from './screens/CreateNewUser'
-import EditUser from './screens/EditUser'
+import ListUser from './screens/ListUsers'
 import CreateNewDelivery from './screens/CreateNewDelivery'
 import ListBoxes from './screens/ListBoxes'
 import ListDeliveries from './screens/ListDeliveries'
@@ -27,7 +27,7 @@ function App() {
             <Route path='/deliverer' element={<Deliverer />} />
             <Route path='/customer' element={<Customer />} />
             <Route path='/createnewuser' element={<CreateNewUser />} />
-            <Route path='/edituser' element={<EditUser />} />
+            <Route path='/listusers' element={<ListUser />} />
             <Route path='/createnewdelivery' element={<CreateNewDelivery />} />
             <Route path='/listboxes' element={<ListBoxes/>} />
             <Route path='/createnewboxes' element={<CreateNewBoxes/>} />
