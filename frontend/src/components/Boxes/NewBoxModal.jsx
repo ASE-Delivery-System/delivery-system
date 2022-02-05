@@ -134,7 +134,6 @@ function NewDeliveryModal(props) {
       }
     }
 
-
     return (
         <Modal
             open={open}
