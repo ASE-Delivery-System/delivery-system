@@ -76,6 +76,8 @@ function DeleteDeliveryModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
+    const update = props.update;
+
     //const [loading, setLoading] = useState(false)
 
     let rowsSelected = props.selectedRows;
@@ -99,6 +101,7 @@ function DeleteDeliveryModal(props) {
                 })
         }
         handleClose();
+        update();
         //update table function
     }
 
@@ -119,7 +122,7 @@ function DeleteDeliveryModal(props) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} autoFocus>No</Button>
-                <Button onClick={DeleteHandler} autoFocus>
+                <Button onClick={DeleteHandler} autoFocus variant='contained' color='primary'>
                     Yes
                 </Button>
             </DialogActions>

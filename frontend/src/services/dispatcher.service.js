@@ -54,17 +54,17 @@ const getDeliveries = async () => {
   return await axios.get(API_URL_DELIVERIES,  { headers: authHeader() })
 }
 
-const headers = {
+const contentHeader = {
   'Content-Type': 'application/json',
   //authHeader()
 }
 
 const createNewDelivery = async (delivery) => {
-  return await axios.post(API_URL_DELIVERIES, delivery ,{ headers: headers })
+  return await axios.post(API_URL_DELIVERIES, delivery ,{ headers: contentHeader })
 }
 
 const changeStatusDelivery = async (id, body) => {
-  return await axios.post(API_URL_DELIVERIES + "/status/" + id, body,{ headers: headers })
+  return await axios.post(API_URL_DELIVERIES + "/status/" + id, body,{ headers: contentHeader })
 }
 
 const deleteDelivery = async (id) => {

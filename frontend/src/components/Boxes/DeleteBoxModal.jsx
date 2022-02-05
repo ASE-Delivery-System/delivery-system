@@ -118,12 +118,12 @@ function DeleteBoxModal(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    You are going to delete the following boxes: {props.selectedRows}
+                    You are going to delete the selected boxes
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} autoFocus>No</Button>
-                <Button onClick={DeleteHandler} autoFocus>
+                <Button onClick={DeleteHandler} autoFocus variant='contained' color='primary'>
                     Yes
                 </Button>
             </DialogActions>

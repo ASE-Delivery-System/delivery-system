@@ -67,12 +67,14 @@ const useStyles = makeStyles((theme) => ({
         color: 'secondary',
     },
 }))
+const reload=()=>window.location.reload();
 
 function ChangeStatusModal(props) {
     const classes = useStyles()
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
+    const update = props.update;
     //const [loading, setLoading] = useState(false)
     const [newStatus, setNewStatus] = React.useState('');
 
@@ -99,6 +101,7 @@ function ChangeStatusModal(props) {
                     console.log(error)
                 })
         }
+        update();
         handleClose();
         //update table function
     }
@@ -149,9 +152,9 @@ function ChangeStatusModal(props) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus>No</Button>
-                <Button onClick={changeStatusHandler} autoFocus>
-                    Yes
+                <Button onClick={handleClose} autoFocus>Cancel</Button>
+                <Button onClick={changeStatusHandler} autoFocus variant='contained' color='primary'>
+                    Confirm
                 </Button>
             </DialogActions>
         </Dialog>

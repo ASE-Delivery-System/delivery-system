@@ -65,6 +65,8 @@ function ListDeliveries(){
     const description = "Manage your deliveries";
 
     const [UserData, setUserData] = useState([])
+    const [dataChanged, setDataChanged] = useState(false);
+
     function readDeliveries(data) {
         let newRows = [];
         let customer = "";
@@ -153,6 +155,22 @@ function ListDeliveries(){
         setChangeModalIsOpen(false)
     }
 
+    function dataChangedHandler() {
+        setDataChanged(true);
+    }
+
+    if(dataChanged){
+        DispatcherService.getDeliveries()
+            .then(function (response) {
+                console.log(response);
+                setUserData(readDeliveries(response.data));
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        setDataChanged(false);
+    }
+
     const [selectedIds, setSelectedIds] = useState([]);
 
     const handleSelectionChange = (selection) => {
@@ -168,15 +186,15 @@ function ListDeliveries(){
                         <Button onClick={openCreateModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Create
                         </Button>
-                        <NewDeliveryModal handleOpen={openCreateModalHandler} handleClose={closeCreateModalHandler} open={createModalIsOpen}/>
+                        <NewDeliveryModal handleOpen={openCreateModalHandler} handleClose={closeCreateModalHandler} open={createModalIsOpen} update={dataChangedHandler}/>
                         <Button onClick={openDeleteModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Delete
                         </Button>
-                        <DeleteDeliveryModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
+                        <DeleteDeliveryModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen} update={dataChangedHandler}/>
                         <Button onClick={openChangeModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Change Status
                         </Button>
-                        <ChangeStatusModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen}/>
+                        <ChangeStatusModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen} update={dataChangedHandler}/>
                     </Stack>
                 <Paper className={classes.boxManagementPaper} component='form'>
                     <div className={classes.container}>

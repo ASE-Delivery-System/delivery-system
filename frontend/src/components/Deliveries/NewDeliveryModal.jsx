@@ -67,6 +67,8 @@ function NewDeliveryModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
+    const update = props.update;
+
     const [loading, setLoading] = useState(false)
 
 
@@ -95,12 +97,13 @@ function NewDeliveryModal(props) {
 
         try {
             dispatcherService.createNewDelivery(JSON.stringify(delivery));
-            setLoading(false)
         }
         catch (e) {
             console.error(e)
         }
-
+        setLoading(false)
+        handleClose();
+        update();
     }
 
 
