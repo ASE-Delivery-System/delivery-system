@@ -100,15 +100,6 @@ function NewDeliveryModal(props) {
         catch (e) {
             console.error(e)
         }
-        /*fetch('https://ase-delivery-service.herokuapp.com/deliveries',
-            {
-                headers: { 'Content-Type': 'application/json' },
-                method: "POST",
-                body: JSON.stringify(delivery)
-            })
-            .then(response => response.json())
-            .then(data => console.log(data));;*/
-
 
     }
 

@@ -89,7 +89,7 @@ function ListDeliveries(){
                         status = "Delivered"
                         break;
                     case "PICKED_UP":
-                        status = "Delivered"
+                        status = "Picked Up"
                         break;
                     default:
                         status = "undefined"

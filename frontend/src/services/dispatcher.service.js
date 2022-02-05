@@ -11,6 +11,7 @@ const getDispatcherView = () => {
   return axios.get(API_URL + 'dispatcher', { headers: authHeader() })
 }
 
+//User Requests
 const registerNewUser = async (user) => {
   return await axios.post(API_URL + 'register', user,  { headers: authHeader() })
 }
@@ -23,6 +24,11 @@ const getUsers = async () => {
   return await axios.get(API_URL_GET_USER,  { headers: authHeader() })
 }
 
+const deleteUsers = async (id) => {
+    return await axios.delete(API_URL_GET_USER + "/" + id, { headers: authHeader() })
+}
+
+//Box Requests
 const getBoxes = async () => {
   return await axios.get(API_URL_GET_BOXES, { headers: authHeader() })
 }
@@ -43,12 +49,7 @@ const deleteBox = async (id) => {
   return await axios.delete(API_URL_GET_BOXES + "/" + id, { headers: authHeader() })
 }
 
-const deleteUsers = async (id) => {
-  return await axios.delete(API_URL_GET_USER + "/" + id, { headers: authHeader() })
-}
-
-
-// Manage deliveries apis
+//Deliveries Requests
 const getDeliveries = async () => {
   return await axios.get(API_URL_DELIVERIES,  { headers: authHeader() })
 }
@@ -63,7 +64,7 @@ const createNewDelivery = async (delivery) => {
 }
 
 const changeStatusDelivery = async (id, body) => {
-  return await axios.post(API_URL_DELIVERIES + "/" + id, body,{ headers: headers })
+  return await axios.post(API_URL_DELIVERIES + "/status/" + id, body,{ headers: headers })
 }
 
 const deleteDelivery = async (id) => {

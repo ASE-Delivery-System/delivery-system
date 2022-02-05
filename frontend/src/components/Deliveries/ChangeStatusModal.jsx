@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Box from "@mui/material/Box";
 import {FormControl} from "@mui/material";
+import DispatcherService from "../../services/dispatcher.service";
 
 const style = {
     position: 'absolute',
@@ -73,10 +74,10 @@ function ChangeStatusModal(props) {
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
     //const [loading, setLoading] = useState(false)
-    const [status, setStatus] = React.useState('');
+    const [newStatus, setNewStatus] = React.useState('');
 
     const handleChange = (event) => {
-        setStatus(event.target.value);
+        setNewStatus(event.target.value);
         console.log(event.target.value)
     };
 
@@ -86,8 +87,17 @@ function ChangeStatusModal(props) {
     function changeStatusHandler() {
         console.log("Entered the Change handler")
         for (const element of rowsSelected) {
+            const bodyToSend = {
+                status: newStatus
+            };
             console.log(element);
-            //Enter the right request
+            DispatcherService.changeStatusDelivery(element, bodyToSend)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
         }
         handleClose();
         //update table function
@@ -106,26 +116,34 @@ function ChangeStatusModal(props) {
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
-                {"Are you sure?"}
+                {"Select the new status"}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    You are going to delete the following deliveries: {props.selectedRows}
+                    You are going to change the status of the selected deliveries to:
                 </DialogContentText>
 
-                <Box sx={{ minWidth: 120 }}>
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                <Box noValidate
+                     component="form"
+                     sx={{
+                         display: 'flex',
+                         flexDirection: 'column',
+                         m: 'auto',
+                         width: 'fit-content',
+                     }}>
+                    <FormControl sx={{ m: 2, minWidth: 180 }}>
+                        <InputLabel id="demo-simple-select-label">New Status</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={status}
-                            label="Status"
+                            value={newStatus}
+                            label="New Status"
                             onChange={handleChange}
                         >
                             <MenuItem value={'IN_DEPOT'}>In Deposit</MenuItem>
                             <MenuItem value={'OUT_FOR_DELIVERY'}>Out for Delivery</MenuItem>
                             <MenuItem value={'DELIVERED'}>Delivered</MenuItem>
+                            <MenuItem value={'PICKED_UP'}>Picked Up</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
