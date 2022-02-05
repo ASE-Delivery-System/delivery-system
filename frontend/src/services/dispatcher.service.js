@@ -23,8 +23,8 @@ const getUsers = async () => {
   return await axios.get(API_URL_GET_USER,  { headers: authHeader() })
 }
 
-const getBoxes = async (box) => {
-  return await axios.get(API_URL_GET_BOXES, box, { headers: authHeader() })
+const getBoxes = async () => {
+  return await axios.get(API_URL_GET_BOXES, { headers: authHeader() })
 }
 
 const createNewBox = async (box) => {
@@ -33,6 +33,10 @@ const createNewBox = async (box) => {
 
 const deleteUsers = async (user) => {
   return await axios.delete(API_URL_GET_USER, user, { headers: authHeader() })
+}
+
+const deleteBox = async (id) => {
+  return await axios.delete(API_URL_GET_BOXES + "/" + id,{ headers: authHeader() })
 }
 // Manage deliveries apis
 const getDeliveries = async () => {
@@ -67,7 +71,8 @@ const DispatcherService = {
     changeStatusDelivery,
     deleteDelivery,
     getBoxes,
-    createNewBox
+    createNewBox,
+    deleteBox
 }
 
 export default DispatcherService
