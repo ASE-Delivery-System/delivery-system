@@ -105,5 +105,6 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Override
     public void deleteDeliveryById(String id) {
         deliveryRepository.deleteById(id);
+
     }
 }
