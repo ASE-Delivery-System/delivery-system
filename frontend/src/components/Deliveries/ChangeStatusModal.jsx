@@ -108,28 +108,6 @@ function ChangeStatusModal(props) {
                     Yes
                 </Button>
             </DialogActions>
-            {/*<Box sx={style}>
-                <h3>Are you sure?</h3>
-                <p>You are going to delete the following deliveries: {props.selectedRows}</p>
-                <div className={classes.deliveryManagementRoot}>
-                    <Paper className={classes.deliveryManagementPaper} component='form'>
-                        <Stack spacing={2} direction="row">
-                            <Button variant='contained' color='secondary' onClick={handleSubmit} type='submit'>
-                                No
-                            </Button>
-                            <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
-                                Yes
-                            </Button>
-
-                        </Stack>
-                    </Paper>
-                    {
-                        <div className='form-group'>
-                            <div className='alert alert-danger' role='alert'></div>
-                        </div>
-                    }
-                </div>
-            </Box>*/}
         </Dialog>
     );
 }
