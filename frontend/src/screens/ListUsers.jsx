@@ -217,7 +217,7 @@ function ListUsers(){
                     </Stack>
                 <Paper className={classes.userManagementPaper} component='form'>
                     <div className={classes.container}>
-                        <div style={{ height: 800, width: '100%' }}>
+                        <div style={{ height: 950, width: '100%' }}>
                             <DataGrid
                                 rows={UserData}
                                 columns={columns}

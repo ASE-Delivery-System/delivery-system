@@ -1,12 +1,12 @@
 import {makeStyles} from '@mui/styles';
 import {Button, Paper, Stack,} from '@mui/material';
 import React, {useEffect, useState} from 'react';
+import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 
 import DispatcherService from "../services/dispatcher.service";
 import NewDeliveryModal from "../components/Deliveries/NewDeliveryModal";
 import DeleteDeliveryModal from "../components/Deliveries/DeleteDeliveryModal";
 import ChangeStatusModal from "../components/Deliveries/ChangeStatusModal";
-import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -156,10 +156,7 @@ function ListDeliveries(){
     const [selectedIds, setSelectedIds] = useState([]);
 
     const handleSelectionChange = (selection) => {
-        //setSelectedRows(selection.rows);
-        //console.log(selectedRows)
         setSelectedIds(selection);
-        //const selectedRowData = rows.filter((row) =>
         console.log(selection);
     };
     console.log(selectedIds);
@@ -183,7 +180,7 @@ function ListDeliveries(){
                     </Stack>
                 <Paper className={classes.boxManagementPaper} component='form'>
                     <div className={classes.container}>
-                        <div style={{ height: 800, width: '100%' }}>
+                        <div style={{ height: 950, width: '100%' }}>
                             <DataGrid
                                 rows={UserData}
                                 columns={columns}

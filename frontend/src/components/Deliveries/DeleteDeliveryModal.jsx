@@ -114,7 +114,7 @@ function DeleteDeliveryModal(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    You are going to delete the following deliveries: {props.selectedRows}
+                    You are going to delete the selected deliveries
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
