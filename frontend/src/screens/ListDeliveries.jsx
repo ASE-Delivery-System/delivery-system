@@ -59,8 +59,6 @@ const columns = [
     { field: 'status', headerName: 'Status', width: 200 },
 ];
 
-
-//    console.log(dispatcherId);
 function ListDeliveries(){
     const classes = useStyles();
     const title = "List of your Deliveries";
@@ -88,6 +86,9 @@ function ListDeliveries(){
                         status = "In Deposit"
                         break;
                     case "DELIVERED":
+                        status = "Delivered"
+                        break;
+                    case "PICKED_UP":
                         status = "Delivered"
                         break;
                     default:
@@ -132,7 +133,6 @@ function ListDeliveries(){
     const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
 
     function openCreateModalHandler() {
-        // switch to the state where the modal is open
         setCreateModalIsOpen(true);
     }
     function closeCreateModalHandler() {
@@ -140,7 +140,6 @@ function ListDeliveries(){
     }
 
     function openDeleteModalHandler() {
-        // switch to the state where the modal is open
         setDeleteModalIsOpen(true);
     }
     function closeDeleteModalHandler() {
@@ -148,17 +147,13 @@ function ListDeliveries(){
     }
 
     function openChangeModalHandler() {
-        // switch to the state where the modal is open
         setChangeModalIsOpen(true);
     }
     function closeChangeModalHandler() {
         setChangeModalIsOpen(false)
     }
 
-    //const [rows, setRows] = useState(readDeliveries(UserData));
     const [selectedIds, setSelectedIds] = useState([]);
-    const [deletedRows, setDeletedRows] = useState([]);
-    const [purgeMode, setPurgeMode] = useState(true);
 
     const handleSelectionChange = (selection) => {
         //setSelectedRows(selection.rows);
@@ -168,17 +163,6 @@ function ListDeliveries(){
         console.log(selection);
     };
     console.log(selectedIds);
-
-    const handlePurge = () => {
-       /* setDeletedRows([
-            ...deletedRows,
-            ...rows.filter(
-                (r) => selectedRows.filter((sr) => sr.id === r.id).length < 1
-            )
-        ]);
-        setRows(selectedRows);
-        setPurgeMode(false);*/
-    };
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>
@@ -208,7 +192,6 @@ function ListDeliveries(){
                                 rowsPerPageOptions={[15]}
                                 checkboxSelection
                                 onSelectionModelChange={handleSelectionChange}
-
                                 HorizontalAlign="Center"
                                 components={{
                                     Toolbar: GridToolbar,
@@ -221,4 +204,3 @@ function ListDeliveries(){
 }
 
 export default ListDeliveries
-//selectedIDs.has(row.id.toString));

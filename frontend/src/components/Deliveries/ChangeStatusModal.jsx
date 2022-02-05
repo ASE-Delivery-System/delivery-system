@@ -1,17 +1,16 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import {useEffect, useRef, useState} from "react";
-import {Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import dispatcherService from "../../services/dispatcher.service";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
-import DispatcherService from "../../services/dispatcher.service";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Box from "@mui/material/Box";
+import {FormControl} from "@mui/material";
 
 const style = {
     position: 'absolute',
@@ -73,12 +72,19 @@ function ChangeStatusModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
-    const [loading, setLoading] = useState(false)
+    //const [loading, setLoading] = useState(false)
+    const [status, setStatus] = React.useState('');
+
+    const handleChange = (event) => {
+        setStatus(event.target.value);
+        console.log(event.target.value)
+    };
+
 
     let rowsSelected = props.selectedRows;
 
     function changeStatusHandler() {
-        console.log("entered the handler")
+        console.log("Entered the Change handler")
         for (const element of rowsSelected) {
             console.log(element);
             //Enter the right request
@@ -86,6 +92,11 @@ function ChangeStatusModal(props) {
         handleClose();
         //update table function
     }
+    const options = [
+        { value: 'chocolate', label: 'Chocolate' },
+        { value: 'strawberry', label: 'Strawberry' },
+        { value: 'vanilla', label: 'Vanilla' }
+    ]
 
     return (
         <Dialog
@@ -101,6 +112,23 @@ function ChangeStatusModal(props) {
                 <DialogContentText id="alert-dialog-description">
                     You are going to delete the following deliveries: {props.selectedRows}
                 </DialogContentText>
+
+                <Box sx={{ minWidth: 120 }}>
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={status}
+                            label="Status"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value={'IN_DEPOT'}>In Deposit</MenuItem>
+                            <MenuItem value={'OUT_FOR_DELIVERY'}>Out for Delivery</MenuItem>
+                            <MenuItem value={'DELIVERED'}>Delivered</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} autoFocus>No</Button>

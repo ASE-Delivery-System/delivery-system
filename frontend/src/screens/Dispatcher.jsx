@@ -34,14 +34,14 @@ const cardPointOne = (
     <CardActions>
       <Link to='/listusers' color='inherit' className='button'>
         <Button size='small' variant='contained'>
-          Edit users
+          Manage Users
         </Button>
       </Link>
     </CardActions>
     <CardActions>
       <Link to='/createnewuser' color='inherit' className='button'>
         <Button size='small' variant='contained'>
-          Create new users
+          Create New Users
         </Button>
       </Link>
     </CardActions>
@@ -58,14 +58,14 @@ const cardPointTwo = (
     <CardActions>
         <Link to='/listdeliveries' color='inherit' className='button'>
           <Button variant='contained' size='small'>
-            Edit deliveries
+            Manage Deliveries
           </Button>
         </Link>
     </CardActions>
     <CardActions>
       <Link to='/createnewdelivery' color='inherit' className='button'>
         <Button size='small' variant='contained'>
-          Create new deliveries
+          Create New Deliveries
         </Button>
       </Link>
     </CardActions>
@@ -79,18 +79,20 @@ const cardPointThree = (
         Box management
       </Typography>
     </CardContent>
-    <CardActions>
-      <Link to='/listboxes' color='inherit' className='button'>
-        <Button size='small' variant='contained'>
-          List boxes
-        </Button>
-      </Link>
+      <CardActions>
+          <Link to='/listboxes' color='inherit' className='button'>
+            <Button size='small' variant='contained'>
+              Manage Boxes
+            </Button>
+          </Link>
+      </CardActions>
+      <CardActions>
        <Link to='/createnewboxes' color='inherit' className='button'>
          <Button size='small' variant='contained'>
            Create New Boxes
          </Button>
        </Link>
-    </CardActions>
+      </CardActions>
   </React.Fragment>
 )
 

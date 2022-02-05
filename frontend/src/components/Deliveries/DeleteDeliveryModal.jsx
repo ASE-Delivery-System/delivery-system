@@ -76,12 +76,10 @@ function DeleteDeliveryModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
-    const [loading, setLoading] = useState(false)
+    //const [loading, setLoading] = useState(false)
 
     let rowsSelected = props.selectedRows;
     let res = "";
-
-    //console.log(props.selectedRows.size);
 
     /*if(props.selectedRows.size != 0) {
         rowsSelected = props.selectedRows;
@@ -89,7 +87,7 @@ function DeleteDeliveryModal(props) {
         console.log(res)
     }*/
     function DeleteHandler() {
-        console.log("entered the handler")
+        console.log("Entered the Delete handler")
         for (const element of rowsSelected) {
             console.log(element);
             DispatcherService.deleteDelivery(element)
@@ -99,7 +97,6 @@ function DeleteDeliveryModal(props) {
                 .catch((error) => {
                     console.log(error)
                 })
-
         }
         handleClose();
         //update table function
