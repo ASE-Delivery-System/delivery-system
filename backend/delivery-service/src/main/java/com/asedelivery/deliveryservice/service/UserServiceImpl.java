@@ -8,6 +8,7 @@ import com.asedelivery.deliveryservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -19,6 +20,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<User> findAllUsers() {
@@ -71,6 +75,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void deleteUserById(String id) {
+        // Do e post request to identity service!
+        restTemplate.delete("https://ase-identity-service.herokuapp.com/users/auth/"+ id, String.class);
         userRepository.deleteById(id);
     }
 
