@@ -6,6 +6,12 @@ import {useEffect, useRef, useState} from "react";
 import {Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import dispatcherService from "../../services/dispatcher.service";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog from "@mui/material/Dialog";
+import DispatcherService from "../../services/dispatcher.service";
 
 const style = {
     position: 'absolute',
@@ -69,60 +75,42 @@ function ChangeStatusModal(props) {
     const handleClose = props.handleClose;
     const [loading, setLoading] = useState(false)
 
+    let rowsSelected = props.selectedRows;
 
-    const boxIdRef = useRef();
-    const customerIdIdRef = useRef();
-    const delivererIdRef = useRef();
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        /*setLoading(true);
-
-        const enteredBoxId = boxIdRef.current.value;
-        const enteredCustomerId = customerIdIdRef.current.value;
-        const enteredDelivererId = delivererIdRef.current.value;
-
-        let delivery = null;
-
-        delivery = {
-            targetBoxId: enteredBoxId,
-            customerId: enteredCustomerId,
-            delivererId: enteredDelivererId,
-            status: "IN_DEPOT"
+    function changeStatusHandler() {
+        console.log("entered the handler")
+        for (const element of rowsSelected) {
+            console.log(element);
+            //Enter the right request
         }
-        console.log(delivery)
-        console.log(JSON.stringify(delivery));
-
-        try {
-            dispatcherService.createNewDelivery(JSON.stringify(delivery));
-            setLoading(false)
-        }
-        catch (e) {
-            console.error(e)
-        }*/
-        /*fetch('https://ase-delivery-service.herokuapp.com/deliveries',
-            {
-                headers: { 'Content-Type': 'application/json' },
-                method: "POST",
-                body: JSON.stringify(delivery)
-            })
-            .then(response => response.json())
-            .then(data => console.log(data));;*/
-
-
+        handleClose();
+        //update table function
     }
 
-
-
     return (
-        <Modal
+        <Dialog
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
         >
-            <Box sx={style}>
-                <h3>Enter the new status for you selected deliveries</h3>
+            <DialogTitle id="alert-dialog-title">
+                {"Are you sure?"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    You are going to delete the following deliveries: {props.selectedRows}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} autoFocus>No</Button>
+                <Button onClick={changeStatusHandler} autoFocus>
+                    Yes
+                </Button>
+            </DialogActions>
+            {/*<Box sx={style}>
+                <h3>Are you sure?</h3>
+                <p>You are going to delete the following deliveries: {props.selectedRows}</p>
                 <div className={classes.deliveryManagementRoot}>
                     <Paper className={classes.deliveryManagementPaper} component='form'>
                         <Stack spacing={2} direction="row">
@@ -141,8 +129,8 @@ function ChangeStatusModal(props) {
                         </div>
                     }
                 </div>
-            </Box>
-        </Modal>
+            </Box>*/}
+        </Dialog>
     );
 }
 

@@ -15,8 +15,8 @@ const getPastDeliveries = async (customerID) => {
 }
 
 //To be finished
-const getActiveDeliveries = async (customerID) => {
-  return await axios.get(API_GET_ACTIVE_DELIVERIES + customerID,  { headers: authHeader() })
+const getActiveDeliveries = async (id) => {
+  return await axios.get(API_GET_ACTIVE_DELIVERIES + id,  { headers: authHeader() })
 }
 
 const CustomerService = {

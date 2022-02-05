@@ -1,11 +1,18 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import {useEffect, useRef, useState} from "react";
 import {Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import dispatcherService from "../../services/dispatcher.service";
+import Dispatcher from "../../screens/Dispatcher";
+import DispatcherService from "../../services/dispatcher.service";
 
 const style = {
     position: 'absolute',
@@ -71,72 +78,57 @@ function DeleteDeliveryModal(props) {
     const handleClose = props.handleClose;
     const [loading, setLoading] = useState(false)
 
-
-    const boxIdRef = useRef();
-    const customerIdIdRef = useRef();
-    const delivererIdRef = useRef();
-
-    let rowsSelected = new Set();
+    let rowsSelected = props.selectedRows;
     let res = "";
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        /*setLoading(true);
-
-        const enteredBoxId = boxIdRef.current.value;
-        const enteredCustomerId = customerIdIdRef.current.value;
-        const enteredDelivererId = delivererIdRef.current.value;
-
-        let delivery = null;
-
-        delivery = {
-            targetBoxId: enteredBoxId,
-            customerId: enteredCustomerId,
-            delivererId: enteredDelivererId,
-            status: "IN_DEPOT"
-        }
-        console.log(delivery)
-        console.log(JSON.stringify(delivery));
-
-        try {
-            dispatcherService.createNewDelivery(JSON.stringify(delivery));
-            setLoading(false)
-        }
-        catch (e) {
-            console.error(e)
-        }*/
-        /*fetch('https://ase-delivery-service.herokuapp.com/deliveries',
-            {
-                headers: { 'Content-Type': 'application/json' },
-                method: "POST",
-                body: JSON.stringify(delivery)
-            })
-            .then(response => response.json())
-            .then(data => console.log(data));;*/
-
-
-    }
 
     //console.log(props.selectedRows.size);
 
-    if(props.selectedRows.size != 0) {
-        console.log("SJOW");
+    /*if(props.selectedRows.size != 0) {
         rowsSelected = props.selectedRows;
         res = Array.from(rowsSelected).join(' ');
-        console.log(props.selectedRows)
+        console.log(res)
+    }*/
+    function DeleteHandler() {
+        console.log("entered the handler")
+        for (const element of rowsSelected) {
+            console.log(element);
+            DispatcherService.deleteDelivery(element)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+
+        }
+        handleClose();
+        //update table function
     }
 
     return (
-        <Modal
+        <Dialog
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
         >
-            <Box sx={style}>
+            <DialogTitle id="alert-dialog-title">
+                {"Are you sure?"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    You are going to delete the following deliveries: {props.selectedRows}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} autoFocus>No</Button>
+                <Button onClick={DeleteHandler} autoFocus>
+                    Yes
+                </Button>
+            </DialogActions>
+            {/*<Box sx={style}>
                 <h3>Are you sure?</h3>
-                <p>You are going to delete the following deliveries: {res}</p>
+                <p>You are going to delete the following deliveries: {props.selectedRows}</p>
                 <div className={classes.deliveryManagementRoot}>
                     <Paper className={classes.deliveryManagementPaper} component='form'>
                         <Stack spacing={2} direction="row">
@@ -155,8 +147,8 @@ function DeleteDeliveryModal(props) {
                         </div>
                     }
                 </div>
-            </Box>
-        </Modal>
+            </Box>*/}
+        </Dialog>
     );
 }
 

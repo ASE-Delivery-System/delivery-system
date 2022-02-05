@@ -65,17 +65,14 @@ function ListDeliveries(){
     const classes = useStyles();
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
-    let selectedIDs = new Set();
-    let rows = []
 
     const [UserData, setUserData] = useState([])
-    function getDeliveries(data) {
+    function readDeliveries(data) {
         let newRows = [];
         let customer = "";
         let status = "";
         let deliverer =  "";
         let box = "";
-
 
         try {
             newRows = data.map( (item) => {
@@ -116,15 +113,16 @@ function ListDeliveries(){
     try {
         useEffect(()=>{
             DispatcherService.getDeliveries()
-                .then((data) => {
-                    setUserData(data.data)
+                .then(function (response) {
+                    console.log(response);
+                    setUserData(readDeliveries(response.data));
                 })
                 .catch((error) => {
                     console.log(error)
                 })
         }, [])
         console.log(UserData)
-        rows = getDeliveries(UserData);
+        //rows = readDeliveries(UserData);
     }
     catch (e) {
         console.error(e);
@@ -157,15 +155,19 @@ function ListDeliveries(){
         setChangeModalIsOpen(false)
     }
 
-    //const [rows, setRows] = useState(getDeliveries(UserData));
-    const [selectedRows, setSelectedRows] = useState([]);
+    //const [rows, setRows] = useState(readDeliveries(UserData));
+    const [selectedIds, setSelectedIds] = useState([]);
     const [deletedRows, setDeletedRows] = useState([]);
     const [purgeMode, setPurgeMode] = useState(true);
 
     const handleSelectionChange = (selection) => {
-        setSelectedRows(selection.rows);
-        console.log(selectedRows)
+        //setSelectedRows(selection.rows);
+        //console.log(selectedRows)
+        setSelectedIds(selection);
+        //const selectedRowData = rows.filter((row) =>
+        console.log(selection);
     };
+    console.log(selectedIds);
 
     const handlePurge = () => {
        /* setDeletedRows([
@@ -189,30 +191,23 @@ function ListDeliveries(){
                         <Button onClick={openDeleteModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Delete
                         </Button>
-                        <DeleteDeliveryModal selectedRows={selectedIDs} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
+                        <DeleteDeliveryModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
                         <Button onClick={openChangeModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Change Status
                         </Button>
-                        <ChangeStatusModal handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen}/>
+                        <ChangeStatusModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen}/>
                     </Stack>
                 <Paper className={classes.boxManagementPaper} component='form'>
                     <div className={classes.container}>
                         <div style={{ height: 800, width: '100%' }}>
                             <DataGrid
-                                rows={rows}
+                                rows={UserData}
                                 columns={columns}
                                 editMode="row"
                                 pageSize={15}
                                 rowsPerPageOptions={[15]}
                                 checkboxSelection
-                                //onSelectionModelChange={handleSelectionChange}
-                                    /*{(ids) => {
-                                    selectedIDs = new Set(ids);
-                                    const selectedRowData = rows.filter((row) =>
-                                        selectedIDs.has(row.id.toString());
-                                );
-                                    console.log(selectedIDs);
-                                }}*/
+                                onSelectionModelChange={handleSelectionChange}
 
                                 HorizontalAlign="Center"
                                 components={{
@@ -226,3 +221,4 @@ function ListDeliveries(){
 }
 
 export default ListDeliveries
+//selectedIDs.has(row.id.toString));

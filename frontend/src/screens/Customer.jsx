@@ -3,6 +3,7 @@ import {Button, Paper, Stack} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import CustomerService from "../services/customer.service";
+import ProjectTable from "../components/ProjectTable";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -55,24 +56,37 @@ const columns = [
 
 ];
 
-let customerId = '61d63a54b4b0ec48de7ad888';
-
-try {
-    customerId = JSON.parse(localStorage.getItem('user')).id;
-}
-catch (e) {
-    console.log(e)
-}
-
 const Customer = () => {
     const classes = useStyles();
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
     let selectedIDs = new Set();
-    let rows = []
+    //let rows = [];
+
+
+    const [selectedRows, setSelectedRows] = useState([]);
 
     const [UserData, setUserData] = useState([])
-    function getDeliveries(data) {
+    const [rows, setRows] = useState([]);
+
+    //const [rows, setRows] = useState(getDeliveries(UserData));
+    const [deletedRows, setDeletedRows] = useState([]);
+    const [purgeMode, setPurgeMode] = useState(true);
+
+    let customerId = '';
+    let customerData = '';
+    //61d63a54b4b0ec48de7ad888
+    try {
+        customerData = JSON.parse(localStorage.getItem('user'));
+        customerId = customerData.id;
+        console.log(localStorage.getItem('user'));
+        console.log(customerData.id);
+    }
+    catch (e) {
+        console.error(e);
+    }
+
+    function readDeliveries(data) {
         let newRows = [];
         let status = "";
         let tracking =  "";
@@ -113,37 +127,36 @@ const Customer = () => {
         return newRows;
     }
 
-    try {
-        useEffect(()=>{
-            CustomerService.getActiveDeliveries(customerId)
-                .then((data) => {
-                    setUserData(data.data)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        }, [])
-        console.log(UserData)
-        rows = getDeliveries(UserData);
-    }
-    catch (e) {
-        console.error(e);
-    }
+    useEffect(()=>{
+        CustomerService.getActiveDeliveries(customerId)
+            .then(function (response) {
+                console.log(response);
+                setUserData(readDeliveries(response.data));
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+        //setUserData(res.data)
+    }, [])
+    console.log(UserData)
+    //onsole.log(rows)
 
     function activeDeliveriesHandler() {
-        // change data shown
-
+        CustomerService.getActiveDeliveries(customerId)
+            .then(function (response) {
+                console.log(response);
+                setUserData(readDeliveries(response.data));
+            })
     }
 
     function pastDeliveriesHandler() {
-        // change data shown
-
+        CustomerService.getPastDeliveries(customerId)
+            .then(function (response) {
+                console.log(response);
+                setUserData(readDeliveries(response.data));
+            })
     }
-
-    //const [rows, setRows] = useState(getDeliveries(UserData));
-    const [selectedRows, setSelectedRows] = useState([]);
-    const [deletedRows, setDeletedRows] = useState([]);
-    const [purgeMode, setPurgeMode] = useState(true);
 
     const handleSelectionChange = (selection) => {
         setSelectedRows(selection.rows);
@@ -173,31 +186,7 @@ const Customer = () => {
             </Button>
         </Stack>
         <Paper className={classes.boxManagementPaper} component='form'>
-            <div className={classes.container}>
-                <div style={{ height: 800, width: '100%' }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        editMode="row"
-                        pageSize={15}
-                        rowsPerPageOptions={[15]}
-                        checkboxSelection
-                        //onSelectionModelChange={handleSelectionChange}
-                        /*{(ids) => {
-                        selectedIDs = new Set(ids);
-                        const selectedRowData = rows.filter((row) =>
-                            selectedIDs.has(row.id.toString());
-                    );
-                        console.log(selectedIDs);
-                    }}*/
-
-                        HorizontalAlign="Center"
-                        components={{
-                            Toolbar: GridToolbar,
-                        }}
-                    />
-                </div>
-            </div>
+            <ProjectTable title={title} description={description} columns={columns} rows={UserData}/>
         </Paper>
     </div>);
 }

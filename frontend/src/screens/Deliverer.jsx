@@ -4,6 +4,7 @@ import {makeStyles} from "@mui/styles";
 import ChangeStatusModal from "../components/Deliveries/ChangeStatusModal";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import DelivererService from "../services/deliverer.service";
+import ProjectTable from "../components/ProjectTable";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-let delivererId = '61d4bfa3da8cf822fc44b3e3';
+let delivererId = '';
 
 try {
     delivererId = JSON.parse(localStorage.getItem('user')).id;
@@ -71,8 +72,14 @@ const Deliverer = () => {    const classes = useStyles();
     let selectedIDs = new Set();
     let rows = []
 
+    let delivererId = '';
+    let delivererData = '';
+
+    delivererData = JSON.parse(localStorage.getItem('user'));
+    delivererId = delivererData.id;
+
     const [UserData, setUserData] = useState([])
-    function getDeliveries(data) {
+    function readDeliveries(data) {
         let newRows = [];
         let customer = "";
         let status = "";
@@ -119,15 +126,19 @@ const Deliverer = () => {    const classes = useStyles();
     try {
         useEffect(()=>{
             DelivererService.getDeliveries(delivererId)
-                .then((data) => {
-                    setUserData(data.data)
+                .then(function (response) {
+                    console.log(response);
+                    setUserData(readDeliveries(response.data));
+                    //setRows(getDeliveries(UserData));
                 })
                 .catch((error) => {
                     console.log(error)
                 })
+
+            //setUserData(res.data)
         }, [])
         console.log(UserData)
-        rows = getDeliveries(UserData);
+        //rows = readDeliveries(UserData);
     }
     catch (e) {
         console.error(e);
@@ -191,31 +202,7 @@ const Deliverer = () => {    const classes = useStyles();
             <ChangeStatusModal handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen}/>
         </Stack>
         <Paper className={classes.boxManagementPaper} component='form'>
-            <div className={classes.container}>
-                <div style={{ height: 800, width: '100%' }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        editMode="row"
-                        pageSize={15}
-                        rowsPerPageOptions={[15]}
-                        checkboxSelection
-                        //onSelectionModelChange={handleSelectionChange}
-                        /*{(ids) => {
-                        selectedIDs = new Set(ids);
-                        const selectedRowData = rows.filter((row) =>
-                            selectedIDs.has(row.id.toString());
-                    );
-                        console.log(selectedIDs);
-                    }}*/
-
-                        HorizontalAlign="Center"
-                        components={{
-                            Toolbar: GridToolbar,
-                        }}
-                    />
-                </div>
-            </div>
+            <ProjectTable title={title} description={description} columns={columns} rows={UserData}/>
         </Paper>
     </div>);
 }

@@ -46,32 +46,14 @@ const headers = {
 
 const createNewDelivery = async (delivery) => {
   return await axios.post(API_URL_DELIVERIES, delivery ,{ headers: headers })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
 }
 
 const changeStatusDelivery = async (id, body) => {
-  return await axios.post(API_URL_DELIVERIES + id, body,{ headers: headers })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  return await axios.post(API_URL_DELIVERIES + "/" + id, body,{ headers: headers })
 }
 
 const deleteDelivery = async (id) => {
-  return await axios.delete(API_URL_DELIVERIES + id,{ headers: authHeader() })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  return await axios.delete(API_URL_DELIVERIES + "/" + id,{ headers: authHeader() })
 }
 
 const DispatcherService = {
