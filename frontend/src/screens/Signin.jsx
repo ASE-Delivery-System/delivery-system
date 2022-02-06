@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     height: '70vh',
     minHeight: '50vh',
-    paddingTop: 100,
+    paddingTop: 50,
   },
   loginPaper: {
     width: '300px',
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
   },
   loginRow: {
     paddingTop: theme.spacing(1),
@@ -97,6 +97,7 @@ const Signin = () => {
 
   return (
     <div className={classes.container}>
+      <h1>Sign in</h1>
       <div className={classes.userLoginRoot}>
         <Paper className={classes.loginPaper} component='form'>
           <div className={classes.loginRow}>
