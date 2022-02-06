@@ -16,8 +16,11 @@ const registerNewUser = async (user) => {
   return await axios.post(API_URL + 'register', user,  { headers: authHeader() })
 }
 
-const postUser = async (user) => {
-  return await axios.post(API_URL_GET_USER, user,  { headers: authHeader() })
+const postUser = async (id, body) => {
+  return await axios.post(API_URL_GET_USER + "/" + id, body,  {headers: contentHeader})
+      .then(function (response) {
+          console.log(response);
+      })
 }
 
 const getUsers = async () => {
