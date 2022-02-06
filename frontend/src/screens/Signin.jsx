@@ -17,17 +17,17 @@ const useStyles = makeStyles((theme) => ({
   },
   userLoginRoot: {
     margin: 'auto',
-    height: '70vh',
+    height: '50vh',
     minHeight: '50vh',
     paddingTop: 50,
   },
   loginPaper: {
     width: '300px',
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
   },
   loginRow: {
     paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
     '&:last-child': {
       paddingBottom: theme.spacing(0),
     },
@@ -102,6 +102,7 @@ const Signin = () => {
 
   return (
     <div className={classes.container}>
+      <h1></h1>
       <h1>Sign in</h1>
       <div className={classes.userLoginRoot}>
         <Paper className={classes.loginPaper} component='form'>
