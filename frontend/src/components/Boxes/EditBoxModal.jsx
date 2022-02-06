@@ -3,14 +3,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
-import {Paper, TextField} from "@mui/material";
+import {Dialog, DialogContent, Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
-
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContentText from "@mui/material/DialogContentText";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import dispatcherService from "../../services/dispatcher.service";
 
 const style = {
     position: 'absolute',
@@ -23,10 +24,6 @@ const style = {
     boxShadow: 20,
     p: 3,
 };
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -72,93 +69,137 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const fields = [
-    { field: 'id', headerName: 'Box ID', width: 200 },
-    { field: 'name', headerName: 'Box Name', width: 200 },
-    { field: 'address', headerName: 'Box Address', width: 200 },
-    { field: 'status', headerName: 'Box Status', width: 200 },
-];
-
-
 function EditBoxModal(props) {
-     const [error, setError] = useState('')
-     const classes = useStyles();
-     const title = "List of your Boxes";
-     const description = "Manage your boxes";
-     const open = props.open
-     const handleOpen = props.handleOpen;
-     const handleClose = props.handleClose;
-     const [loading, setLoading] = useState(false)
-     const [name, setName] = useState('')
-     const [id, setId] = useState('')
-     const [address, setAddress] = useState('')
-     const navigate = useNavigate()
+    const classes = useStyles();
 
-     let rowsSelected = props.selectedRows;
-     let res = "";
+    const open = props.open
+    const handleOpen = props.handleOpen;
+    const handleClose = props.handleClose;
+    const update = props.update;
+    const clickedRow = props.clickedRow;
 
-     const boxIdRef = props.selectedRows;
-     const boxNameRef = props.selectedRows.name;
-     const boxAddressRef = props.selectedRows.address;
-     const boxStatusRef = props.selectedRows.status;
+    const boxId = clickedRow.id;
+    const boxAddress = clickedRow.address;
+    const boxName = clickedRow.name;
+    let boxStatus = clickedRow.status;
+    const boxCustomer = clickedRow.customer;
+    const boxDeliverer = clickedRow.deliverer;
+    const boxDeliveries = clickedRow.deliveries;
 
-     const [BoxData, setBoxData] = useState([])
+    const newNameRef = useRef();
+    const newAddressRef = useRef();
 
-     const handleSubmit = (e) => {
-          console.log('bla bla ')
+    const [loading, setLoading] = useState(false);
+    const [newStatus, setNewStatus] = React.useState('');
 
-         for (const element of e) {
-         DispatcherService.postBox(e)
-             .then(function (e) {
-                 console.log(e);
-             })
-             .catch((error) => {
-             console.log(error.response)
-             })
-           }
+    const handleChange = (event) => {
+        setNewStatus(event.target.value);
+        console.log(event.target.value);
+        boxStatus = newStatus;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        console.log("Entered submit")
+        const enteredBoxName = newNameRef.current.value;
+        const enteredBoxAddress = newAddressRef.current.value;
+
+        let box = null;
+
+        box = {
+            id: boxId,
+            name: enteredBoxName,
+            status: boxStatus,
+            address: enteredBoxAddress,
+            customer: boxCustomer,
+            deliverer: boxDeliverer,
+            deliveries: boxDeliveries
         }
+        console.log(box)
+        console.log(JSON.stringify(box));
+
+        try {
+            dispatcherService.postBox(boxId,JSON.stringify(box));
+        }
+        catch (e) {
+            console.error(e)
+        }
+        setLoading(false)
+        handleClose();
+        update();
+    }
+    console.log(boxId)
 
     return (
-        <Modal
+        <Dialog
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
         >
-            <Box sx={style}>
-                <h1>Edit Box</h1>
-                <div className={classes.deliveryManagementRoot}>
-                    <Paper className={classes.deliveryManagementPaper} component='form'>
-                        <div className={classes.deliveryManagementRow}>
-                            <TextField label='Box Id' variant='outlined' editable='false' fullWidth value={props.selectedRows}/>
+            <DialogTitle id="alert-dialog-title">
+                {"Edit Box"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Edit your clicked box:
+                </DialogContentText>
+                <Paper sx={{
+                    minWidth: 500,
+                    padding: (1),}}>
+                    <Stack
+                        component="form"
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minWidth: 400,
+                            width: 'fit-content',
+                            padding: (2),
+                        }}
+                        noValidate
+                        autoComplete="off"
+                        spacing={1}
+                    >
+                        <InputLabel id="nameLabel">New Name</InputLabel>
+                        <TextField label='New Box Name' variant='outlined' fullWidth defaultValue={boxName} inputRef={newNameRef}/>
+                        <InputLabel id="addressLabel">New Address</InputLabel>
+                        <TextField label='New Box Address' variant='outlined' fullWidth defaultValue={boxAddress} inputRef={newAddressRef}/>
+                        <InputLabel id="statusLabel">New Status</InputLabel>
+                        <Select
+                            labelId="statusLabel"
+                            id="demo-simple-select"
+                            defaultValue={boxStatus}
+                            onChange={handleChange}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={'EMPTY'}>Empty</MenuItem>
+                            <MenuItem value={'TAKEN'}>Taken</MenuItem>
+                        </Select>
+                    </Stack>
+                        <div>
+                            <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
+                                {loading ? 'Loading...' : 'Submit'}
+                            </Button>
                         </div>
-                        <div className={classes.deliveryManagementRow}>
-                            <TextField label='Box Name' variant='outlined' editable='true' fullWidth inputRef={boxNameRef} value={name} onChange={(e) => setName(e.target.value)}/>
-                        </div>
-                        <div className={classes.deliveryManagementRow}>
-                            <TextField label='Box Address' variant='outlined' fullWidth inputRef={boxAddressRef} value={address} onChange={(e) => setAddress(e.target.value)}/>
-                        </div>
-                        <div className={classes.deliveryManagementRow}>
-                            <TextField label='Status' variant='outlined' fullWidth inputRef={boxStatusRef} />
-                        </div>
-                        <div className={classes.deliveryManagementRow}>
-                            <div>
-                                <Button className={classes.submitButton} variant='contained' color="success" onClick={()=> handleSubmit} type='submit'>
-                                    {loading ? 'Loading...' : 'Submit'}
-                                </Button>&nbsp;&nbsp;
-                                <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary' type='submit'>close</Button>
-                            </div>
-                        </div>
-                    </Paper>
-                    {
-                        <div className='form-group'>
-                            <div className='alert alert-danger' role='alert'></div>
-                        </div>
-                    }
-                </div>
-            </Box>
-        </Modal>
+                </Paper>
+            </DialogContent>
+
+
+        </Dialog>
     );
 }
 
 export default EditBoxModal;
+
+/*
+<div className={classes.deliveryManagementRow}>
+    <div>
+        <Button className={classes.submitButton} variant='contained' color="success" onClick={()=> handleSubmit} type='submit'>
+            {loading ? 'Loading...' : 'Submit'}
+        </Button>&nbsp;&nbsp;
+        <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary' type='submit'>close</Button>
+    </div>
+</div>*/

@@ -41,8 +41,11 @@ const createNewBox = async (box) => {
   return await axios.post(API_URL_GET_BOXES, box, { headers: authHeader() })
 }
 
-const postBox = async (id) => {
-  return await axios.post(API_URL_GET_BOXES + "/" + id, { headers: authHeader() })
+const postBox = async (id, body) => {
+  return await axios.post(API_URL_GET_BOXES + "/" + id, body,{ headers: contentHeader})
+      .then(function (response) {
+          console.log(response);
+      })
 }
 
 const deleteBox = async (id) => {

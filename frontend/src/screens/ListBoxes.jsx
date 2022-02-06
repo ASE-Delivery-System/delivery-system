@@ -60,12 +60,14 @@ const columns = [
 
 
 //    console.log(dispatcherId);
-function ListDeliveries(){
+function ListBoxes(){
     const classes = useStyles();
     const title = "List of your Boxes";
     const description = "Manage your boxes";
 
     const [BoxData, setBoxData] = useState([])
+    const [dataChanged, setDataChanged] = useState(false);
+
     function readBoxes(data) {
         let newRows = [];
         let name = "";
@@ -80,10 +82,13 @@ function ListDeliveries(){
                 status =  item.status;
                 address = item.address
                 return {
-                    "id": item.id,
-                    "name": item.name,
-                    "address": item.address,
-                    "status": item.status,
+                    "id": id,
+                    "name": name,
+                    "status": status,
+                    "address": address,
+                    "customer": item.customer,
+                    "deliverer": item.deliverer,
+                    "deliveries": item.deliveries
                 }
                 //newRows.push(itemInfo)
             });
@@ -106,7 +111,7 @@ function ListDeliveries(){
                     console.log(error)
                 })
         }, [])
-        console.log(BoxData)
+        //console.log(BoxData)
         //rows = readDeliveries(UserData);
     }
     catch (e) {
@@ -114,7 +119,7 @@ function ListDeliveries(){
     }
     const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [editModalIsOpen, setEditModalIsOpen] = useState(false);
 
 
     function openCreateModalHandler() {
@@ -133,16 +138,32 @@ function ListDeliveries(){
         setDeleteModalIsOpen(false)
     }
 
-    function openChangeModalHandler() {
+    function openEditModalHandler() {
         // switch to the state where the modal is open
-        setModalIsOpen(true);
+        setEditModalIsOpen(true);
     }
-    function closeChangeModalHandler() {
-        setModalIsOpen(false)
+    function closeEditModalHandler() {
+        setEditModalIsOpen(false)
     }
 
-    //const [rows, setRows] = useState(readDeliveries(UserData));
+    function dataChangedHandler() {
+        setDataChanged(true);
+    }
+
+    if(dataChanged){
+        DispatcherService.getBoxes()
+            .then(function (response) {
+                console.log(response);
+                setBoxData(readBoxes(response.data));
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        setDataChanged(false);
+    }
+
     const [selectedIds, setSelectedIds] = useState([]);
+    const [clickedRow, setClickedRow] = useState([]);
 
     const handleSelectionChange = (selection) => {
         setSelectedIds(selection);
@@ -152,10 +173,11 @@ function ListDeliveries(){
     const handleRowClick = (row) => {
         //Open an edit modal
         console.log(row);
-        setModalIsOpen(true);
+        setEditModalIsOpen(true);
+        setClickedRow(row.row);
     }
     console.log(selectedIds);
-    console.log(modalIsOpen);
+    console.log(editModalIsOpen);
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>
@@ -169,7 +191,7 @@ function ListDeliveries(){
                             Delete
                         </Button>
                         <DeleteBoxModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
-                        {modalIsOpen ? <EditBoxModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={modalIsOpen}/> : ''}
+                        {editModalIsOpen ? <EditBoxModal clickedRow={clickedRow} handleOpen={openEditModalHandler} handleClose={closeEditModalHandler} open={editModalIsOpen} update={dataChangedHandler}/> : ''}
                     </Stack>
                 <Paper className={classes.boxManagementPaper} component='form'>
                     <div className={classes.container}>
@@ -195,5 +217,5 @@ function ListDeliveries(){
             </div>);
 }
 
-export default ListDeliveries
+export default ListBoxes
 //selectedIDs.has(row.id.toString));
