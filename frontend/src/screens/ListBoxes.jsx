@@ -52,10 +52,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-    { field: 'id', headerName: 'Box ID', width: 200, editable: 'false'  },
-    { field: 'name', headerName: 'Box Name', width: 200, editable:'true'  },
-    { field: 'address', headerName: 'Box Address', width: 200, editable:'true'  },
-    { field: 'status', headerName: 'Box Status', width: 200, editable:'true'  },
+    { field: 'id', headerName: 'Box ID', width: 200},
+    { field: 'name', headerName: 'Box Name', width: 200},
+    { field: 'address', headerName: 'Box Address', width: 200},
+    { field: 'status', headerName: 'Box Status', width: 200},
 ];
 
 
@@ -114,7 +114,8 @@ function ListDeliveries(){
     }
     const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-    const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
 
     function openCreateModalHandler() {
         // switch to the state where the modal is open
@@ -134,57 +135,27 @@ function ListDeliveries(){
 
     function openChangeModalHandler() {
         // switch to the state where the modal is open
-        setChangeModalIsOpen(true);
+        setModalIsOpen(true);
     }
     function closeChangeModalHandler() {
-        setChangeModalIsOpen(false)
+        setModalIsOpen(false)
     }
 
     //const [rows, setRows] = useState(readDeliveries(UserData));
     const [selectedIds, setSelectedIds] = useState([]);
-    const [deletedRows, setDeletedRows] = useState([]);
-    const [purgeMode, setPurgeMode] = useState(true);
-    const [name, setName] = useState('')
-    const [address, setAddress] = useState('')
-    const [status, setStatus] = useState('')
-    const [setSubmitted] = useState(false)
+
     const handleSelectionChange = (selection) => {
-        //setSelectedRows(selection.rows);
-        //console.log(selectedRows)
         setSelectedIds(selection);
-        //const selectedRowData = rows.filter((row) =>
         console.log(selection);
     };
+
+    const handleRowClick = (row) => {
+        //Open an edit modal
+        console.log(row);
+        setModalIsOpen(true);
+    }
     console.log(selectedIds);
-
-    const handleSave = (e) => {
-         //changing input once already entered
-           const handleName = (e) => {
-             setName(e.target.value)
-             setSubmitted(false)
-           }
-
-           const handleAddress = (e) => {
-             setAddress(e.target.value)
-             setSubmitted(false)
-           }
-
-           const handleStatus = (e) => {
-             setStatus(e.target.value)
-             setSubmitted(false)
-           }
-         console.log("entered the save")
-         console.log(selectedIds);
-         for (const element of selectedIds) {
-         DispatcherService.postBox(selectedIds)
-             .then(function (selectedIds) {
-                 console.log(selectedIds);
-             })
-             .catch((error) => {
-             console.log(error.response)
-             })
-           }
-         }
+    console.log(modalIsOpen);
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>
@@ -198,13 +169,7 @@ function ListDeliveries(){
                             Delete
                         </Button>
                         <DeleteBoxModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
-                        <Button onClick={openChangeModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
-                            Edit Boxes
-                        </Button>
-                        <EditBoxModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen}/>
-                        <Button onClick={handleSave} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
-                            Save
-                        </Button>
+                        {modalIsOpen ? <EditBoxModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={modalIsOpen}/> : ''}
                     </Stack>
                 <Paper className={classes.boxManagementPaper} component='form'>
                     <div className={classes.container}>
@@ -215,7 +180,9 @@ function ListDeliveries(){
                                 pageSize={15}
                                 rowsPerPageOptions={[15]}
                                 checkboxSelection
+                                disableSelectionOnClick
                                 onSelectionModelChange={handleSelectionChange}
+                                onRowClick={handleRowClick}
                                 editMode="row"
                                 HorizontalAlign="Center"
                                 components={{

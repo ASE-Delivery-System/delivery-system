@@ -6,12 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
-import {useEffect, useRef, useState} from "react";
-import {Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import dispatcherService from "../../services/dispatcher.service";
-import Dispatcher from "../../screens/Dispatcher";
 import DispatcherService from "../../services/dispatcher.service";
 
 const style = {
@@ -78,16 +73,9 @@ function DeleteDeliveryModal(props) {
     const handleClose = props.handleClose;
     const update = props.update;
 
-    //const [loading, setLoading] = useState(false)
-
     let rowsSelected = props.selectedRows;
     let res = "";
 
-    /*if(props.selectedRows.size != 0) {
-        rowsSelected = props.selectedRows;
-        res = Array.from(rowsSelected).join(' ');
-        console.log(res)
-    }*/
     function DeleteHandler() {
         console.log("Entered the Delete handler")
         for (const element of rowsSelected) {

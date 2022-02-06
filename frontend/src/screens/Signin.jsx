@@ -91,7 +91,7 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, password, 'asdasd')
+    //console.log(username, password, 'asdasd')
     dispatch(login({ username, password }))
   }
 

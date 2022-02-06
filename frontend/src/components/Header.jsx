@@ -33,6 +33,7 @@ function Header() {
     isDispatcher = currentUser.roles.includes('ROLE_DISPATCHER') && true
     isDeliverer = currentUser.roles.includes('ROLE_DELIVERER') && true
     isCustomer = currentUser.roles.includes('ROLE_CUSTOMER') && true
+    //console.log(currentUser.roles)
   } catch (error) {
     console.log(error)
   }
@@ -132,7 +133,7 @@ function Header() {
       onClose={handleMobileMenuClose}
     >
       {currentUser ? (
-        <>
+          <div key={"IfTrue"}>
           <MenuItem onClick={handleProfileMenuOpen}>
             <IconButton size='large' aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
               <AccountCircle />
@@ -144,9 +145,9 @@ function Header() {
               Logout
             </Button>
           </MenuItem>
-        </>
+        </div>
       ) : (
-        <>
+          <div key={"IfFalse"}>
           <MenuItem onClick={handleLogin}>
             <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
               Login
@@ -157,7 +158,7 @@ function Header() {
               SignUp
             </Button>
           </MenuItem> */}
-        </>
+        </div>
       )}
     </Menu>
   )

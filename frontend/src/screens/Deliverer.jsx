@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {Button, Paper, Stack} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import ChangeStatusModal from "../components/Deliveries/ChangeStatusModal";
-import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import DelivererService from "../services/deliverer.service";
 import ProjectTable from "../components/ProjectTable";
 
