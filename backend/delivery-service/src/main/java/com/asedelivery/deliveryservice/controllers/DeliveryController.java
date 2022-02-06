@@ -85,6 +85,13 @@ public class DeliveryController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteDeliveryById(@PathVariable String id){
+        Delivery delivery = deliveryService.findDeliveryById(id);
+
+        if (Objects.isNull(delivery)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body( new MessageResponse("Delivery Not Found"));
+        }
         deliveryService.deleteDeliveryById(id);
         return ResponseEntity.ok( new MessageResponse("Delivery deleted") );
     }

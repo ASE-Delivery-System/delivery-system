@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService{
@@ -45,10 +46,10 @@ public class DeliveryServiceImpl implements DeliveryService{
         User customer = userService.findUserById(deliveryRequest.getCustomerId());
 
         Delivery newDelivery = new Delivery(targetBox,customer,deliverer,deliveryRequest.getStatus());
-        Delivery createDelivery = deliveryRepository.save(newDelivery);
+        Delivery createdDelivery = deliveryRepository.save(newDelivery);
 
         List<Delivery> deliveryList = new ArrayList<>();
-        deliveryList.add(createDelivery);
+        deliveryList.add(createdDelivery);
 
         System.out.println(deliveryList.get(0).getId());
         System.out.println(deliveryList.get(0).getStatus());
@@ -56,9 +57,19 @@ public class DeliveryServiceImpl implements DeliveryService{
         targetBox.setCustomer(customer);
         targetBox.setDeliverer(deliverer);
         targetBox.setStatus(EBoxStatus.TAKEN);
-        targetBox.setDeliveries(deliveryList);
+
+        List<Delivery> deliveryListInTargetBox = targetBox.getDeliveries();
+
+        if (targetBox.getDeliveries() != null && targetBox.getDeliveries().size() > 0) {
+            deliveryListInTargetBox.add(createdDelivery);
+        }
+
+        if (targetBox.getDeliveries() == null || targetBox.getDeliveries().size() == 0){
+            targetBox.setDeliveries(deliveryList);
+        }
 
         boxRepository.save(targetBox);
+
 
         EmailRequest emailToBeSend = new EmailRequest();
         emailToBeSend.setTo("pellumbbaboci97@gmail.com");
@@ -67,7 +78,7 @@ public class DeliveryServiceImpl implements DeliveryService{
         // Do e post request to email service!
         restTemplate.postForObject("https://ase-email-service.herokuapp.com/api/send", emailToBeSend, String.class);
         System.out.println("sent success");
-        return createDelivery;
+        return createdDelivery;
     }
 
     @Override
@@ -104,7 +115,24 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public void deleteDeliveryById(String id) {
-        deliveryRepository.deleteById(id);
+        Delivery deliveryToBeDeleted = deliveryService.findDeliveryById(id);
 
+        Box targetBox = boxService.findBoxById(deliveryToBeDeleted.getTargetBox().getId());
+
+        // Delete delivery from the list
+        List<Delivery> deliveryList = targetBox.getDeliveries()
+                .stream()
+                .filter(delivery -> !Objects.equals(delivery.getId(), id))
+                .collect(Collectors.toList());
+
+        targetBox.setDeliveries(deliveryList);
+        Box deletedDeliveryFromBox = boxRepository.save(targetBox);
+
+        // Update the status of the box to empty if in target box there are not more deliveries
+        if (deletedDeliveryFromBox.getDeliveries() == null || deletedDeliveryFromBox.getDeliveries().size() == 0){
+            boxService.updateBoxStatus(targetBox.getId(), EBoxStatus.EMPTY);
+        }
+        // delete the delivery
+        deliveryRepository.deleteById(id);
     }
 }
