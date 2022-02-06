@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../slices/auth'
 
+const reload=()=>window.location.reload();
+
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'relative',
@@ -17,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     height: '70vh',
     minHeight: '50vh',
-    paddingTop: 100,
+    paddingTop: 50,
   },
   loginPaper: {
     width: '300px',
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
   },
   loginRow: {
     paddingTop: theme.spacing(1),
@@ -81,10 +83,13 @@ const Signin = () => {
     if (isLoggedIn) {
       if (isDispatcher) {
         navigate('/dispatcher')
+        reload()
       } else if (isDeliverer) {
         navigate('/deliverer')
+        reload()
       } else if (isCustomer) {
         navigate('/customer')
+        reload()
       }
     }
   }, [isLoggedIn,isDispatcher,isDeliverer,isCustomer, navigate])
@@ -97,6 +102,7 @@ const Signin = () => {
 
   return (
     <div className={classes.container}>
+      <h1>Sign in</h1>
       <div className={classes.userLoginRoot}>
         <Paper className={classes.loginPaper} component='form'>
           <div className={classes.loginRow}>
