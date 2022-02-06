@@ -3,6 +3,7 @@ package com.asedelivery.deliveryservice.controllers;
 import com.asedelivery.deliveryservice.models.Box;
 import com.asedelivery.deliveryservice.models.Delivery;
 import com.asedelivery.deliveryservice.models.EBoxStatus;
+import com.asedelivery.deliveryservice.payload.request.BoxStatusUpdateRequest;
 import com.asedelivery.deliveryservice.payload.request.RegisterNewBoxRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.service.BoxService;
@@ -79,7 +80,7 @@ public class BoxController {
     }
 
     @PostMapping("/status/{id}")
-    public ResponseEntity<?> updateBoxStatusById(@PathVariable String id, @RequestBody String status){
+    public ResponseEntity<?> updateBoxStatusById(@PathVariable String id, @RequestBody BoxStatusUpdateRequest status){
         Box boxToBeUpdated = boxService.findBoxById(id);
 
         if (Objects.isNull(boxToBeUpdated)) {
@@ -88,7 +89,7 @@ public class BoxController {
                     .body( new MessageResponse("Box Not Found"));
         }
 
-        return ResponseEntity.ok( boxService.updateBoxStatus(id, EBoxStatus.valueOf(status)));
+        return ResponseEntity.ok( boxService.updateBoxStatus(id, EBoxStatus.valueOf(status.getStatus())));
     }
 
     @DeleteMapping("/{id}")
