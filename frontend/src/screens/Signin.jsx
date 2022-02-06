@@ -108,7 +108,7 @@ const Signin = () => {
 
           <div className={classes.loginRow + ' ' + classes.loginButtons}>
             <div>
-              <Button className={classes.loginButton} variant='contained' color='primary' onClick={handleSubmit} type='submit' lo>
+              <Button className={classes.loginButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
                 {loading ? 'Loading...' : 'Login'}
               </Button>
             </div>
