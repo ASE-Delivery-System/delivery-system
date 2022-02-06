@@ -76,6 +76,8 @@ function DeleteBoxModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
+    const update = props.update;
+
     const [loading, setLoading] = useState(false)
 
     let rowsSelected = props.selectedRows;
@@ -94,7 +96,6 @@ function DeleteBoxModal(props) {
             console.log(element);
             DispatcherService.deleteBox(element)
                 .then(function (response) {
-                    reload()
                     console.log(response);
                 })
                 .catch((error) => {
@@ -102,6 +103,7 @@ function DeleteBoxModal(props) {
                 })
 
         }
+        update();
         handleClose();
         //update table function
     }

@@ -118,6 +118,7 @@ function NewDeliveryModal(props) {
         const box = {
           name: name,
           address: address,
+            status: "EMPTY"
         }
 
         DispatcherService.createNewBox(box)
@@ -152,14 +153,11 @@ function NewDeliveryModal(props) {
                             <TextField label='Box Address' variant='outlined' fullWidth inputRef={boxAddressRef} value={address} onChange={(e) => setAddress(e.target.value)}/>
                         </div>
                         <div className={classes.deliveryManagementRow}>
-                            <TextField label='Status' variant='outlined' fullWidth inputRef={boxStatusRef} />
-                        </div>
-                        <div className={classes.deliveryManagementRow}>
                             <div>
                                 <Button className={classes.submitButton} variant='contained' color="success" onClick={handleSubmit} type='submit'>
                                     {loading ? 'Loading...' : 'Submit'}
                                 </Button>&nbsp;&nbsp;
-                                <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary' type='submit'>close</Button>
+                                <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary'>close</Button>
                             </div>
                         </div>
                     </Paper>

@@ -102,8 +102,8 @@ function NewDeliveryModal(props) {
             console.error(e)
         }
         setLoading(false)
-        handleClose();
         update();
+        handleClose();
     }
 
 

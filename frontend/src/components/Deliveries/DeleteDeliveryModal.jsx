@@ -88,8 +88,8 @@ function DeleteDeliveryModal(props) {
                     console.log(error)
                 })
         }
-        handleClose();
         update();
+        handleClose();
         //update table function
     }
 

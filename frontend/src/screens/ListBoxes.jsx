@@ -6,6 +6,8 @@ import EditBoxModal from "../components/Boxes/EditBoxModal";
 import DeleteBoxModal from "../components/Boxes/DeleteBoxModal";
 import NewBoxModal from "../components/Boxes/NewBoxModal";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
+import ChangeStatusModal from "../components/Deliveries/ChangeStatusModal";
+import ChangeStatusBoxModal from "../components/Boxes/ChangeStatusBoxModal";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -120,7 +122,7 @@ function ListBoxes(){
     const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-
+    const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
 
     function openCreateModalHandler() {
         // switch to the state where the modal is open
@@ -144,6 +146,12 @@ function ListBoxes(){
     }
     function closeEditModalHandler() {
         setEditModalIsOpen(false)
+    }
+    function openChangeModalHandler() {
+        setChangeModalIsOpen(true);
+    }
+    function closeChangeModalHandler() {
+        setChangeModalIsOpen(false)
     }
 
     function dataChangedHandler() {
@@ -186,11 +194,16 @@ function ListBoxes(){
                         <Button onClick={openCreateModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Create
                         </Button>
-                        <NewBoxModal handleOpen={openCreateModalHandler} handleClose={closeCreateModalHandler} open={createModalIsOpen}/>
+                        <NewBoxModal handleOpen={openCreateModalHandler} handleClose={closeCreateModalHandler} open={createModalIsOpen} update={dataChangedHandler}/>
                         <Button onClick={openDeleteModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Delete
                         </Button>
-                        <DeleteBoxModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
+                        <DeleteBoxModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen} update={dataChangedHandler}/>
+                        <Button onClick={openChangeModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
+                            Change Status
+                        </Button>
+                        <ChangeStatusBoxModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen} update={dataChangedHandler}/>
+
                         {editModalIsOpen ? <EditBoxModal clickedRow={clickedRow} handleOpen={openEditModalHandler} handleClose={closeEditModalHandler} open={editModalIsOpen} update={dataChangedHandler}/> : ''}
                     </Stack>
                 <Paper className={classes.boxManagementPaper} component='form'>

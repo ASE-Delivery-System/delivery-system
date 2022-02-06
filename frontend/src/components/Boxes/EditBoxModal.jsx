@@ -81,7 +81,6 @@ function EditBoxModal(props) {
     const boxId = clickedRow.id;
     const boxAddress = clickedRow.address;
     const boxName = clickedRow.name;
-    let boxStatus = clickedRow.status;
     const boxCustomer = clickedRow.customer;
     const boxDeliverer = clickedRow.deliverer;
     const boxDeliveries = clickedRow.deliveries;
@@ -90,12 +89,11 @@ function EditBoxModal(props) {
     const newAddressRef = useRef();
 
     const [loading, setLoading] = useState(false);
-    const [newStatus, setNewStatus] = React.useState('');
+    const [boxStatus, setBoxStatus] = React.useState(clickedRow.status);
 
     const handleChange = (event) => {
-        setNewStatus(event.target.value);
+        setBoxStatus(event.target.value);
         console.log(event.target.value);
-        boxStatus = newStatus;
     };
 
     const handleSubmit = (e) => {
@@ -126,8 +124,8 @@ function EditBoxModal(props) {
             console.error(e)
         }
         setLoading(false)
-        handleClose();
         update();
+        handleClose();
     }
     console.log(boxId)
 
@@ -153,7 +151,7 @@ function EditBoxModal(props) {
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            minWidth: 400,
+                            minWidth: 500,
                             width: 'fit-content',
                             padding: (2),
                         }}
@@ -169,10 +167,10 @@ function EditBoxModal(props) {
                         <Select
                             labelId="statusLabel"
                             id="demo-simple-select"
-                            defaultValue={boxStatus}
+                            defaultValue={clickedRow.status}
                             onChange={handleChange}
                         >
-                            <MenuItem value="">
+                            <MenuItem disabled value="">
                                 <em>None</em>
                             </MenuItem>
                             <MenuItem value={'EMPTY'}>Empty</MenuItem>

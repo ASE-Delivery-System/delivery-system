@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import {FormControl} from "@mui/material";
 import DispatcherService from "../../services/dispatcher.service";
 
-function ChangeStatusModal(props) {
+function ChangeStatusBoxModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
@@ -29,13 +29,13 @@ function ChangeStatusModal(props) {
     let rowsSelected = props.selectedRows;
 
     function changeStatusHandler() {
-        console.log("Entered the Change handler")
+        /*console.log("Entered the Change handler")
         for (const element of rowsSelected) {
-            const bodyToSend = {
-                status: newStatus
-            };
+            const bodyToSend = newStatus.toString();
             console.log(element);
-            DispatcherService.changeStatusDelivery(element, bodyToSend)
+            console.log(bodyToSend);
+
+            DispatcherService.changeStatusBox(element, bodyToSend)
                 .then(function (response) {
                     console.log(response);
                 })
@@ -44,7 +44,7 @@ function ChangeStatusModal(props) {
                 })
         }
         update();
-        handleClose();
+        handleClose();*/
         //update table function
     }
 
@@ -80,10 +80,8 @@ function ChangeStatusModal(props) {
                             label="New Status"
                             onChange={handleChange}
                         >
-                            <MenuItem value={'IN_DEPOT'}>In Deposit</MenuItem>
-                            <MenuItem value={'OUT_FOR_DELIVERY'}>Out for Delivery</MenuItem>
-                            <MenuItem value={'DELIVERED'}>Delivered</MenuItem>
-                            <MenuItem value={'PICKED_UP'}>Picked Up</MenuItem>
+                            <MenuItem value={'EMPTY'}>Empty</MenuItem>
+                            <MenuItem value={'TAKEN'}>Taken</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
@@ -98,4 +96,4 @@ function ChangeStatusModal(props) {
     );
 }
 
-export default ChangeStatusModal;
+export default ChangeStatusBoxModal;
