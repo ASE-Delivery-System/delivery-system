@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import DispatcherService from "../services/dispatcher.service";
 import DeleteUserModal from "../components/Users/DeleteUserModal";
 import NewUserModal from "../components/Users/NewUserModal";
+import EditUserModal from "../components/Users/EditUserModal";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,6 +67,8 @@ function ListUsers(){
     const description = "Manage your users";
 
     const [UserData, setUserData] = useState([])
+    const [dataChanged, setDataChanged] = useState(false);
+
     function readUsers(data) {
         let newRows = [];
         let username = "";
@@ -74,7 +77,9 @@ function ListUsers(){
         let lastName = "";
         let address = "";
         let rfidToken = "";
-        let roles =  "";
+        let roles = [];
+        let rolesName =  "";
+        let rolesId =  "";
         let id = "";
 
         try {
@@ -82,10 +87,11 @@ function ListUsers(){
                 id = item.id;
                 username = item.username;
                 email =  item.email;
-                firstName = item.firstName
-                lastName = item.lastName
-                address = item.address
-                rfidToken = item.rfidToken
+                firstName = item.firstName;
+                lastName = item.lastName;
+                address = item.address;
+                rfidToken = item.rfidToken;
+                roles = item.roles;
 
                 return {
                     "id": item.id,
@@ -95,16 +101,8 @@ function ListUsers(){
                     "lastName": item.lastName,
                     "address": item.address,
                     "rfidToken": item.rfidToken,
-                    "roles" : item.roles.map((roles) => {
-                                 switch (roles.name) {
-                                     case "ROLE_DELIVERER":
-                                         return "Deliverer";
-                                     case "ROLE_CUSTOMER":
-                                         return "Customer";
-                                     case "ROLE_DISPATCHER":
-                                         return "Dispatcher";
-                                 }
-                             })
+                    "roles" : roles[0].name,
+                    "rolesId": roles[0].id
                 }
                 //newRows.push(itemInfo)
             });
@@ -136,6 +134,7 @@ function ListUsers(){
     const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
+    const [editModalIsOpen, setEditModalIsOpen] = useState(false);
 
     function openCreateModalHandler() {
         // switch to the state where the modal is open
@@ -153,6 +152,14 @@ function ListUsers(){
         setDeleteModalIsOpen(false)
     }
 
+    function openEditModalHandler() {
+        // switch to the state where the modal is open
+        setEditModalIsOpen(true);
+    }
+    function closeEditModalHandler() {
+        setEditModalIsOpen(false)
+    }
+
     function openChangeModalHandler() {
         // switch to the state where the modal is open
         setChangeModalIsOpen(true);
@@ -161,13 +168,27 @@ function ListUsers(){
         setChangeModalIsOpen(false)
     }
 
+
+    function dataChangedHandler() {
+        setDataChanged(true);
+    }
+
+    if(dataChanged){
+        DispatcherService.getUsers()
+            .then(function (response) {
+                console.log(response);
+                setUserData(readUsers(response.data));
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        setDataChanged(false);
+    }
+
     //const [rows, setRows] = useState(readDeliveries(UserData));
     const [selectedIds, setSelectedIds] = useState([]);
-    const [deletedRows, setDeletedRows] = useState([]);
-    const [purgeMode, setPurgeMode] = useState(true);
-    const [name, setName] = useState('')
-    const [address, setAddress] = useState('')
-    const [status, setStatus] = useState('')
+    const [clickedRow, setClickedRow] = useState([]);
+
     const [setSubmitted] = useState(false)
     const handleSelectionChange = (selection) => {
         //setSelectedRows(selection.rows);
@@ -178,26 +199,14 @@ function ListUsers(){
     };
     console.log(selectedIds);
 
-    const handleSave = (e) => {
-         //changing input once already entered
-           const handleName = (e) => {
-             setName(e.target.value)
-             setSubmitted(false)
-           }
-
-           const handleAddress = (e) => {
-             setAddress(e.target.value)
-             setSubmitted(false)
-           }
-
-           const handleStatus = (e) => {
-             setStatus(e.target.value)
-             setSubmitted(false)
-           }
-         console.log("entered the save")
-         console.log(selectedIds);
-
-         }
+    const handleRowClick = (row) => {
+        //Open an edit modal
+        console.log(row);
+        setEditModalIsOpen(true);
+        setClickedRow(row.row);
+    }
+    console.log(selectedIds);
+    console.log(editModalIsOpen);
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>
@@ -211,9 +220,7 @@ function ListUsers(){
                             Delete
                         </Button>
                         <DeleteUserModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
-                        <Button onClick={openChangeModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
-                            Edit Users
-                        </Button>
+                        {editModalIsOpen ? <EditUserModal clickedRow={clickedRow} handleOpen={openEditModalHandler} handleClose={closeEditModalHandler} open={editModalIsOpen} update={dataChangedHandler}/> : ''}
                     </Stack>
                 <Paper className={classes.userManagementPaper} component='form'>
                     <div className={classes.container}>
@@ -224,7 +231,9 @@ function ListUsers(){
                                 pageSize={15}
                                 rowsPerPageOptions={[15]}
                                 checkboxSelection
+                                disableSelectionOnClick
                                 onSelectionModelChange={handleSelectionChange}
+                                onRowClick={handleRowClick}
                                 editMode="row"
                                 HorizontalAlign="Center"
                                 components={{
