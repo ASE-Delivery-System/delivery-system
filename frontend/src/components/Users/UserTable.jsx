@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function DeliveriesTable(props) {
+function UserTable(props) {
     const classes = useStyles();
 
     const rows = props.rows;
@@ -88,6 +88,6 @@ function DeliveriesTable(props) {
     );
 }
 
-export default DeliveriesTable;
+export default UserTable;
 
 
