@@ -118,12 +118,12 @@ function DeleteUserModal(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    You are going to delete the selected users
+                    You are going to delete {rowsSelected.length} users
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus>No</Button>
-                <Button onClick={DeleteHandler} autoFocus variant='contained' color='primary'>
+                <Button onClick={handleClose} autoFocus variant='contained' color='primary'>No</Button>
+                <Button onClick={DeleteHandler} autoFocus variant='contained' color='success'>
                     Yes
                 </Button>
             </DialogActions>

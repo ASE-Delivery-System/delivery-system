@@ -62,7 +62,7 @@ function ChangeStatusBoxModal(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    You are going to change the status of the selected deliveries to:
+                    You are going to change the status of {rowsSelected.length} deliveries to:
                 </DialogContentText>
 
                 <Box noValidate

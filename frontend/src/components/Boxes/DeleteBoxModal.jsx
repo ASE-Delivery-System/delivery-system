@@ -49,7 +49,7 @@ function DeleteBoxModal(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    You are going to delete the selected boxes
+                    You are going to delete {rowsSelected.length} boxes
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

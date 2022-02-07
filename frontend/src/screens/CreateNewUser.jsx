@@ -106,31 +106,38 @@ const CreateNewUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('bla bla ')
+    //console.log('bla bla ')
     setLoading(true)
 
-    if (username === '' || email === '' || password === '') {
-      setError(true)
-    } else {
-      const user = {
-        username: username,
-        password: password,
-        email: email,
-        firstName: firstname,
-        lastName: lastname,
-        rfidToken: rfidToken,
-        address: address,
-        role: role,
-      }
+    try {
+      if (username === '' || email === '' || password === '') {
+        //setLoading(false)
 
-      DispatcherService.registerNewUser(user)
-        .then(() => {
-          setLoading(false)
-          navigate('/dispatcher')
-        })
-        .catch((error) => {
-          setLoading(false)
-        })
+      } else {
+        const user = {
+          username: username,
+          password: password,
+          email: email,
+          firstName: firstname,
+          lastName: lastname,
+          rfidToken: rfidToken,
+          address: address,
+          role: role,
+        }
+
+        DispatcherService.registerNewUser(user)
+            .then(() => {
+              setLoading(false)
+              navigate('/dispatcher')
+            })
+            .catch((error) => {
+              setLoading(false)
+            })
+      }
+    }
+    catch (e) {
+      console.error(e);
+      setLoading(false)
     }
   }
   console.log(role)

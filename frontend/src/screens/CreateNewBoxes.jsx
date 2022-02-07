@@ -1,9 +1,19 @@
 import { makeStyles } from '@mui/styles'
-import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio } from '@mui/material'
+import {
+  Paper,
+  Button,
+  TextField,
+  RadioGroup,
+  FormLabel,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  Stack
+} from '@mui/material'
 import React, {useRef, useState} from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import MenuItem from "@mui/material/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -12,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'left',
     alignItems: 'center',
+    padding: 120,
   },
   boxManagementRoot: {
     margin: 'auto',
@@ -77,15 +88,15 @@ const CreateNewBoxes = () => {
 
   const handleSubmit = (e) => {
       e.preventDefault()
-      console.log('bla bla ')
       setLoading(true)
 
       if (name === '' || address === '') {
-        setError(true)
+        //setError(true)
       } else {
         const box = {
           name: name,
           address: address,
+          status: "EMPTY"
         }
 
         DispatcherService.createNewBox(box)
@@ -103,22 +114,29 @@ const CreateNewBoxes = () => {
   return (
     <div className={classes.container}>
       <h1>Create New Boxes </h1>
-      <div className={classes.boxManagementRoot}>
-        <Paper className={classes.boxManagementPaper} component='form'>
-          <div className={classes.boxManagementRow}>
+      <div >
+        <Paper sx={{
+          width: 'fit-content',
+          padding: (1),}}>
+          <Stack
+              component="form"
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: 500,
+                width: 'fit-content',
+                padding: (2),
+              }}
+              noValidate
+              autoComplete="off"
+              spacing={4}
+          >
             <TextField label='Box name' variant='outlined' fullWidth value={name} onChange={(e) => setName(e.target.value)} />
-          </div>
-          <div className={classes.userManagementRow}>
             <TextField label='Box address' variant='outlined' fullWidth value={address} onChange={(e) => setAddress(e.target.value)} />
-          </div>
-
-          <div className={classes.boxManagementRow + ' ' + classes.submitButtons}>
-            <div>
-              <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
-                {loading ? 'Loading...' : 'Submit'}
-              </Button>
-            </div>
-          </div>
+          </Stack>
+          <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
+            {loading ? 'Loading...' : 'Submit'}
+          </Button>
         </Paper>
         {
           <div className='form-group'>

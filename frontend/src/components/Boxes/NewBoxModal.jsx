@@ -108,22 +108,20 @@ function NewDeliveryModal(props) {
 
     const handleSubmit = (e) => {
       e.preventDefault()
-      console.log('bla bla ')
       setLoading(true)
 
       if (name === '' || address === '') {
         setError('Example error message!')
       } else {
         const box = {
-          name: name,
-          address: address,
+            name: name,
+            address: address,
             status: "EMPTY"
         }
 
         DispatcherService.createNewBox(box)
           .then(() => {
             setLoading(false)
-            navigate('/listboxes')
             handleClose()
             reload()
           })
@@ -164,9 +162,18 @@ function NewDeliveryModal(props) {
                         autoComplete="off"
                         spacing={1}
                     >
-                        <TextField label='Box Name' variant='outlined' fullWidth value={name} onChange={(e) => setName(e.target.value)}/>
-                        <TextField label='Box Address' variant='outlined' fullWidth value={address} onChange={(e) => setAddress(e.target.value)}/>
-
+                        <TextField
+                            label='Box Name'
+                            variant='outlined'
+                            helperText="Please insert the Box Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}/>
+                        <TextField
+                            label='Box Address'
+                            variant='outlined'
+                            helperText="Please insert the Box Address"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}/>
                     </Stack>
                 </Paper>
             </DialogContent>

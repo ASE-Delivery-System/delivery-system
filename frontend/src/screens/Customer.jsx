@@ -60,15 +60,22 @@ const Customer = () => {
     let customerId = '';
     let customerData = '';
     let customerUsername = '';
+    let isCustomer = false;
+
     const classes = useStyles();
+
     const title = "List of your Deliveries, ";
     const description = "Manage your deliveries";
     const [deliveriesData, setDeliveriesData] = useState([])
 
+
     try {
         customerData = JSON.parse(localStorage.getItem('user'));
-        customerId = customerData.id;
-        customerUsername = customerData.username;
+        if(customerData!=null && customerData.roles.includes('ROLE_CUSTOMER')) {
+            customerId = customerData.id;
+            customerUsername = customerData.username;
+            isCustomer = true;
+        }
     }
     catch (e) {
         console.error(e);
@@ -121,34 +128,52 @@ const Customer = () => {
         return newRows;
     }
 
-    useEffect(()=>{
-        CustomerService.getActiveDeliveries(customerId)
-            .then(function (response) {
-                console.log(response);
-                setDeliveriesData(readDeliveries(response.data));
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-        //setUserData(res.data)
-    }, [])
-    console.log(deliveriesData)
+    try {
+        useEffect(()=>{
+            if(isCustomer) {
+                CustomerService.getActiveDeliveries(customerId)
+                    .then(function (response) {
+                        console.log(response);
+                        if(customerId == '') {
+                            setDeliveriesData(readDeliveries(response.data));
+                        }
+                    })
+            }
+            //setUserData(res.data)
+        }, [])
+    }
+    catch (e) {
+        console.error(e)
+    }
 
     function activeDeliveriesHandler() {
-        CustomerService.getActiveDeliveries(customerId)
-            .then(function (response) {
-                console.log(response);
-                setDeliveriesData(readDeliveries(response.data));
-            })
+        try {
+            if (isCustomer) {
+                CustomerService.getActiveDeliveries(customerId)
+                    .then(function (response) {
+                        console.log(response);
+                        setDeliveriesData(readDeliveries(response.data));
+                    })
+            }
+        }
+        catch (e) {
+            console.error(e)
+        }
     }
 
     function pastDeliveriesHandler() {
-        CustomerService.getPastDeliveries(customerId)
-            .then(function (response) {
-                console.log(response);
-                setDeliveriesData(readDeliveries(response.data));
-            })
+        try {
+            if (isCustomer) {
+                CustomerService.getPastDeliveries(customerId)
+                    .then(function (response) {
+                        console.log(response);
+                        setDeliveriesData(readDeliveries(response.data));
+                    })
+            }
+        }
+        catch (e) {
+            console.error(e)
+        }
     }
 
     return (<div className={classes.container}>

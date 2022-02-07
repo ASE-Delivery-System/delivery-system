@@ -11,6 +11,14 @@ const getDispatcherView = () => {
   return axios.get(API_URL + 'dispatcher', { headers: authHeader() })
 }
 
+const getDeliverers = async () => {
+    return await axios.get(API_URL_GET_USER + "/deliverers",  { headers: authHeader() })
+}
+
+const getCustomers = async () => {
+    return await axios.get(API_URL_GET_USER + "/customers",  { headers: authHeader() })
+}
+
 //User Requests
 const registerNewUser = async (user) => {
   return await axios.post(API_URL + 'register', user,  { headers: authHeader() })
@@ -58,13 +66,8 @@ const getDeliveries = async () => {
   return await axios.get(API_URL_DELIVERIES,  { headers: authHeader() })
 }
 
-const contentHeader = {
-  'Content-Type': 'application/json',
-  //authHeader()
-}
-
 const createNewDelivery = async (delivery) => {
-  return await axios.post(API_URL_DELIVERIES, delivery ,{ headers: contentHeader })
+  return await axios.post(API_URL_DELIVERIES, delivery ,{ headers: authHeader() })
 }
 
 const changeStatusDelivery = async (id, body) => {
@@ -90,7 +93,9 @@ const DispatcherService = {
     deleteBox,
     getBoxById,
     postBox,
-    changeStatusBox
+    changeStatusBox,
+    getDeliverers,
+    getCustomers
 }
 
 export default DispatcherService

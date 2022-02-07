@@ -63,6 +63,18 @@ function ListDeliveries(){
     const classes = useStyles();
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
+    let isDispatcher = false;
+
+    try {
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if(userData!=null && userData.roles.includes('ROLE_DISPATCHER')) {
+            isDispatcher = true
+            console.log(JSON.parse(localStorage.getItem('user')));
+        }
+    }
+    catch (e) {
+        console.error(e);
+    }
 
     const [deliveryData, setDeliveryData] = useState([])
     const [dataChanged, setDataChanged] = useState(false);
@@ -123,17 +135,18 @@ function ListDeliveries(){
 
     try {
         useEffect(()=>{
-            DispatcherService.getDeliveries()
-                .then(function (response) {
-                    console.log(response);
-                    setDeliveryData(readDeliveries(response.data));
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+            if(isDispatcher) {
+                DispatcherService.getDeliveries()
+                    .then(function (response) {
+                        //console.log(response);
+                        setDeliveryData(readDeliveries(response.data));
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
+            }
         }, [])
-        //console.log(deliveryData)
-        //rows = readDeliveries(deliveryData);
+
     }
     catch (e) {
         console.error(e);
@@ -164,23 +177,28 @@ function ListDeliveries(){
         setDataChanged(true);
     }
 
-    if(dataChanged){
-        DispatcherService.getDeliveries()
-            .then(function (response) {
-                console.log(response);
-                setDeliveryData(readDeliveries(response.data));
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-        setDataChanged(false);
+    if(dataChanged && isDispatcher){
+        try {
+            DispatcherService.getDeliveries()
+                .then(function (response) {
+                    setDeliveryData(readDeliveries(response.data));
+                    setDataChanged(false);
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+        catch (e){
+            console.error(e);
+            setDataChanged(false);
+        }
     }
 
     const handleSelectionChange = (selection) => {
         setSelectedIds(selection);
-        console.log(selection);
+        //console.log(selection);
     };
-    console.log(selectedIds);
+    //console.log(selectedIds);
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>
@@ -189,7 +207,7 @@ function ListDeliveries(){
                         <Button onClick={openCreateModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Create
                         </Button>
-                        <NewDeliveryModal handleOpen={openCreateModalHandler} handleClose={closeCreateModalHandler} open={createModalIsOpen} update={dataChangedHandler}/>
+                        <NewDeliveryModal handleOpen={openCreateModalHandler} handleClose={closeCreateModalHandler} open={createModalIsOpen} update={dataChangedHandler} loggedIn={isDispatcher}/>
                         <Button onClick={openDeleteModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Delete
                         </Button>

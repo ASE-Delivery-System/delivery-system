@@ -159,23 +159,32 @@ function EditBoxModal(props) {
                         autoComplete="off"
                         spacing={1}
                     >
-                        <InputLabel id="nameLabel">New Name</InputLabel>
-                        <TextField label='New Box Name' variant='outlined' fullWidth defaultValue={boxName} inputRef={newNameRef}/>
-                        <InputLabel id="addressLabel">New Address</InputLabel>
-                        <TextField label='New Box Address' variant='outlined' fullWidth defaultValue={boxAddress} inputRef={newAddressRef}/>
-                        <InputLabel id="statusLabel">New Status</InputLabel>
-                        <Select
-                            labelId="statusLabel"
-                            id="demo-simple-select"
+                        <TextField
+                            label='New Box Name'
+                            variant='outlined'
+                            helperText="Please enter the new box name"
+                            defaultValue={boxName}
+                            inputRef={newNameRef}/>
+                        <TextField
+                            label='New Box Address'
+                            variant='outlined'
+                            helperText="Please enter the new box address"
+                            defaultValue={boxAddress}
+                            inputRef={newAddressRef}/>
+                        <TextField
+                            id="outlined-select-box"
+                            select
+                            label="Status"
                             defaultValue={clickedRow.status}
                             onChange={handleChange}
+                            helperText="Please select the new box status"
                         >
                             <MenuItem disabled value="">
                                 <em>None</em>
                             </MenuItem>
                             <MenuItem value={'EMPTY'}>Empty</MenuItem>
                             <MenuItem value={'TAKEN'}>Taken</MenuItem>
-                        </Select>
+                        </TextField>
                     </Stack>
                 </Paper>
             </DialogContent>

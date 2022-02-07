@@ -59,12 +59,22 @@ const columns = [
     { field: 'status', headerName: 'Box Status', width: 200},
 ];
 
-
-//    console.log(dispatcherId);
 function ListBoxes(){
     const classes = useStyles();
     const title = "List of your Boxes";
     const description = "Manage your boxes";
+    let isDispatcher = false;
+
+    try {
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if(userData!=null && userData.roles.includes('ROLE_DISPATCHER')) {
+            isDispatcher = true
+            console.log(JSON.parse(localStorage.getItem('user')));
+        }
+    }
+    catch (e) {
+        console.error(e);
+    }
 
     const [BoxData, setBoxData] = useState([])
     const [dataChanged, setDataChanged] = useState(false);
@@ -103,14 +113,16 @@ function ListBoxes(){
 
     try {
         useEffect(()=>{
-            DispatcherService.getBoxes()
-                .then(function (response) {
-                    console.log(response);
-                    setBoxData(readBoxes(response.data));
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+            if(isDispatcher) {
+                DispatcherService.getBoxes()
+                    .then(function (response) {
+                        console.log(response);
+                        setBoxData(readBoxes(response.data));
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
         }, [])
     }
     catch (e) {
@@ -155,16 +167,21 @@ function ListBoxes(){
         setDataChanged(true);
     }
 
-    if(dataChanged){
-        DispatcherService.getBoxes()
-            .then(function (response) {
-                console.log(response);
-                setBoxData(readBoxes(response.data));
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-        setDataChanged(false);
+    if(dataChanged && isDispatcher){
+        try {
+            DispatcherService.getBoxes()
+                .then(function (response) {
+                    console.log(response);
+                    setBoxData(readBoxes(response.data));
+                    setDataChanged(false);
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
     const [selectedIds, setSelectedIds] = useState([]);
@@ -181,8 +198,8 @@ function ListBoxes(){
         setEditModalIsOpen(true);
         setClickedRow(row.row);
     }
-    console.log(selectedIds);
-    console.log(editModalIsOpen);
+    //console.log(selectedIds);
+    //console.log(editModalIsOpen);
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>

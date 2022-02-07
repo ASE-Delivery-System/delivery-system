@@ -9,17 +9,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    bgcolor: 'background.paper',
-    border: 'auto',
-    boxShadow: 20,
-    p: 3,
-};
 const useStyles = makeStyles((theme) => ({
     container: {
         position: 'relative',
@@ -64,8 +53,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-
-
 function DeleteDeliveryModal(props) {
     const classes = useStyles()
     const open = props.open
@@ -74,7 +61,6 @@ function DeleteDeliveryModal(props) {
     const update = props.update;
 
     let rowsSelected = props.selectedRows;
-    let res = "";
 
     function DeleteHandler() {
         console.log("Entered the Delete handler")
@@ -90,7 +76,6 @@ function DeleteDeliveryModal(props) {
                 })
         }
         handleClose();
-        //update table function
     }
 
     return (
@@ -105,7 +90,7 @@ function DeleteDeliveryModal(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    You are going to delete the selected deliveries
+                    You are going to delete {rowsSelected.length} deliveries
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

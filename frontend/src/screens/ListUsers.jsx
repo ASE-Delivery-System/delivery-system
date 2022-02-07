@@ -66,6 +66,19 @@ function ListUsers(){
     const title = "List of your Users";
     const description = "Manage your users";
 
+    let isDispatcher = false;
+
+    try {
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if(userData!=null && userData.roles.includes('ROLE_DISPATCHER')) {
+            isDispatcher = true
+            console.log(JSON.parse(localStorage.getItem('user')));
+        }
+    }
+    catch (e) {
+        console.error(e);
+    }
+
     const [UserData, setUserData] = useState([])
     const [dataChanged, setDataChanged] = useState(false);
 
@@ -116,14 +129,16 @@ function ListUsers(){
 
     try {
         useEffect(()=>{
-            DispatcherService.getUsers()
-                .then(function (response) {
-                    console.log(response);
-                    setUserData(readUsers(response.data));
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+            if(isDispatcher) {
+                DispatcherService.getUsers()
+                    .then(function (response) {
+                        console.log(response);
+                        setUserData(readUsers(response.data));
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
         }, [])
         console.log(UserData)
         //rows = readDeliveries(UserData);
@@ -173,11 +188,12 @@ function ListUsers(){
         setDataChanged(true);
     }
 
-    if(dataChanged){
+    if(dataChanged && isDispatcher){
         DispatcherService.getUsers()
             .then(function (response) {
                 console.log(response);
                 setUserData(readUsers(response.data));
+                setDataChanged(false);
             })
             .catch((error) => {
                 console.log(error)

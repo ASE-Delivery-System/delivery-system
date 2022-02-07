@@ -49,15 +49,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-let delivererId = '';
-
-try {
-    delivererId = JSON.parse(localStorage.getItem('user')).id;
-}
-catch (e) {
-    console.log(e)
-}
-
 const columns = [
     { field: 'targetBox', headerName: 'Target Box', width: 200 },
     { field: 'targetCustomer', headerName: 'Target Customer', width: 200 },
@@ -72,10 +63,15 @@ const Deliverer = () => {    const classes = useStyles();
     let delivererData = '';
     let delivererUsername = '';
 
+    let isDeliverer = false;
+
     try {
         delivererData = JSON.parse(localStorage.getItem('user'));
-        delivererId = delivererData.id;
-        delivererUsername = delivererData.username;
+        if(delivererData!=null && delivererData.roles.includes('ROLE_CUSTOMER')) {
+            delivererId = delivererData.id;
+            delivererUsername = delivererData.username;
+            isDeliverer = true;
+        }
     }
     catch (e) {
         console.error(e)
@@ -132,17 +128,18 @@ const Deliverer = () => {    const classes = useStyles();
 
     try {
         useEffect(()=>{
-            DelivererService.getDeliveries(delivererId)
-                .then(function (response) {
-                    console.log(response);
-                    setDeliveryData(readDeliveries(response.data));
-                    //setRows(getDeliveries(UserData));
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+            if(isDeliverer) {
+                DelivererService.getDeliveries(delivererId)
+                    .then(function (response) {
+                        console.log(response);
+                        setDeliveryData(readDeliveries(response.data));
+                        //setRows(getDeliveries(UserData));
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
 
-            //setUserData(res.data)
         }, [])
         console.log(deliveryData)
         //rows = readDeliveries(UserData);
@@ -167,17 +164,21 @@ const Deliverer = () => {    const classes = useStyles();
         setDataChanged(true);
     }
 
-    if(dataChanged){
-        DelivererService.getDeliveries(delivererId)
-            .then(function (response) {
-                console.log(response);
-                setDeliveryData(readDeliveries(response.data));
-                //setRows(getDeliveries(UserData));
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-        setDataChanged(false);
+    if(dataChanged && isDeliverer){
+        try {
+            DelivererService.getDeliveries(delivererId)
+                .then(function (response) {
+                    console.log(response);
+                    if(delivererId === '') {
+                        setDeliveryData(readDeliveries(response.data));
+                    }
+                    setDataChanged(false);
+                })
+        }
+        catch (e) {
+            console.error(e);
+            setDataChanged(false);
+        }
     }
 
     const handleSelectionChange = (selection) => {
