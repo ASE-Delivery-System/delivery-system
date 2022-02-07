@@ -3,7 +3,6 @@ import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormContr
 import React, { useState } from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   container: {

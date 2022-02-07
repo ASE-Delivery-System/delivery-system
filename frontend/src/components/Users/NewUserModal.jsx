@@ -1,27 +1,22 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import {useEffect, useRef, useState} from "react";
-import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio } from "@mui/material";
+import {useState} from "react";
+import {
+    Paper,
+    Button,
+    TextField,
+    RadioGroup,
+    FormLabel,
+    FormControl,
+    FormControlLabel,
+    Radio,
+    DialogContent, Stack, DialogActions, Dialog
+} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    bgcolor: 'background.paper',
-    border: 'auto',
-    boxShadow: 20,
-    p: 3,
-};
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContentText from "@mui/material/DialogContentText";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -74,17 +69,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function NewUserModal(props) {
-    // for opening the snackbar
-  // registration
-   const [email, setEmail] = useState('')
-   const [firstname, setFirstname] = useState('')
-   const [lastname, setLastname] = useState('')
-   const [username, setUsername] = useState('')
-   const [password, setPassword] = useState('')
-   const [rfidToken, setRfidToken] = useState('')
-   const [role, setRole] = useState([])
-
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [email, setEmail] = useState('')
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [rfidToken, setRfidToken] = useState('')
+    const [role, setRole] = useState([])
 
     const classes = useStyles()
     const open = props.open
@@ -96,11 +87,6 @@ function NewUserModal(props) {
     // registration
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
-
-    const boxIdRef = useRef();
-    const boxNameRef = useRef();
-    const boxAddressRef = useRef();
-    const boxStatusRef = useRef();
 
     const [setSubmitted] = useState(false)
 
@@ -137,7 +123,7 @@ function NewUserModal(props) {
         DispatcherService.registerNewUser(user)
           .then(() => {
             setLoading(false)
-            navigate('/dispatcher')
+            navigate('/listusers')
             handleClose()
             reload()
           })
@@ -150,74 +136,71 @@ function NewUserModal(props) {
 
 
     return (
-        <Modal
+        <Dialog
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
         >
-            <Box sx={style}>
-                <h1>Create New User</h1>
-                <div className={classes.userManagementRoot}>
-                    <Paper className={classes.userManagementPaper} component='form'>
-                       <FormControl component='fieldset'>
-                         <FormLabel component='legend'>User Type</FormLabel>
-                         <RadioGroup
-                           row
-                           aria-label='userType'
-                           name='row-radio-buttons-group'
-                           onChange={(e) => {
-                             setRole([e.currentTarget.value])
-                           }}
-                         >
-                           <FormControlLabel value='customer' control={<Radio />} label='Customer' />
-                           <FormControlLabel value='dispatcher' control={<Radio />} label='Dispatcher' />
-                           <FormControlLabel value='deliverer' control={<Radio />} label='Deliverer' />
-                         </RadioGroup>
-                       </FormControl>
-                      <div className={classes.userManagementRow}>
+            <DialogTitle id="alert-dialog-title">
+                {"Create New User"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Insert the information for your new user:
+                </DialogContentText>
+                <Paper sx={{
+                    minWidth: 500,
+                    padding: (1),}}>
+                    <FormControl component='fieldset'>
+                        <FormLabel component='legend'>Choose the User Type</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-label='userType'
+                            name='row-radio-buttons-group'
+                            onChange={(e) => {
+                                setRole([e.currentTarget.value])
+                            }}
+                        >
+                            <FormControlLabel value='customer' control={<Radio />} label='Customer' />
+                            <FormControlLabel value='dispatcher' control={<Radio />} label='Dispatcher' />
+                            <FormControlLabel value='deliverer' control={<Radio />} label='Deliverer' />
+                        </RadioGroup>
+                    </FormControl>
+                    <Stack
+                        component="form"
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minWidth: 500,
+                            width: 'fit-content',
+                            padding: (2),
+                        }}
+                        noValidate
+                        autoComplete="off"
+                        spacing={1}
+                    >
                         <TextField label='First name' variant='outlined' fullWidth value={firstname} onChange={(e) => setFirstname(e.target.value)} />
-                      </div>
-                      <div className={classes.userManagementRow}>
                         <TextField label='Last name' variant='outlined' fullWidth value={lastname} onChange={(e) => setLastname(e.target.value)} />
-                      </div>
-                      <div className={classes.userManagementRow}>
                         <TextField label='Username' variant='outlined' fullWidth value={username} onChange={(e) => setUsername(e.target.value)} />
-                      </div>
-                      <div className={classes.userManagementRow}>
                         <TextField label='Email' variant='outlined' fullWidth value={email} onChange={(e) => setEmail(e.target.value)} type='Email' />
-                      </div>
-                      <div className={classes.userManagementRow}>
                         <TextField label='Address' variant='outlined' fullWidth value={address} onChange={(e) => setAddress(e.target.value)} />
-                      </div>
-                      {!role.includes('dispatcher') ? (
-                        <div className={classes.userManagementRow}>
-                          <TextField label='RFID Token' variant='outlined' fullWidth value={rfidToken} onChange={(e) => setRfidToken(e.target.value)} type='text' />
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-                      <div className={classes.userManagementRow}>
+                        {!role.includes('dispatcher') ? (
+                            <TextField label='RFID Token' variant='outlined' fullWidth value={rfidToken} onChange={(e) => setRfidToken(e.target.value)} type='text' />
+                        ) : (
+                            <></>
+                        )}
                         <TextField label='Password' variant='outlined' fullWidth value={password} onChange={(e) => setPassword(e.target.value)} type='password' />
-                      </div>
-
-                        <div className={classes.userManagementRow}>
-                            <div>
-                                <Button className={classes.submitButton} variant='contained' color="success" onClick={handleSubmit} type='submit'>
-                                    {loading ? 'Loading...' : 'Submit'}
-                                </Button>&nbsp;&nbsp;
-                                <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary' type='submit'>close</Button>
-                            </div>
-                        </div>
-                    </Paper>
-                    {
-                        <div className='form-group'>
-                            <div className='alert alert-danger' role='alert'></div>
-                        </div>
-                    }
-                </div>
-            </Box>
-        </Modal>
+                    </Stack>
+                </Paper>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} variant='contained' color='primary'>Close</Button>
+                <Button className={classes.submitButton} variant='contained' color='success' onClick={handleSubmit} type='submit'>
+                    {loading ? 'Loading...' : 'Submit'}
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 }
 

@@ -9,9 +9,6 @@ import DispatcherService from "../../services/dispatcher.service";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import dispatcherService from "../../services/dispatcher.service";
 
 const style = {
     position: 'absolute',

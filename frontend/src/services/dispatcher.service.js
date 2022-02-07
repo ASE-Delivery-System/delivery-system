@@ -42,7 +42,7 @@ const createNewBox = async (box) => {
 }
 
 const postBox = async (id, body) => {
-  return await axios.post(API_URL_GET_BOXES + "/" + id, body,{ headers: contentHeader})
+  return await axios.post(API_URL_GET_BOXES + "/" + id, body,{ headers: authHeader()})
 }
 
 const deleteBox = async (id) => {
@@ -50,7 +50,7 @@ const deleteBox = async (id) => {
 }
 
 const changeStatusBox = async (id, body) => {
-    return await axios.post(API_URL_GET_BOXES + "/status/" + id, body,{ headers: contentHeader })
+    return await axios.post(API_URL_GET_BOXES + "/status/" + id, body,{ headers: authHeader()})
 }
 
 //Deliveries Requests
@@ -68,7 +68,7 @@ const createNewDelivery = async (delivery) => {
 }
 
 const changeStatusDelivery = async (id, body) => {
-  return await axios.post(API_URL_DELIVERIES + "/status/" + id, body,{ headers: contentHeader })
+  return await axios.post(API_URL_DELIVERIES + "/status/" + id, body,{ headers: authHeader() })
 }
 
 const deleteDelivery = async (id) => {

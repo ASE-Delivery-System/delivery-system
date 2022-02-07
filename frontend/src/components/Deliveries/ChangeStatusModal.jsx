@@ -88,8 +88,8 @@ function ChangeStatusModal(props) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus >Cancel</Button>
-                <Button onClick={changeStatusHandler} autoFocus variant='contained' color='primary'>
+                <Button onClick={handleClose} autoFocus variant='contained' color='primary'>Cancel</Button>
+                <Button onClick={changeStatusHandler} autoFocus variant='contained' color='success'>
                     Confirm
                 </Button>
             </DialogActions>

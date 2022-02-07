@@ -82,9 +82,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function NewDeliveryModal(props) {
-    // for opening the snackbar
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
-
     const classes = useStyles()
     const open = props.open
     const handleOpen = props.handleOpen;
@@ -92,14 +89,9 @@ function NewDeliveryModal(props) {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const [error, setError] = useState('')
-    // registration
+
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
-
-    const boxIdRef = useRef();
-    const boxNameRef = useRef();
-    const boxAddressRef = useRef();
-    const boxStatusRef = useRef();
 
     const [setSubmitted] = useState(false)
 
@@ -172,8 +164,8 @@ function NewDeliveryModal(props) {
                         autoComplete="off"
                         spacing={1}
                     >
-                        <TextField label='Box Name' variant='outlined' fullWidth inputRef={boxNameRef} value={name} onChange={(e) => setName(e.target.value)}/>
-                        <TextField label='Box Address' variant='outlined' fullWidth inputRef={boxAddressRef} value={address} onChange={(e) => setAddress(e.target.value)}/>
+                        <TextField label='Box Name' variant='outlined' fullWidth value={name} onChange={(e) => setName(e.target.value)}/>
+                        <TextField label='Box Address' variant='outlined' fullWidth value={address} onChange={(e) => setAddress(e.target.value)}/>
 
                     </Stack>
                 </Paper>
@@ -184,7 +176,6 @@ function NewDeliveryModal(props) {
                     {loading ? 'Loading...' : 'Submit'}
                 </Button>
             </DialogActions>
-
         </Dialog>
     );
 }

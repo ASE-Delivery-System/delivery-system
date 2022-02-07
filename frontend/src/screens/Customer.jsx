@@ -63,14 +63,12 @@ const Customer = () => {
     const classes = useStyles();
     const title = "List of your Deliveries, ";
     const description = "Manage your deliveries";
-    const [UserData, setUserData] = useState([])
+    const [deliveriesData, setDeliveriesData] = useState([])
 
     try {
         customerData = JSON.parse(localStorage.getItem('user'));
         customerId = customerData.id;
         customerUsername = customerData.username;
-        console.log(localStorage.getItem('user'));
-        console.log(customerData.id);
     }
     catch (e) {
         console.error(e);
@@ -127,7 +125,7 @@ const Customer = () => {
         CustomerService.getActiveDeliveries(customerId)
             .then(function (response) {
                 console.log(response);
-                setUserData(readDeliveries(response.data));
+                setDeliveriesData(readDeliveries(response.data));
             })
             .catch((error) => {
                 console.log(error)
@@ -135,14 +133,13 @@ const Customer = () => {
 
         //setUserData(res.data)
     }, [])
-    console.log(UserData)
-    //onsole.log(rows)
+    console.log(deliveriesData)
 
     function activeDeliveriesHandler() {
         CustomerService.getActiveDeliveries(customerId)
             .then(function (response) {
                 console.log(response);
-                setUserData(readDeliveries(response.data));
+                setDeliveriesData(readDeliveries(response.data));
             })
     }
 
@@ -150,7 +147,7 @@ const Customer = () => {
         CustomerService.getPastDeliveries(customerId)
             .then(function (response) {
                 console.log(response);
-                setUserData(readDeliveries(response.data));
+                setDeliveriesData(readDeliveries(response.data));
             })
     }
 
@@ -166,7 +163,7 @@ const Customer = () => {
             </Button>
         </Stack>
         <Paper className={classes.boxManagementPaper} component='form'>
-            <ProjectTable title={title} description={description} columns={columns} rows={UserData}/>
+            <ProjectTable title={title} description={description} columns={columns} rows={deliveriesData}/>
         </Paper>
     </div>);
 }

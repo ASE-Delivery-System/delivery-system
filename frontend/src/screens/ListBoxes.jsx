@@ -6,7 +6,6 @@ import EditBoxModal from "../components/Boxes/EditBoxModal";
 import DeleteBoxModal from "../components/Boxes/DeleteBoxModal";
 import NewBoxModal from "../components/Boxes/NewBoxModal";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
-import ChangeStatusModal from "../components/Deliveries/ChangeStatusModal";
 import ChangeStatusBoxModal from "../components/Boxes/ChangeStatusBoxModal";
 
 const useStyles = makeStyles((theme) => ({
@@ -113,8 +112,6 @@ function ListBoxes(){
                     console.log(error)
                 })
         }, [])
-        //console.log(BoxData)
-        //rows = readDeliveries(UserData);
     }
     catch (e) {
         console.error(e);
@@ -231,4 +228,3 @@ function ListBoxes(){
 }
 
 export default ListBoxes
-//selectedIDs.has(row.id.toString));

@@ -118,7 +118,7 @@ function EditBoxModal(props) {
         console.log(JSON.stringify(box));
 
         try {
-            dispatcherService.postBox(boxId,JSON.stringify(box));
+            dispatcherService.postBox(boxId,box);
         }
         catch (e) {
             console.error(e)
