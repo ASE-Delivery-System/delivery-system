@@ -109,6 +109,9 @@ const Deliverer = () => {    const classes = useStyles();
                     case "DELIVERED":
                         status = "Delivered"
                         break;
+                    case "PICKED_UP":
+                        status = "Picked Up"
+                        break;
                     default:
                         status = "undefined"
                 }
