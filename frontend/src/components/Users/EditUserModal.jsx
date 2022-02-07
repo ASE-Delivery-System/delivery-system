@@ -87,8 +87,8 @@ function EditUserModal(props) {
     const userUsername = clickedRow.username;
     const userRfidToken = clickedRow.rfidToken;
     const userRoles = clickedRow.roles;
-    const userRolesName = React.useState(clickedRow.rolesName);
-    const userRolesId = React.useState(clickedRow.rolesId);
+    const userRolesName = clickedRow.roles;
+    const userRolesId = clickedRow.rolesId;
 
     const newIdRef = useRef();
     const newEmailRef = useRef();
@@ -109,7 +109,7 @@ function EditUserModal(props) {
     const [username, setUsername] = React.useState(clickedRow.username);
     const [rfidToken, setRfidToken] = React.useState(clickedRow.rfidToken);
     // const [roles, setRoles] = React.useState(clickedRow.roles);
-    const [rolesName, setRolesName] = React.useState(clickedRow.rolesName);
+    const [rolesName, setRolesName] = React.useState(clickedRow.roles);
     const [rolesId, setRolesId] = React.useState(clickedRow.rolesId);
     const [roles, setRoles] = React.useState(clickedRow.roles);
 
@@ -119,14 +119,7 @@ function EditUserModal(props) {
     };
 
     let rowsSelected = props.selectedRows;
-//         const handleChange = (event) => {
-//         setEmail(event.target.value);
-//         setAddress(event.target.value);
-//         setFirstname(event.target.value);
-//         setLastname(event.target.value);
-//         setRfidToken(event.target.value);
-//         console.log(event.target.value);
-//     };
+
     function handleSubmit() {
 
            const enteredEmail = newEmailRef.current.value;
@@ -135,79 +128,45 @@ function EditUserModal(props) {
            const enteredLastname = newLastnameRef.current.value;
            const enteredRfidToken = newRfidTokenRef.current.value;
            const enteredAddress = newAddressRef.current.value;
-           const enteredRoles = newRolesRef.current.value;
 
             console.log("Entered the Change handler")
                 const bodyToSend = {
                     id: userId,
                     username: enteredUsername,
                     email: enteredEmail,
+                    address: enteredAddress,
                     firstName: enteredFirstname,
                     lastName: enteredLastname,
                     rfidToken: enteredRfidToken,
-                    roles: userRolesName
+                    roles:
+                            [{
+                                id: userRolesId,
+                                name: userRolesName
+                            }],
                 };
                 console.log(bodyToSend);
                 DispatcherService.postUser(userId, bodyToSend)
                     .then(function (response) {
-                        console.log(response.data);
+                        console.log(response);
                         update();
                     })
                     .catch((error) => {
                         console.log(error)
                     })
 
+            handleClose();
+
 
             const handleChange = (event) => {
-                     setEmail(event.target.value);
-                     setAddress(event.target.value);
-                     setFirstname(event.target.value);
-                     setLastname(event.target.value);
-                     setRfidToken(event.target.value);
-                     console.log(event.target.value);
+                 setEmail(event.target.value);
+                 setAddress(event.target.value);
+                 setFirstname(event.target.value);
+                 setLastname(event.target.value);
+                 setRfidToken(event.target.value);
+                 console.log(event.target.value);
                  };
         }
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         setLoading(true);
-//         console.log("Entered submit")
-//         const enteredEmail = newEmailRef.current.value;
-//         const enteredUsername = newUsernameRef.current.value;
-//         const enteredFirstname = newFirstnameRef.current.value;
-//         const enteredLastname = newLastnameRef.current.value;
-//         const enteredRfidToken = newRfidTokenRef.current.value;
-//         const enteredAddress = newAddressRef.current.value;
-//         const enteredRolesId = newRolesIdRef.current.value;
-//         const enteredRolesName = newRolesNameRef.current.value;
-//
-//         let user = null;
-//
-//         user = {
-//             id: userId,
-//             username: enteredUsername,
-//             email: enteredEmail,
-//             firstName: enteredFirstname,
-//             lastName: enteredLastname,
-//             rfidToken: enteredRfidToken,
-//             roles: {
-//                  id: enteredRolesId,
-//                  name: enteredRolesName
-//             },
-//             address: enteredAddress,
-//         }
-//         console.log(user)
-//         console.log(JSON.stringify(user));
-//
-//         try {
-//             dispatcherService.postUser(userId,JSON.stringify(user));
-//         }
-//         catch (e) {
-//             console.error(e)
-//         }
-//         setLoading(false)
-//         update();
-//         handleClose();
-//     }
+
     console.log(userId)
 
     return (
@@ -252,20 +211,6 @@ function EditUserModal(props) {
                         <TextField label='New Address' variant='outlined' fullWidth defaultValue={userAddress} inputRef={newAddressRef}/>
                         <InputLabel id="rfidTokenLabel">New RFID Token</InputLabel>
                         <TextField label='New RFID Token' variant='outlined' fullWidth defaultValue={userRfidToken} inputRef={newRfidTokenRef}/>
-                        <InputLabel id="roleLabel">New Role</InputLabel>
-                        <Select
-                            labelId="roleLabel"
-                            id="demo-simple-select"
-                            defaultValue={clickedRow.roles}
-                            onChange={handleRoleChange}
-                        >
-                            <MenuItem disabled value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={'Dispatcher'}>Dispatcher</MenuItem>
-                            <MenuItem value={'Deliverer'}>Deliverer</MenuItem>
-                            <MenuItem value={'Customer'}>Customer</MenuItem>
-                        </Select>
                     </Stack>
                 </Paper>
             </DialogContent>
@@ -282,12 +227,3 @@ function EditUserModal(props) {
 
 export default EditUserModal;
 
-/*
-<div className={classes.deliveryManagementRow}>
-    <div>
-        <Button className={classes.submitButton} variant='contained' color="success" onClick={()=> handleSubmit} type='submit'>
-            {loading ? 'Loading...' : 'Submit'}
-        </Button>&nbsp;&nbsp;
-        <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary' type='submit'>close</Button>
-    </div>
-</div>*/

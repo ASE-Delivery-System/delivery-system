@@ -17,7 +17,6 @@ function ChangeStatusModal(props) {
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
     const update = props.update;
-    //const [loading, setLoading] = useState(false)
     const [newStatus, setNewStatus] = React.useState('');
 
     const handleChange = (event) => {

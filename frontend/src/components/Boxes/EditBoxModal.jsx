@@ -191,13 +191,3 @@ function EditBoxModal(props) {
 }
 
 export default EditBoxModal;
-
-/*
-<div className={classes.deliveryManagementRow}>
-    <div>
-        <Button className={classes.submitButton} variant='contained' color="success" onClick={()=> handleSubmit} type='submit'>
-            {loading ? 'Loading...' : 'Submit'}
-        </Button>&nbsp;&nbsp;
-        <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary' type='submit'>close</Button>
-    </div>
-</div>*/

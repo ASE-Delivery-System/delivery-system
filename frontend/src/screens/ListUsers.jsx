@@ -77,9 +77,9 @@ function ListUsers(){
         let lastName = "";
         let address = "";
         let rfidToken = "";
-        let roles = "";
+        let roles = [];
         let rolesName =  "";
-        let rolesId =  [];
+        let rolesId =  "";
         let id = "";
 
         try {
@@ -93,10 +93,6 @@ function ListUsers(){
                 rfidToken = item.rfidToken;
                 roles = item.roles;
 
-                if (roles!=null) {
-                   rolesName = roles.name
-                   rolesId = roles.id
-                 }
                 return {
                     "id": item.id,
                     "username": item.username,
@@ -105,16 +101,8 @@ function ListUsers(){
                     "lastName": item.lastName,
                     "address": item.address,
                     "rfidToken": item.rfidToken,
-                    "roles" : item.roles.map((roles) => {
-                         switch (roles.name) {
-                             case "ROLE_DELIVERER":
-                                return "Deliverer";
-                            case "ROLE_CUSTOMER":
-                                return "Customer";
-                            case "ROLE_DISPATCHER":
-                                return "Dispatcher";
-                         }
-                    })
+                    "roles" : roles[0].name,
+                    "rolesId": roles[0].id
                 }
                 //newRows.push(itemInfo)
             });

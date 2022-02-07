@@ -19,13 +19,6 @@ function DeleteBoxModal(props) {
     let rowsSelected = props.selectedRows;
     let res = "";
 
-    //console.log(props.selectedRows.size);
-
-    /*if(props.selectedRows.size != 0) {
-        rowsSelected = props.selectedRows;
-        res = Array.from(rowsSelected).join(' ');
-        console.log(res)
-    }*/
     function DeleteHandler() {
         console.log("entered the handler")
         for (const element of rowsSelected) {
