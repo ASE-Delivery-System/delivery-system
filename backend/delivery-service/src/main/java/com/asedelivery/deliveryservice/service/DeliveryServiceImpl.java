@@ -100,7 +100,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public List<Delivery> getAllDeliveriesOfDeliverer(String delivererId) {
-        return deliveryRepository.findDeliveriesByDelivererIdAndStatus(delivererId, EDeliveryStatus.IN_DEPOT);
+        return deliveryRepository.findDeliveriesByDeliverer_Id(delivererId);
     }
 
     @Override
