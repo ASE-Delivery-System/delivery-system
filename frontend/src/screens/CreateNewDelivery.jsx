@@ -1,5 +1,5 @@
 import { makeStyles } from '@mui/styles'
-import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio } from '@mui/material'
+import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormControlLabel, Radio, Menu ,MenuItem} from '@mui/material'
 import React, {useRef, useState} from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
@@ -54,7 +54,18 @@ const CreateNewDelivery = () => {
   const classes = useStyles()
 
   const [loading, setLoading] = useState(false)
+// change to drop down menu  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    console.log(event.currentTarget);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
+////////////////////////////////////////////////////////////////
 
   const boxIdRef = useRef();
   const customerIdIdRef = useRef();
@@ -103,14 +114,66 @@ const CreateNewDelivery = () => {
       <div className={classes.deliveryManagementRoot}>
         <Paper className={classes.deliveryManagementPaper} component='form'>
           <div className={classes.deliveryManagementRow}>
+            
+            <Button
+              id="boxbutton"
+              variant="contained"
+              aria-controls={open ? 'menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              Target Box
+            </Button>
+
             <TextField label='Target Box' variant='outlined' fullWidth inputRef={boxIdRef} />
           </div>
           <div className={classes.deliveryManagementRow}>
+            
+            <Button
+              id="customerbutton"
+              variant="contained"
+              aria-controls={open ? 'menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              Target Customer
+            </Button>
+
             <TextField label='Target Customer' variant='outlined' fullWidth inputRef={customerIdIdRef} />
           </div>
           <div className={classes.deliveryManagementRow}>
+            
+            <Button
+              id="delivererbutton"
+              variant="contained"
+              aria-controls={open ? 'menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              Deliverer
+            </Button>
             <TextField label='Deliverer' variant='outlined' fullWidth inputRef={delivererIdRef} />
           </div>
+
+          <div>
+          <Menu
+              id="menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'newdeliverybutton',
+              }}
+            >
+              <MenuItem onClick={handleClose}>item1</MenuItem>
+              <MenuItem onClick={handleClose}>item2</MenuItem>
+              <MenuItem onClick={handleClose}>item3</MenuItem>
+            </Menu>
+          </div>
+
           <div className={classes.deliveryManagementRow + ' ' + classes.submitButtons}>
             <div>
               <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
