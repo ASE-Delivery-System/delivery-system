@@ -38,12 +38,12 @@ function ChangeStatusModal(props) {
             DispatcherService.changeStatusDelivery(element, bodyToSend)
                 .then(function (response) {
                     console.log(response);
+                    update();
                 })
                 .catch((error) => {
                     console.log(error)
                 })
         }
-        update();
         handleClose();
         //update table function
     }
@@ -89,7 +89,7 @@ function ChangeStatusModal(props) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus>Cancel</Button>
+                <Button onClick={handleClose} autoFocus >Cancel</Button>
                 <Button onClick={changeStatusHandler} autoFocus variant='contained' color='primary'>
                     Confirm
                 </Button>

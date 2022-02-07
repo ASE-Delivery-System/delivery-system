@@ -4,6 +4,8 @@ import {makeStyles} from "@mui/styles";
 import ChangeStatusModal from "../components/Deliveries/ChangeStatusModal";
 import DelivererService from "../services/deliverer.service";
 import ProjectTable from "../components/ProjectTable";
+import DispatcherService from "../services/dispatcher.service";
+import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -66,18 +68,23 @@ const columns = [
 ];
 
 const Deliverer = () => {    const classes = useStyles();
-    const title = "List of your Deliveries";
+    const title = "List of your Deliveries, ";
     const description = "Manage your deliveries";
-    let selectedIDs = new Set();
-    let rows = []
-
     let delivererId = '';
     let delivererData = '';
+    let delivererUsername = '';
 
-    delivererData = JSON.parse(localStorage.getItem('user'));
-    delivererId = delivererData.id;
+    try {
+        delivererData = JSON.parse(localStorage.getItem('user'));
+        delivererId = delivererData.id;
+        delivererUsername = delivererData.username;
+    }
+    catch (e) {
+        console.error(e)
+    }
 
-    const [UserData, setUserData] = useState([])
+
+    const [deliveryData, setDeliveryData] = useState([])
     function readDeliveries(data) {
         let newRows = [];
         let customer = "";
@@ -127,7 +134,7 @@ const Deliverer = () => {    const classes = useStyles();
             DelivererService.getDeliveries(delivererId)
                 .then(function (response) {
                     console.log(response);
-                    setUserData(readDeliveries(response.data));
+                    setDeliveryData(readDeliveries(response.data));
                     //setRows(getDeliveries(UserData));
                 })
                 .catch((error) => {
@@ -136,31 +143,16 @@ const Deliverer = () => {    const classes = useStyles();
 
             //setUserData(res.data)
         }, [])
-        console.log(UserData)
+        console.log(deliveryData)
         //rows = readDeliveries(UserData);
     }
     catch (e) {
         console.error(e);
     }
-    const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
-    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
     const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
-
-    function openCreateModalHandler() {
-        // switch to the state where the modal is open
-        setCreateModalIsOpen(true);
-    }
-    function closeCreateModalHandler() {
-        setCreateModalIsOpen(false)
-    }
-
-    function openDeleteModalHandler() {
-        // switch to the state where the modal is open
-        setDeleteModalIsOpen(true);
-    }
-    function closeDeleteModalHandler() {
-        setDeleteModalIsOpen(false)
-    }
+    const [dataChanged, setDataChanged] = useState(false);
+    const [selectedIds, setSelectedIds] = useState([]);
 
     function openChangeModalHandler() {
         // switch to the state where the modal is open
@@ -170,38 +162,57 @@ const Deliverer = () => {    const classes = useStyles();
         setChangeModalIsOpen(false)
     }
 
-    //const [rows, setRows] = useState(getDeliveries(UserData));
-    const [selectedRows, setSelectedRows] = useState([]);
-    const [deletedRows, setDeletedRows] = useState([]);
-    const [purgeMode, setPurgeMode] = useState(true);
+    function dataChangedHandler() {
+        setDataChanged(true);
+    }
+
+    if(dataChanged){
+        DelivererService.getDeliveries(delivererId)
+            .then(function (response) {
+                console.log(response);
+                setDeliveryData(readDeliveries(response.data));
+                //setRows(getDeliveries(UserData));
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        setDataChanged(false);
+    }
 
     const handleSelectionChange = (selection) => {
-        setSelectedRows(selection.rows);
-        console.log(selectedRows)
+        setSelectedIds(selection);
+        console.log(selection);
     };
-
-    const handlePurge = () => {
-        /* setDeletedRows([
-             ...deletedRows,
-             ...rows.filter(
-                 (r) => selectedRows.filter((sr) => sr.id === r.id).length < 1
-             )
-         ]);
-         setRows(selectedRows);
-         setPurgeMode(false);*/
-    };
+    console.log(selectedIds);
 
     return (<div className={classes.container}>
-        <h1> {title} </h1>
+        <h1> {title} {delivererUsername}</h1>
         <h3> {description} </h3>
         <Stack spacing={2} direction="row">
             <Button onClick={openChangeModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                 Change Status
             </Button>
-            <ChangeStatusModal handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen}/>
+            <ChangeStatusModal selectedRows={selectedIds} handleOpen={openChangeModalHandler} handleClose={closeChangeModalHandler} open={changeModalIsOpen} update={dataChangedHandler}/>
         </Stack>
         <Paper className={classes.boxManagementPaper} component='form'>
-            <ProjectTable title={title} description={description} columns={columns} rows={UserData}/>
+            <div className={classes.container}>
+                <div style={{ height: 950, width: '100%' }}>
+                    <DataGrid
+                        rows={deliveryData}
+                        columns={columns}
+                        editMode="row"
+                        pageSize={15}
+                        rowsPerPageOptions={[15]}
+                        checkboxSelection
+                        disableSelectionOnClick
+                        onSelectionModelChange={handleSelectionChange}
+                        HorizontalAlign="Center"
+                        components={{
+                            Toolbar: GridToolbar,
+                        }}
+                    />
+                </div>
+            </div>
         </Paper>
     </div>);
 }

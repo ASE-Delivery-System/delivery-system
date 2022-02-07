@@ -3,13 +3,18 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
-import {Paper, TextField} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContentText from "@mui/material/DialogContentText";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 
 const style = {
@@ -40,12 +45,14 @@ const useStyles = makeStyles((theme) => ({
     },
     deliveryManagementRoot: {
         margin: 'auto',
-        height: '50vh',
+        height: 'auto',
         minHeight: '30vh',
         paddingTop: 10,
+        width: 'fit-content',
     },
     deliveryManagementPaper: {
-        width: '500px',
+        minWidth: 500,
+        width: 'fit-content',
         padding: theme.spacing(2),
     },
 
@@ -136,39 +143,49 @@ function NewDeliveryModal(props) {
     }
 
     return (
-        <Modal
+        <Dialog
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
         >
-            <Box sx={style}>
-                <h1>Create New Box</h1>
-                <div className={classes.deliveryManagementRoot}>
-                    <Paper className={classes.deliveryManagementPaper} component='form'>
-                        <div className={classes.deliveryManagementRow}>
-                            <TextField label='Box Name' variant='outlined' fullWidth inputRef={boxNameRef} value={name} onChange={(e) => setName(e.target.value)}/>
-                        </div>
-                        <div className={classes.deliveryManagementRow}>
-                            <TextField label='Box Address' variant='outlined' fullWidth inputRef={boxAddressRef} value={address} onChange={(e) => setAddress(e.target.value)}/>
-                        </div>
-                        <div className={classes.deliveryManagementRow}>
-                            <div>
-                                <Button className={classes.submitButton} variant='contained' color="success" onClick={handleSubmit} type='submit'>
-                                    {loading ? 'Loading...' : 'Submit'}
-                                </Button>&nbsp;&nbsp;
-                                <Button className={classes.submitButton} onClick={handleClose} variant='contained' color='primary'>close</Button>
-                            </div>
-                        </div>
-                    </Paper>
-                    {
-                        <div className='form-group'>
-                            <div className='alert alert-danger' role='alert'></div>
-                        </div>
-                    }
-                </div>
-            </Box>
-        </Modal>
+            <DialogTitle id="alert-dialog-title">
+                {"Create New Box"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Insert name and address for your new box:
+                </DialogContentText>
+                <Paper sx={{
+                    minWidth: 500,
+                    padding: (1),}}>
+                    <Stack
+                        component="form"
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minWidth: 500,
+                            width: 'fit-content',
+                            padding: (2),
+                        }}
+                        noValidate
+                        autoComplete="off"
+                        spacing={1}
+                    >
+                        <TextField label='Box Name' variant='outlined' fullWidth inputRef={boxNameRef} value={name} onChange={(e) => setName(e.target.value)}/>
+                        <TextField label='Box Address' variant='outlined' fullWidth inputRef={boxAddressRef} value={address} onChange={(e) => setAddress(e.target.value)}/>
+
+                    </Stack>
+                </Paper>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} variant='contained' color='primary'>Close</Button>
+                <Button className={classes.submitButton} variant='contained' color='success' onClick={handleSubmit} type='submit'>
+                    {loading ? 'Loading...' : 'Submit'}
+                </Button>
+            </DialogActions>
+
+        </Dialog>
     );
 }
 

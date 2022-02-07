@@ -29,9 +29,11 @@ function ChangeStatusBoxModal(props) {
     let rowsSelected = props.selectedRows;
 
     function changeStatusHandler() {
-        /*console.log("Entered the Change handler")
+        console.log("Entered the Change handler")
         for (const element of rowsSelected) {
-            const bodyToSend = newStatus.toString();
+            const bodyToSend = {
+                status: newStatus
+            };
             console.log(element);
             console.log(bodyToSend);
 
@@ -44,7 +46,7 @@ function ChangeStatusBoxModal(props) {
                 })
         }
         update();
-        handleClose();*/
+        handleClose();
         //update table function
     }
 
@@ -87,8 +89,8 @@ function ChangeStatusBoxModal(props) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus>Cancel</Button>
-                <Button onClick={changeStatusHandler} autoFocus variant='contained' color='primary'>
+                <Button onClick={handleClose} autoFocus variant='contained' color='primary'>Cancel</Button>
+                <Button onClick={changeStatusHandler} autoFocus variant='contained' color='success'>
                     Confirm
                 </Button>
             </DialogActions>

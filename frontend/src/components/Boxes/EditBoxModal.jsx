@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
-import {Dialog, DialogContent, Paper, Stack, TextField} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -177,14 +177,14 @@ function EditBoxModal(props) {
                             <MenuItem value={'TAKEN'}>Taken</MenuItem>
                         </Select>
                     </Stack>
-                        <div>
-                            <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
-                                {loading ? 'Loading...' : 'Submit'}
-                            </Button>
-                        </div>
                 </Paper>
             </DialogContent>
-
+            <DialogActions>
+                <Button onClick={handleClose} variant='contained' color='primary'>Cancel</Button>
+                <Button variant='contained' color='success' onClick={handleSubmit} type='submit'>
+                    {loading ? 'Loading...' : 'Submit'}
+                </Button>
+            </DialogActions>
 
         </Dialog>
     );

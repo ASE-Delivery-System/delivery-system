@@ -8,7 +8,6 @@ const getDelivererView = () => {
   return axios.get(API_URL + 'register', { headers: authHeader() })
 }
 
-//To be finished
 const getDeliveries = async (delivererId) => {
   return await axios.get(API_GET_DELIVERIES + delivererId,  { headers: authHeader() })
 }

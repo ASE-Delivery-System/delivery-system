@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-    { field: 'id', headerName: 'Box ID', width: 200},
+    { field: 'id', headerName: 'Box ID', width: 250},
     { field: 'name', headerName: 'Box Name', width: 200},
     { field: 'address', headerName: 'Box Address', width: 200},
     { field: 'status', headerName: 'Box Status', width: 200},
