@@ -16,8 +16,11 @@ const registerNewUser = async (user) => {
   return await axios.post(API_URL + 'register', user,  { headers: authHeader() })
 }
 
-const postUser = async (user) => {
-  return await axios.post(API_URL_GET_USER, user,  { headers: authHeader() })
+const postUser = async (id, body) => {
+  return await axios.post(API_URL_GET_USER + "/" + id, body,  {headers: contentHeader})
+      .then(function (response) {
+          console.log(response);
+      })
 }
 
 const getUsers = async () => {
@@ -41,12 +44,16 @@ const createNewBox = async (box) => {
   return await axios.post(API_URL_GET_BOXES, box, { headers: authHeader() })
 }
 
-const postBox = async (id) => {
-  return await axios.post(API_URL_GET_BOXES + "/" + id, { headers: authHeader() })
+const postBox = async (id, body) => {
+  return await axios.post(API_URL_GET_BOXES + "/" + id, body,{ headers: contentHeader})
 }
 
 const deleteBox = async (id) => {
   return await axios.delete(API_URL_GET_BOXES + "/" + id, { headers: authHeader() })
+}
+
+const changeStatusBox = async (id, body) => {
+    return await axios.post(API_URL_GET_BOXES + "/status/" + id, body,{ headers: contentHeader })
 }
 
 //Deliveries Requests
@@ -85,7 +92,8 @@ const DispatcherService = {
     createNewBox,
     deleteBox,
     getBoxById,
-    postBox
+    postBox,
+    changeStatusBox
 }
 
 export default DispatcherService

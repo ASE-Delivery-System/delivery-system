@@ -57,28 +57,18 @@ const columns = [
 ];
 
 const Customer = () => {
-    const classes = useStyles();
-    const title = "List of your Deliveries";
-    const description = "Manage your deliveries";
-    let selectedIDs = new Set();
-    //let rows = [];
-
-
-    const [selectedRows, setSelectedRows] = useState([]);
-
-    const [UserData, setUserData] = useState([])
-    const [rows, setRows] = useState([]);
-
-    //const [rows, setRows] = useState(getDeliveries(UserData));
-    const [deletedRows, setDeletedRows] = useState([]);
-    const [purgeMode, setPurgeMode] = useState(true);
-
     let customerId = '';
     let customerData = '';
-    //61d63a54b4b0ec48de7ad888
+    let customerUsername = '';
+    const classes = useStyles();
+    const title = "List of your Deliveries, ";
+    const description = "Manage your deliveries";
+    const [UserData, setUserData] = useState([])
+
     try {
         customerData = JSON.parse(localStorage.getItem('user'));
         customerId = customerData.id;
+        customerUsername = customerData.username;
         console.log(localStorage.getItem('user'));
         console.log(customerData.id);
     }
@@ -91,12 +81,15 @@ const Customer = () => {
         let status = "";
         let tracking =  "";
         let box = "";
-
+        let boxName = "";
 
         try {
             newRows = data.map( (item) => {
                 tracking =  item.id;
-                box = item.targetBox.name;
+                box = item.targetBox;
+                if(box!= null) {
+                    boxName = box.name
+                }
 
                 switch(item.status) {
                     case "OUT_FOR_DELIVERY":
@@ -116,7 +109,7 @@ const Customer = () => {
                 }
                 return {
                     "id": item.id,
-                    "box": box,
+                    "box": boxName,
                     "trackingCode": tracking,
                     "status": status,
                 }
@@ -161,24 +154,8 @@ const Customer = () => {
             })
     }
 
-    const handleSelectionChange = (selection) => {
-        setSelectedRows(selection.rows);
-        console.log(selectedRows)
-    };
-
-    const handlePurge = () => {
-        /* setDeletedRows([
-             ...deletedRows,
-             ...rows.filter(
-                 (r) => selectedRows.filter((sr) => sr.id === r.id).length < 1
-             )
-         ]);
-         setRows(selectedRows);
-         setPurgeMode(false);*/
-    };
-
     return (<div className={classes.container}>
-        <h1> {title} </h1>
+        <h1> {title} {customerUsername}</h1>
         <h3> {description} </h3>
         <Stack spacing={2} direction="row">
             <Button onClick={activeDeliveriesHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>

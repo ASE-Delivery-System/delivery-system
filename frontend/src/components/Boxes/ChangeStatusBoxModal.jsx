@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import {FormControl} from "@mui/material";
 import DispatcherService from "../../services/dispatcher.service";
 
-function ChangeStatusModal(props) {
+function ChangeStatusBoxModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
@@ -35,15 +35,17 @@ function ChangeStatusModal(props) {
                 status: newStatus
             };
             console.log(element);
-            DispatcherService.changeStatusDelivery(element, bodyToSend)
+            console.log(bodyToSend);
+
+            DispatcherService.changeStatusBox(element, bodyToSend)
                 .then(function (response) {
                     console.log(response);
-                    update();
                 })
                 .catch((error) => {
                     console.log(error)
                 })
         }
+        update();
         handleClose();
         //update table function
     }
@@ -80,17 +82,15 @@ function ChangeStatusModal(props) {
                             label="New Status"
                             onChange={handleChange}
                         >
-                            <MenuItem value={'IN_DEPOT'}>In Deposit</MenuItem>
-                            <MenuItem value={'OUT_FOR_DELIVERY'}>Out for Delivery</MenuItem>
-                            <MenuItem value={'DELIVERED'}>Delivered</MenuItem>
-                            <MenuItem value={'PICKED_UP'}>Picked Up</MenuItem>
+                            <MenuItem value={'EMPTY'}>Empty</MenuItem>
+                            <MenuItem value={'TAKEN'}>Taken</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus >Cancel</Button>
-                <Button onClick={changeStatusHandler} autoFocus variant='contained' color='primary'>
+                <Button onClick={handleClose} autoFocus variant='contained' color='primary'>Cancel</Button>
+                <Button onClick={changeStatusHandler} autoFocus variant='contained' color='success'>
                     Confirm
                 </Button>
             </DialogActions>
@@ -98,4 +98,4 @@ function ChangeStatusModal(props) {
     );
 }
 
-export default ChangeStatusModal;
+export default ChangeStatusBoxModal;

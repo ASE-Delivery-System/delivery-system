@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
-import {Paper, TextField} from "@mui/material";
+import {Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import dispatcherService from "../../services/dispatcher.service";
 
@@ -12,11 +12,11 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 'auto',
+    width: 'fit-content',
     bgcolor: 'background.paper',
     border: 'auto',
     boxShadow: 20,
-    p: 3,
+    p: 2,
 };
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -102,8 +102,8 @@ function NewDeliveryModal(props) {
             console.error(e)
         }
         setLoading(false)
-        handleClose();
         update();
+        handleClose();
     }
 
 
@@ -128,14 +128,13 @@ function NewDeliveryModal(props) {
                         <div className={classes.deliveryManagementRow}>
                             <TextField label='Deliverer' variant='outlined' fullWidth inputRef={delivererIdRef} />
                         </div>
-                        <div className={classes.deliveryManagementRow + ' ' + classes.submitButtons}>
-                            <div>
-                                <Button className={classes.submitButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
-                                    {loading ? 'Loading...' : 'Submit'}
-                                </Button>
-                            </div>
-                        </div>
                     </Paper>
+                    <Stack padding={1} justifyContent="right" direction="row" spacing={1}>
+                        <Button onClick={handleClose} autoFocus variant='contained' color='primary'>Cancel</Button>
+                        <Button className={classes.submitButton} variant='contained' color='success' onClick={handleSubmit} type='submit'>
+                            {loading ? 'Loading...' : 'Submit'}
+                        </Button>
+                    </Stack>
                     {
                         <div className='form-group'>
                             <div className='alert alert-danger' role='alert'></div>

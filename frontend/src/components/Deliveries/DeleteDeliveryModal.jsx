@@ -83,13 +83,13 @@ function DeleteDeliveryModal(props) {
             DispatcherService.deleteDelivery(element)
                 .then(function (response) {
                     console.log(response);
+                    update();
                 })
                 .catch((error) => {
                     console.log(error)
                 })
         }
         handleClose();
-        update();
         //update table function
     }
 
@@ -109,8 +109,8 @@ function DeleteDeliveryModal(props) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus>No</Button>
-                <Button onClick={DeleteHandler} autoFocus variant='contained' color='primary'>
+                <Button onClick={handleClose} autoFocus variant='contained' color='primary'>No</Button>
+                <Button onClick={DeleteHandler} autoFocus variant='contained' color='success'>
                     Yes
                 </Button>
             </DialogActions>

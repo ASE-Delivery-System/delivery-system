@@ -64,8 +64,12 @@ function ListDeliveries(){
     const title = "List of your Deliveries";
     const description = "Manage your deliveries";
 
-    const [UserData, setUserData] = useState([])
+    const [deliveryData, setDeliveryData] = useState([])
     const [dataChanged, setDataChanged] = useState(false);
+    const [selectedIds, setSelectedIds] = useState([]);
+    const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
 
     function readDeliveries(data) {
         let newRows = [];
@@ -73,13 +77,17 @@ function ListDeliveries(){
         let status = "";
         let deliverer =  "";
         let box = "";
+        let boxName = "";
+
 
         try {
             newRows = data.map( (item) => {
                 customer = item.customer;
                 deliverer =  item.deliverer;
-                box = item.targetBox.name;
-
+                box = item.targetBox;
+                if(box!= null) {
+                    boxName = box.name
+                }
                 switch(item.status) {
                     case "OUT_FOR_DELIVERY":
                         status = "Out for Delivery"
@@ -98,7 +106,7 @@ function ListDeliveries(){
                 }
                 return {
                     "id": item.id,
-                    "targetBox": box,
+                    "targetBox": boxName,
                     "targetCustomer": customer.firstName + " " + customer.lastName,
                     "deliverer": deliverer.firstName + " " + deliverer.lastName,
                     "status": status,
@@ -118,21 +126,18 @@ function ListDeliveries(){
             DispatcherService.getDeliveries()
                 .then(function (response) {
                     console.log(response);
-                    setUserData(readDeliveries(response.data));
+                    setDeliveryData(readDeliveries(response.data));
                 })
                 .catch((error) => {
                     console.log(error)
                 })
         }, [])
-        console.log(UserData)
-        //rows = readDeliveries(UserData);
+        //console.log(deliveryData)
+        //rows = readDeliveries(deliveryData);
     }
     catch (e) {
         console.error(e);
     }
-    const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
-    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-    const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
 
     function openCreateModalHandler() {
         setCreateModalIsOpen(true);
@@ -163,15 +168,13 @@ function ListDeliveries(){
         DispatcherService.getDeliveries()
             .then(function (response) {
                 console.log(response);
-                setUserData(readDeliveries(response.data));
+                setDeliveryData(readDeliveries(response.data));
             })
             .catch((error) => {
                 console.log(error)
             })
         setDataChanged(false);
     }
-
-    const [selectedIds, setSelectedIds] = useState([]);
 
     const handleSelectionChange = (selection) => {
         setSelectedIds(selection);
@@ -200,12 +203,13 @@ function ListDeliveries(){
                     <div className={classes.container}>
                         <div style={{ height: 950, width: '100%' }}>
                             <DataGrid
-                                rows={UserData}
+                                rows={deliveryData}
                                 columns={columns}
                                 editMode="row"
                                 pageSize={15}
                                 rowsPerPageOptions={[15]}
                                 checkboxSelection
+                                disableSelectionOnClick
                                 onSelectionModelChange={handleSelectionChange}
                                 HorizontalAlign="Center"
                                 components={{
