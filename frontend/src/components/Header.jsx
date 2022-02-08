@@ -33,8 +33,9 @@ function Header() {
     isDispatcher = currentUser.roles.includes('ROLE_DISPATCHER') && true
     isDeliverer = currentUser.roles.includes('ROLE_DELIVERER') && true
     isCustomer = currentUser.roles.includes('ROLE_CUSTOMER') && true
+    //console.log(currentUser.roles)
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
   const navigate = useNavigate()
@@ -52,17 +53,17 @@ function Header() {
     handleMobileMenuClose()
   }
 
-  const handleDeliveryManagement = () => {
+  const handleDispatcherView = () => {
     navigate('/dispatcher')
     handleMenuClose()
   }
 
-  const handleBoxStatusManagement = () => {
+  const handleDelivererView = () => {
     navigate('/deliverer')
     handleMenuClose()
   }
 
-  const handleMyDeliveries = () => {
+  const handleCustomerView = () => {
     navigate('/customer')
     handleMenuClose()
   }
@@ -102,11 +103,11 @@ function Header() {
       onClose={handleMenuClose}
     >
       {isDispatcher ? (
-        <MenuItem onClick={handleDeliveryManagement}>Delivery Management</MenuItem>
+        <MenuItem onClick={handleDispatcherView}>Dispatcher View</MenuItem>
       ) : isDeliverer ? (
-        <MenuItem onClick={handleBoxStatusManagement}>Box status management</MenuItem>
+        <MenuItem onClick={handleDelivererView}>Deliverer View</MenuItem>
       ) : isCustomer ? (
-        <MenuItem onClick={handleMyDeliveries}>My Deliveries</MenuItem>
+        <MenuItem onClick={handleCustomerView}>Customer View</MenuItem>
       ) : (
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       )}
@@ -114,6 +115,7 @@ function Header() {
   )
 
   const mobileMenuId = 'primary-search-account-menu-mobile'
+  // Menu is causing an error
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -131,7 +133,7 @@ function Header() {
       onClose={handleMobileMenuClose}
     >
       {currentUser ? (
-        <>
+          <div key={"IfTrue"}>
           <MenuItem onClick={handleProfileMenuOpen}>
             <IconButton size='large' aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
               <AccountCircle />
@@ -143,9 +145,9 @@ function Header() {
               Logout
             </Button>
           </MenuItem>
-        </>
+        </div>
       ) : (
-        <>
+          <div key={"IfFalse"}>
           <MenuItem onClick={handleLogin}>
             <Button color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
               Login
@@ -156,7 +158,7 @@ function Header() {
               SignUp
             </Button>
           </MenuItem> */}
-        </>
+        </div>
       )}
     </Menu>
   )

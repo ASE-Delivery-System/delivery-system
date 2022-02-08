@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../slices/auth'
 
+const reload=()=>window.location.reload();
+
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'relative',
@@ -15,17 +17,17 @@ const useStyles = makeStyles((theme) => ({
   },
   userLoginRoot: {
     margin: 'auto',
-    height: '70vh',
+    height: '50vh',
     minHeight: '50vh',
-    paddingTop: 100,
+    paddingTop: 50,
   },
   loginPaper: {
     width: '300px',
-    padding: theme.spacing(4),
+    padding: theme.spacing(2),
   },
   loginRow: {
     paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
     '&:last-child': {
       paddingBottom: theme.spacing(0),
     },
@@ -81,22 +83,27 @@ const Signin = () => {
     if (isLoggedIn) {
       if (isDispatcher) {
         navigate('/dispatcher')
+        reload()
       } else if (isDeliverer) {
         navigate('/deliverer')
+        reload()
       } else if (isCustomer) {
         navigate('/customer')
+        reload()
       }
     }
   }, [isLoggedIn,isDispatcher,isDeliverer,isCustomer, navigate])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, password, 'asdasd')
+    console.log(username, password, 'signin check')
     dispatch(login({ username, password }))
   }
 
   return (
     <div className={classes.container}>
+      <h1></h1>
+      <h1>Sign in</h1>
       <div className={classes.userLoginRoot}>
         <Paper className={classes.loginPaper} component='form'>
           <div className={classes.loginRow}>
@@ -108,7 +115,7 @@ const Signin = () => {
 
           <div className={classes.loginRow + ' ' + classes.loginButtons}>
             <div>
-              <Button className={classes.loginButton} variant='contained' color='primary' onClick={handleSubmit} type='submit' lo>
+              <Button className={classes.loginButton} variant='contained' color='primary' onClick={handleSubmit} type='submit'>
                 {loading ? 'Loading...' : 'Login'}
               </Button>
             </div>
