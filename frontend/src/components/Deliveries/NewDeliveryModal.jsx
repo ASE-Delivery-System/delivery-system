@@ -153,7 +153,7 @@ function NewDeliveryModal(props) {
 
         if (enteredBoxId === '' || enteredCustomerId === '' || enteredDelivererId === '') {
             setIsError(true)
-            setMessage('No Target Box or Customer or Deliverer selected')
+            //setMessage('No Target Box or Customer or Deliverer selected')
             setLoading(false)
         }
         else {
@@ -175,7 +175,7 @@ function NewDeliveryModal(props) {
                     .catch((error) => {
                         console.log(error)
                         setIsError(true)
-                        setMessage(error.message)
+                        //setMessage(error.message)
                         setLoading(false)
                     })
             } catch (e) {

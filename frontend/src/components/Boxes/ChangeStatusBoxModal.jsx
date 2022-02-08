@@ -41,7 +41,7 @@ function ChangeStatusBoxModal(props) {
 
         if (rowsSelected.length === 0) {
             setIsError(true)
-            setMessage('No rows selected')
+            //setMessage('No rows selected')
             setLoading(false)
         }
         else {
@@ -68,7 +68,7 @@ function ChangeStatusBoxModal(props) {
             catch (e) {
                 console.error(e);
                 setIsError(true)
-                setMessage(e.message)
+                //setMessage(e.message)
                 setLoading(false)
             }
             update();

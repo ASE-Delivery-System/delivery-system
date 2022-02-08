@@ -101,7 +101,7 @@ function NewUserModal(props) {
 
       if (username === '' || email === '' || password === '') {
           setIsError(true)
-          setMessage('The username or email or password field are empty')
+          //setMessage('The username or email or password field are empty')
           setLoading(false)
         } else {
           const user = {
@@ -127,7 +127,7 @@ function NewUserModal(props) {
                   .catch((error) => {
                       console.log('response: ', error.response.data)
                       setIsError(true)
-                      setMessage(error.message)
+                      //setMessage(error.message)
                       setLoading(false)                  })
           }
           catch (e) {

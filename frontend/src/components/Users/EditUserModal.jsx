@@ -161,7 +161,7 @@ function EditUserModal(props) {
                     //console.log(error)
                     console.log(error)
                     setIsError(true)
-                    setMessage(error.message)
+                    //setMessage(error.message)
                     setLoading(false)
                 })
         }

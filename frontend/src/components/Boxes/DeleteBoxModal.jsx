@@ -28,7 +28,7 @@ function DeleteBoxModal(props) {
 
         if (rowsSelected.length === 0) {
             setIsError(true)
-            setMessage('No rows selected')
+            //setMessage('No rows selected')
             setLoading(false)
         }
         else {
@@ -53,7 +53,7 @@ function DeleteBoxModal(props) {
             catch (e) {
                 console.error(e);
                 setIsError(true)
-                setMessage("Delete not possible")
+                //setMessage("Delete not possible")
                 setLoading(false)
             }
             update();

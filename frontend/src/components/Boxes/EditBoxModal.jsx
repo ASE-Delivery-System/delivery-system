@@ -117,7 +117,7 @@ function EditBoxModal(props) {
                 .catch((error) => {
                     console.log(error)
                     setIsError(true)
-                    setMessage(error.message)
+                    //setMessage(error.message)
                     setLoading(false)
                 })
         }
