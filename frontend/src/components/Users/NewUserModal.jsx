@@ -98,10 +98,10 @@ function NewUserModal(props) {
       e.preventDefault()
       setLoading(true)
 
-      if (username === '' || email === '' || password === '' || rfidToken === '' || role === '' || firstname === ''|| lastname === '') {
+      if (username === '' || email === '' || password === '' || role === '' || firstname === ''|| lastname === '') {
           setIsError(true)
           setLoading(false)
-          setMessage('Please filled in all fields the fields as they are all required');
+          setMessage('Please fill in first name, last name, username, email, password, and role');
         } else {
           const user = {
             username: username,
@@ -125,7 +125,8 @@ function NewUserModal(props) {
                   .catch((error) => {
                       console.log('response: ', error.response.data)
                       setIsError(true)
-                      setLoading(false)                  })
+                      setLoading(false)
+                      })
           }
           catch (e) {
               console.error(e);

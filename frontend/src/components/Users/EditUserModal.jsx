@@ -131,8 +131,14 @@ function EditUserModal(props) {
         const enteredLastname = newLastnameRef.current.value;
         const enteredRfidToken = newRfidTokenRef.current.value;
         const enteredAddress = newAddressRef.current.value;
+        let bodyToSend = null;
 
         console.log("Entered the Change handler")
+        if (enteredUsername === '' || enteredEmail === '' || userRolesName === '' || enteredFirstname === ''|| enteredLastname === '') {
+            setIsError(true)
+            setLoading(false)
+            setMessage('Please fill in first name, last name, username, email, password, and role');
+        } else {
         const bodyToSend = {
             id: userId,
             username: enteredUsername,
@@ -146,7 +152,8 @@ function EditUserModal(props) {
                     id: userRolesId,
                     name: userRolesName
                 }],
-        };
+            }
+         };
         //console.log(bodyToSend);
         try {
             DispatcherService.postUser(userId, bodyToSend)

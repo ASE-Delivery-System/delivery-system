@@ -111,10 +111,10 @@ const CreateNewUser = () => {
     setLoading(true)
 
     try {
-      if (username === '' || email === '' || password === '' || rfidToken === '' || role === '' || firstname === ''|| lastname === '') {
+      if (username === '' || email === '' || password === '' || role === '' || firstname === ''|| lastname === '') {
           setIsError(true)
           setLoading(false)
-          setMessage('Please filled in all fields the fields as they are all required');
+          setMessage('Please fill in first name, last name, username, email, password, and role');
         } else {
         const user = {
           username: username,

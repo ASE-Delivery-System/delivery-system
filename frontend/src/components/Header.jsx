@@ -53,17 +53,17 @@ function Header() {
     handleMobileMenuClose()
   }
 
-  const handleDeliveryManagement = () => {
+  const handleDispatcherView = () => {
     navigate('/dispatcher')
     handleMenuClose()
   }
 
-  const handleBoxStatusManagement = () => {
+  const handleDelivererView = () => {
     navigate('/deliverer')
     handleMenuClose()
   }
 
-  const handleMyDeliveries = () => {
+  const handleCustomerView = () => {
     navigate('/customer')
     handleMenuClose()
   }
@@ -103,11 +103,11 @@ function Header() {
       onClose={handleMenuClose}
     >
       {isDispatcher ? (
-        <MenuItem onClick={handleDeliveryManagement}>Delivery Management</MenuItem>
+        <MenuItem onClick={handleDispatcherView}>Dispatcher View</MenuItem>
       ) : isDeliverer ? (
-        <MenuItem onClick={handleBoxStatusManagement}>Box status management</MenuItem>
+        <MenuItem onClick={handleDelivererView}>Deliverer View</MenuItem>
       ) : isCustomer ? (
-        <MenuItem onClick={handleMyDeliveries}>My Deliveries</MenuItem>
+        <MenuItem onClick={handleCustomerView}>Customer View</MenuItem>
       ) : (
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       )}

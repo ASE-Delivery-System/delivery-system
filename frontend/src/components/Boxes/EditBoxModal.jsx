@@ -93,6 +93,11 @@ function EditBoxModal(props) {
 
         let box = null;
 
+        if (enteredBoxName  === '' || enteredBoxAddress === '') {
+           setIsError(true)
+           setMessage('The Box Name or Box Address field is empty')
+           setLoading(false)
+        } else {
         box = {
             id: boxId,
             name: enteredBoxName,
@@ -101,9 +106,8 @@ function EditBoxModal(props) {
             customer: boxCustomer,
             deliverer: boxDeliverer,
             deliveries: boxDeliveries
+            }
         }
-        //console.log(box)
-        //console.log(JSON.stringify(box));
 
         try {
             dispatcherService.postBox(boxId,box)
