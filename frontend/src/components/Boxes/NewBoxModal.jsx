@@ -81,7 +81,7 @@ function NewDeliveryModal(props) {
 
       if (name === '' || address === '') {
           setIsError(true)
-          //setMessage('The Box Name or Box Address field is empty')
+          setMessage('The Box Name or Box Address field is empty')
           setLoading(false)
       } else {
         const box = {

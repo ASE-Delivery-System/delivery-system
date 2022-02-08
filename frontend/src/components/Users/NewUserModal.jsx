@@ -96,13 +96,12 @@ function NewUserModal(props) {
 
     const handleSubmit = (e) => {
       e.preventDefault()
-      //console.log('bla bla ')
       setLoading(true)
 
-      if (username === '' || email === '' || password === '') {
+      if (username === '' || email === '' || password === '' || rfidToken === '' || role === '' || firstname === ''|| lastname === '') {
           setIsError(true)
-          //setMessage('The username or email or password field are empty')
           setLoading(false)
+          setMessage('Please filled in all fields the fields as they are all required');
         } else {
           const user = {
             username: username,
@@ -120,14 +119,12 @@ function NewUserModal(props) {
                   .then(() => {
                       setIsError(false)
                       setLoading(false)
-                      //navigate('/listusers')
                       handleClose()
                       reload()
                   })
                   .catch((error) => {
                       console.log('response: ', error.response.data)
                       setIsError(true)
-                      //setMessage(error.message)
                       setLoading(false)                  })
           }
           catch (e) {

@@ -58,7 +58,7 @@ const columns = [
    {title: "Last Name", field : "lastName", headerName: "Last Name", editable: true},
    {title: "Address", field : "address", width: 120, headerName: "Address", editable: true},
    {title: "RFID Token", field : "rfidToken", width: 100, headerName: "RFID Token", editable: true},
-   {title: "Role", field : "roles", headerName: "Role", editable: true},
+   {title: "Role", field : "rolesName", headerName: "Role", editable: true},
 ];
 
 function ListUsers(){
@@ -116,9 +116,18 @@ function ListUsers(){
                     "address": item.address,
                     "rfidToken": item.rfidToken,
                     "roles" : roles[0].name,
+                    "rolesName": item.roles.map((roles) => {
+                         switch (roles.name) {
+                             case "ROLE_DELIVERER":
+                                 return "Deliverer";
+                             case "ROLE_CUSTOMER":
+                                 return "Customer";
+                             case "ROLE_DISPATCHER":
+                                 return "Dispatcher";
+                             }
+                         }),
                     "rolesId": roles[0].id
                 }
-                //newRows.push(itemInfo)
             });
         }
         catch (e) {
@@ -133,7 +142,6 @@ function ListUsers(){
             if(isDispatcher) {
                 DispatcherService.getUsers()
                     .then(function (response) {
-                        //console.log(response);
                         setUserData(readUsers(response.data));
                     })
                     .catch((error) => {
@@ -141,8 +149,6 @@ function ListUsers(){
                     })
             }
         }, [])
-        //console.log(UserData)
-        //rows = readDeliveries(UserData);
     }
     catch (e) {
         console.error(e);
@@ -202,28 +208,19 @@ function ListUsers(){
         setDataChanged(false);
     }
 
-    //const [rows, setRows] = useState(readDeliveries(UserData));
     const [selectedIds, setSelectedIds] = useState([]);
     const [clickedRow, setClickedRow] = useState([]);
 
     const [setSubmitted] = useState(false)
     const handleSelectionChange = (selection) => {
-        //setSelectedRows(selection.rows);
-        //console.log(selectedRows)
         setSelectedIds(selection);
-        //const selectedRowData = rows.filter((row) =>
-        //console.log(selection);
     };
-    //console.log(selectedIds);
 
     const handleRowClick = (row) => {
         //Open an edit modal
-        //console.log(row);
         setEditModalIsOpen(true);
         setClickedRow(row.row);
     }
-    //console.log(selectedIds);
-    //console.log(editModalIsOpen);
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>
@@ -264,4 +261,3 @@ function ListUsers(){
 }
 
 export default ListUsers
-//selectedIDs.has(row.id.toString));

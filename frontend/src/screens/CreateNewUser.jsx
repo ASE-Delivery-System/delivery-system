@@ -111,11 +111,11 @@ const CreateNewUser = () => {
     setLoading(true)
 
     try {
-      if (username === '' || email === '' || password === '') {
-        setIsError(true)
-        setMessage('The username or email or password field are empty')
-        setLoading(false)
-      } else {
+      if (username === '' || email === '' || password === '' || rfidToken === '' || role === '' || firstname === ''|| lastname === '') {
+          setIsError(true)
+          setLoading(false)
+          setMessage('Please filled in all fields the fields as they are all required');
+        } else {
         const user = {
           username: username,
           password: password,
