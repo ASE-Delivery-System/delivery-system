@@ -8,6 +8,8 @@ import java.util.Set;
 
 public class UserRegisterObj {
 
+    private String id;
+
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
@@ -26,10 +28,19 @@ public class UserRegisterObj {
     public UserRegisterObj() {
     }
 
-    public UserRegisterObj(String username, String email, String password) {
+    public UserRegisterObj(String id, String username, String email, String password) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {

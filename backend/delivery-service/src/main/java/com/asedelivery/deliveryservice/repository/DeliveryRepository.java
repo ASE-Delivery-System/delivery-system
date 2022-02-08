@@ -14,8 +14,8 @@ public interface DeliveryRepository extends MongoRepository<Delivery, String> {
 
     Delivery findDeliveryById(String id);
 
-    @Query("{'deliverer' : ?0, 'status' : ?1}")
-    List<Delivery> findDeliveriesByDelivererIdAndStatus(@Param("deliverer") String customer_id, @Param("status") EDeliveryStatus status);
+    @Query("{'deliverer' : ?0}")
+    List<Delivery> findDeliveriesByDeliverer_Id(@Param("deliverer") String deliverer_id);
 
     @Query("{'customer' : ?0, 'status' : { $ne: ?1 }}")
     List<Delivery> findAllActiveDeliveries(@Param("customer") String customer_id, @Param("status") EDeliveryStatus status);

@@ -1,12 +1,15 @@
 package com.asedelivery.deliveryservice.controllers;
 
 import com.asedelivery.deliveryservice.models.Box;
+import com.asedelivery.deliveryservice.models.Delivery;
 import com.asedelivery.deliveryservice.models.EBoxStatus;
+import com.asedelivery.deliveryservice.payload.request.BoxStatusUpdateRequest;
 import com.asedelivery.deliveryservice.payload.request.RegisterNewBoxRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.service.BoxService;
 import com.asedelivery.deliveryservice.security.jwt.JwtUtils;
 
+import com.asedelivery.deliveryservice.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +32,9 @@ public class BoxController {
 
     @Autowired
     BoxService boxService;
+
+    @Autowired
+    DeliveryService deliveryService;
 
     @GetMapping("") //GET /api/boxes
     public ResponseEntity<List<Box>> getAllBoxes() {
@@ -71,6 +77,19 @@ public class BoxController {
                     .body( new MessageResponse("Box Not Found"));
         }
         return ResponseEntity.ok( boxService.updateBox(id,box));
+    }
+
+    @PostMapping("/status/{id}")
+    public ResponseEntity<?> updateBoxStatusById(@PathVariable String id, @RequestBody BoxStatusUpdateRequest status){
+        Box boxToBeUpdated = boxService.findBoxById(id);
+
+        if (Objects.isNull(boxToBeUpdated)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body( new MessageResponse("Box Not Found"));
+        }
+
+        return ResponseEntity.ok( boxService.updateBoxStatus(id, EBoxStatus.valueOf(status.getStatus())));
     }
 
     @DeleteMapping("/{id}")
