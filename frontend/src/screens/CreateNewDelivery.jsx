@@ -101,6 +101,9 @@ const CreateNewDelivery = () => {
   const [listCustomers, setListCustomers] = useState([])
   const [listDeliverers, setListDeliverers] = useState([])
 
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
+
   const handleChangeBox = (event) => {
     setSelectedBox(event.target.value);
   };
@@ -118,7 +121,7 @@ const CreateNewDelivery = () => {
       if(isDispatcher) {
         DispatcherService.getBoxes()
             .then(function (response) {
-              console.log(response);
+              //console.log(response);
               setListBoxes(readBoxes(response.data));
             })
         return () => {
@@ -128,7 +131,7 @@ const CreateNewDelivery = () => {
     }, [])
   }
   catch (e) {
-    console.log(e);
+    console.error(e);
   }
 
   try {
@@ -136,7 +139,7 @@ const CreateNewDelivery = () => {
       if(isDispatcher) {
         DispatcherService.getCustomers()
             .then(function (response) {
-              console.log(response);
+              //console.log(response);
               setListCustomers(readUsers(response.data));
             })
         return () => {
@@ -146,7 +149,7 @@ const CreateNewDelivery = () => {
     }, [])
   }
   catch (e) {
-    console.log(e);
+    console.error(e);
   }
 
   try {
@@ -154,7 +157,7 @@ const CreateNewDelivery = () => {
       if (isDispatcher) {
         DispatcherService.getDeliverers()
             .then(function (response) {
-              console.log(response);
+              //console.log(response);
               setListDeliverers(readUsers(response.data));
             })
         return () => {
@@ -164,7 +167,7 @@ const CreateNewDelivery = () => {
     }, [])
   }
   catch (e) {
-    console.log(e);
+    console.error(e);
   }
 
   const handleSubmit = (e) => {
@@ -176,7 +179,9 @@ const CreateNewDelivery = () => {
     const enteredDelivererId = selectedDeliverer;
 
     if (enteredBoxId === '' || enteredCustomerId === '' || enteredDelivererId === '') {
-      //setLoading(false)
+      setIsError(true)
+      setMessage('No Target Box or Customer or Deliverer selected')
+      setLoading(false)
     }
     else {
       const delivery = {
@@ -189,8 +194,15 @@ const CreateNewDelivery = () => {
       try {
         dispatcherService.createNewDelivery(delivery)
             .then(() => {
+              setIsError(false)
               setLoading(false)
               navigate('/listdeliveries')
+            })
+            .catch((error) => {
+              console.log(error)
+              setIsError(true)
+              setMessage(error.message)
+              setLoading(false)
             })
       } catch (e) {
         console.error(e)
@@ -266,11 +278,13 @@ const CreateNewDelivery = () => {
             {loading ? 'Loading...' : 'Submit'}
           </Button>
         </Paper>
-        {
-          <div className='form-group'>
-            <div className='alert alert-danger' role='alert'></div>
-          </div>
-        }
+        {isError && (
+            <div className='form-group'>
+              <div className='alert alert-danger' role='alert'>
+                {message}
+              </div>
+            </div>
+        )}
       </div>
     </div>
   )

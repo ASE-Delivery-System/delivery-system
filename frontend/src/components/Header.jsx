@@ -35,7 +35,7 @@ function Header() {
     isCustomer = currentUser.roles.includes('ROLE_CUSTOMER') && true
     //console.log(currentUser.roles)
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
   const navigate = useNavigate()

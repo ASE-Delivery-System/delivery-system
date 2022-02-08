@@ -11,43 +11,69 @@ import Select from '@mui/material/Select';
 import Box from "@mui/material/Box";
 import {FormControl} from "@mui/material";
 import DispatcherService from "../../services/dispatcher.service";
+import {useState} from "react";
+
+const reload=()=>window.location.reload();
 
 function ChangeStatusBoxModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
     const update = props.update;
-    //const [loading, setLoading] = useState(false)
-    const [newStatus, setNewStatus] = React.useState('');
 
-    const handleChange = (event) => {
-        setNewStatus(event.target.value);
-        console.log(event.target.value)
-    };
+    const [loading, setLoading] = useState(false);
 
+    const [newStatus, setNewStatus] = useState('');
+
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
 
     let rowsSelected = props.selectedRows;
 
+    const handleChange = (event) => {
+        setNewStatus(event.target.value);
+        //console.log(event.target.value)
+    };
+
     function changeStatusHandler() {
         console.log("Entered the Change handler")
-        for (const element of rowsSelected) {
-            const bodyToSend = {
-                status: newStatus
-            };
-            console.log(element);
-            console.log(bodyToSend);
+        setLoading(true)
 
-            DispatcherService.changeStatusBox(element, bodyToSend)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+        if (rowsSelected.length === 0) {
+            setIsError(true)
+            setMessage('No rows selected')
+            setLoading(false)
         }
-        update();
-        handleClose();
-        //update table function
+        else {
+            try {
+                for (const element of rowsSelected) {
+                    const bodyToSend = {
+                        status: newStatus
+                    };
+                    //console.log(element);
+                    //console.log(bodyToSend);
+                    DispatcherService.changeStatusBox(element, bodyToSend)
+                        .then(function (response) {
+                            //console.log(response);
+                            setIsError(false)
+                            setLoading(false)
+                        })
+                        .catch((error) => {
+                        console.log(error)
+                        setIsError(true)
+                        setLoading(false)
+                        })
+                }
+            }
+            catch (e) {
+                console.error(e);
+                setIsError(true)
+                setMessage(e.message)
+                setLoading(false)
+            }
+            update();
+            handleClose();
+        }
     }
 
     return (
@@ -87,6 +113,13 @@ function ChangeStatusBoxModal(props) {
                         </Select>
                     </FormControl>
                 </Box>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} autoFocus variant='contained' color='primary'>Cancel</Button>

@@ -83,7 +83,9 @@ function NewUserModal(props) {
     const handleClose = props.handleClose;
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const [error, setError] = useState('')
+
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
     // registration
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
@@ -91,23 +93,16 @@ function NewUserModal(props) {
     const [setSubmitted] = useState(false)
 
     //changing input once already entered
-    const handleName = (e) => {
-      setName(e.target.value)
-      setSubmitted(false)
-    }
-
-    const handleAddress = (e) => {
-      setAddress(e.target.value)
-      setSubmitted(false)
-    }
 
     const handleSubmit = (e) => {
       e.preventDefault()
-      console.log('bla bla ')
+      //console.log('bla bla ')
       setLoading(true)
 
       if (username === '' || email === '' || password === '') {
-          setError(true)
+          setIsError(true)
+          setMessage('The username or email or password field are empty')
+          setLoading(false)
         } else {
           const user = {
             username: username,
@@ -120,17 +115,24 @@ function NewUserModal(props) {
             role: role,
           }
 
-        DispatcherService.registerNewUser(user)
-          .then(() => {
-            setLoading(false)
-            navigate('/listusers')
-            handleClose()
-            reload()
-          })
-          .catch((error) => {
-            console.log('response: ', error.response.data)
-            setLoading(false)
-          })
+          try {
+              DispatcherService.registerNewUser(user)
+                  .then(() => {
+                      setIsError(false)
+                      setLoading(false)
+                      //navigate('/listusers')
+                      handleClose()
+                      reload()
+                  })
+                  .catch((error) => {
+                      console.log('response: ', error.response.data)
+                      setIsError(true)
+                      setMessage(error.message)
+                      setLoading(false)                  })
+          }
+          catch (e) {
+              console.error(e);
+          }
       }
     }
 
@@ -193,6 +195,13 @@ function NewUserModal(props) {
                         <TextField label='Password' variant='outlined' fullWidth value={password} onChange={(e) => setPassword(e.target.value)} type='password' />
                     </Stack>
                 </Paper>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} variant='contained' color='primary'>Close</Button>

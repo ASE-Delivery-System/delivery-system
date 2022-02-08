@@ -1,29 +1,12 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
 import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import DispatcherService from "../../services/dispatcher.service";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import dispatcherService from "../../services/dispatcher.service";
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    bgcolor: 'background.paper',
-    border: 'auto',
-    boxShadow: 20,
-    p: 3,
-};
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -69,6 +52,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const reload=()=>window.location.reload();
+
 function EditBoxModal(props) {
     const classes = useStyles();
 
@@ -91,9 +76,12 @@ function EditBoxModal(props) {
     const [loading, setLoading] = useState(false);
     const [boxStatus, setBoxStatus] = React.useState(clickedRow.status);
 
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
+
     const handleChange = (event) => {
         setBoxStatus(event.target.value);
-        console.log(event.target.value);
+        //console.log(event.target.value);
     };
 
     const handleSubmit = (e) => {
@@ -114,20 +102,30 @@ function EditBoxModal(props) {
             deliverer: boxDeliverer,
             deliveries: boxDeliveries
         }
-        console.log(box)
-        console.log(JSON.stringify(box));
+        //console.log(box)
+        //console.log(JSON.stringify(box));
 
         try {
-            dispatcherService.postBox(boxId,box);
+            dispatcherService.postBox(boxId,box)
+                .then(function (response) {
+                    //console.log(response);
+                    setIsError(false)
+                    setLoading(false)
+                    handleClose();
+                    reload()
+                })
+                .catch((error) => {
+                    console.log(error)
+                    setIsError(true)
+                    setMessage(error.message)
+                    setLoading(false)
+                })
         }
         catch (e) {
             console.error(e)
         }
-        setLoading(false)
-        update();
-        handleClose();
     }
-    console.log(boxId)
+    //console.log(boxId)
 
     return (
         <Dialog
@@ -187,6 +185,13 @@ function EditBoxModal(props) {
                         </TextField>
                     </Stack>
                 </Paper>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} variant='contained' color='primary'>Cancel</Button>

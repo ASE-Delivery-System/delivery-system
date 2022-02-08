@@ -69,7 +69,8 @@ function ListDeliveries(){
         const userData = JSON.parse(localStorage.getItem('user'));
         if(userData!=null && userData.roles.includes('ROLE_DISPATCHER')) {
             isDispatcher = true
-            console.log(JSON.parse(localStorage.getItem('user')));
+            console.log("Current User:")
+            console.log(userData);
         }
     }
     catch (e) {

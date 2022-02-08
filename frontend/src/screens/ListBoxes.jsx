@@ -69,7 +69,8 @@ function ListBoxes(){
         const userData = JSON.parse(localStorage.getItem('user'));
         if(userData!=null && userData.roles.includes('ROLE_DISPATCHER')) {
             isDispatcher = true
-            console.log(JSON.parse(localStorage.getItem('user')));
+            console.log("Current User:")
+            console.log(userData);
         }
     }
     catch (e) {
@@ -116,11 +117,11 @@ function ListBoxes(){
             if(isDispatcher) {
                 DispatcherService.getBoxes()
                     .then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         setBoxData(readBoxes(response.data));
                     })
                     .catch((error) => {
-                        console.log(error)
+                        //console.log(error)
                     })
             }
         }, [])
@@ -171,16 +172,16 @@ function ListBoxes(){
         try {
             DispatcherService.getBoxes()
                 .then(function (response) {
-                    console.log(response);
+                    //console.log(response);
                     setBoxData(readBoxes(response.data));
                     setDataChanged(false);
                 })
                 .catch((error) => {
-                    console.log(error)
+                    //console.log(error)
                 })
         }
         catch (e) {
-            console.log(e)
+            console.error(e)
         }
     }
 
@@ -189,12 +190,12 @@ function ListBoxes(){
 
     const handleSelectionChange = (selection) => {
         setSelectedIds(selection);
-        console.log(selection);
+        //console.log(selection);
     };
 
     const handleRowClick = (row) => {
         //Open an edit modal
-        console.log(row);
+        //console.log(row);
         setEditModalIsOpen(true);
         setClickedRow(row.row);
     }

@@ -8,33 +8,57 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {useState} from "react";
 import DispatcherService from "../../services/dispatcher.service";
 
+const reload=()=>window.location.reload();
+
 function DeleteBoxModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
     const update = props.update;
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
 
     let rowsSelected = props.selectedRows;
-    let res = "";
 
     function DeleteHandler() {
-        console.log("entered the handler")
-        for (const element of rowsSelected) {
-            console.log(element);
-            DispatcherService.deleteBox(element)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+        console.log("Entered the Delete Handler");
+        setLoading(true);
 
+        if (rowsSelected.length === 0) {
+            setIsError(true)
+            setMessage('No rows selected')
+            setLoading(false)
         }
-        update();
-        handleClose();
-        //update table function
+        else {
+            try {
+                for (const element of rowsSelected) {
+                    //console.log(element);
+                    DispatcherService.deleteBox(element)
+                        .then(function (response) {
+                            //console.log(response);
+                            setIsError(false)
+                            setLoading(false)
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            setIsError(true)
+                            //setMessage(error.message)
+                            setLoading(false)
+                        })
+
+                }
+            }
+            catch (e) {
+                console.error(e);
+                setIsError(true)
+                setMessage("Delete not possible")
+                setLoading(false)
+            }
+            update();
+            handleClose();
+        }
     }
 
     return (
@@ -51,6 +75,13 @@ function DeleteBoxModal(props) {
                 <DialogContentText id="alert-dialog-description">
                     You are going to delete {rowsSelected.length} boxes
                 </DialogContentText>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} autoFocus variant='contained' color='primary'>No</Button>

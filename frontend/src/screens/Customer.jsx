@@ -75,6 +75,8 @@ const Customer = () => {
             customerId = customerData.id;
             customerUsername = customerData.username;
             isCustomer = true;
+            console.log("Current User")
+            console.log(customerData);
         }
     }
     catch (e) {
@@ -133,10 +135,8 @@ const Customer = () => {
             if(isCustomer) {
                 CustomerService.getActiveDeliveries(customerId)
                     .then(function (response) {
-                        console.log(response);
-                        if(customerId == '') {
-                            setDeliveriesData(readDeliveries(response.data));
-                        }
+                        //console.log(response);
+                        setDeliveriesData(readDeliveries(response.data));
                     })
             }
             //setUserData(res.data)
@@ -151,7 +151,7 @@ const Customer = () => {
             if (isCustomer) {
                 CustomerService.getActiveDeliveries(customerId)
                     .then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         setDeliveriesData(readDeliveries(response.data));
                     })
             }
@@ -166,7 +166,7 @@ const Customer = () => {
             if (isCustomer) {
                 CustomerService.getPastDeliveries(customerId)
                     .then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         setDeliveriesData(readDeliveries(response.data));
                     })
             }

@@ -72,7 +72,8 @@ function ListUsers(){
         const userData = JSON.parse(localStorage.getItem('user'));
         if(userData!=null && userData.roles.includes('ROLE_DISPATCHER')) {
             isDispatcher = true
-            console.log(JSON.parse(localStorage.getItem('user')));
+            console.log("Current User:")
+            console.log(userData);
         }
     }
     catch (e) {
@@ -132,7 +133,7 @@ function ListUsers(){
             if(isDispatcher) {
                 DispatcherService.getUsers()
                     .then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         setUserData(readUsers(response.data));
                     })
                     .catch((error) => {
@@ -140,7 +141,7 @@ function ListUsers(){
                     })
             }
         }, [])
-        console.log(UserData)
+        //console.log(UserData)
         //rows = readDeliveries(UserData);
     }
     catch (e) {
@@ -191,7 +192,7 @@ function ListUsers(){
     if(dataChanged && isDispatcher){
         DispatcherService.getUsers()
             .then(function (response) {
-                console.log(response);
+                //console.log(response);
                 setUserData(readUsers(response.data));
                 setDataChanged(false);
             })
@@ -211,18 +212,18 @@ function ListUsers(){
         //console.log(selectedRows)
         setSelectedIds(selection);
         //const selectedRowData = rows.filter((row) =>
-        console.log(selection);
+        //console.log(selection);
     };
-    console.log(selectedIds);
+    //console.log(selectedIds);
 
     const handleRowClick = (row) => {
         //Open an edit modal
-        console.log(row);
+        //console.log(row);
         setEditModalIsOpen(true);
         setClickedRow(row.row);
     }
-    console.log(selectedIds);
-    console.log(editModalIsOpen);
+    //console.log(selectedIds);
+    //console.log(editModalIsOpen);
 
     return (<div className={classes.container}>
                 <h1> {title} </h1>

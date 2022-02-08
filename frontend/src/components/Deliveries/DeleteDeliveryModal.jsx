@@ -8,6 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
+import {useState} from "react";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -53,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const reload=()=>window.location.reload();
+
 function DeleteDeliveryModal(props) {
     const classes = useStyles()
     const open = props.open
@@ -60,22 +63,46 @@ function DeleteDeliveryModal(props) {
     const handleClose = props.handleClose;
     const update = props.update;
 
+    const [loading, setLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
+
     let rowsSelected = props.selectedRows;
 
     function DeleteHandler() {
         console.log("Entered the Delete handler")
-        for (const element of rowsSelected) {
-            console.log(element);
-            DispatcherService.deleteDelivery(element)
-                .then(function (response) {
-                    console.log(response);
-                    update();
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+        setLoading(true);
+
+        if (rowsSelected.length === 0) {
+            setIsError(true)
+            setMessage('No rows selected')
+            setLoading(false)
         }
-        handleClose();
+        else {
+            try {
+                for (const element of rowsSelected) {
+                    //console.log(element);
+                    DispatcherService.deleteDelivery(element)
+                        .then(function (response) {
+                            setIsError(false)
+                            setLoading(false)
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            setIsError(true)
+                            setLoading(false)
+                        })
+                }
+            }
+            catch (e) {
+                console.error(e);
+                setIsError(true)
+                setMessage(e.message)
+                setLoading(false)
+            }
+            update();
+            handleClose();
+        }
     }
 
     return (
@@ -92,6 +119,13 @@ function DeleteDeliveryModal(props) {
                 <DialogContentText id="alert-dialog-description">
                     You are going to delete {rowsSelected.length} deliveries
                 </DialogContentText>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} autoFocus variant='contained' color='primary'>No</Button>

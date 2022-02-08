@@ -67,10 +67,12 @@ const Deliverer = () => {    const classes = useStyles();
 
     try {
         delivererData = JSON.parse(localStorage.getItem('user'));
-        if(delivererData!=null && delivererData.roles.includes('ROLE_CUSTOMER')) {
+        if(delivererData!=null && delivererData.roles.includes('ROLE_DELIVERER')) {
             delivererId = delivererData.id;
             delivererUsername = delivererData.username;
             isDeliverer = true;
+            console.log("Current User:")
+            console.log(delivererData);
         }
     }
     catch (e) {
@@ -131,7 +133,7 @@ const Deliverer = () => {    const classes = useStyles();
             if(isDeliverer) {
                 DelivererService.getDeliveries(delivererId)
                     .then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         setDeliveryData(readDeliveries(response.data));
                         //setRows(getDeliveries(UserData));
                     })
@@ -141,7 +143,7 @@ const Deliverer = () => {    const classes = useStyles();
             }
 
         }, [])
-        console.log(deliveryData)
+        //console.log(deliveryData)
         //rows = readDeliveries(UserData);
     }
     catch (e) {
@@ -168,7 +170,7 @@ const Deliverer = () => {    const classes = useStyles();
         try {
             DelivererService.getDeliveries(delivererId)
                 .then(function (response) {
-                    console.log(response);
+                    //console.log(response);
                     if(delivererId === '') {
                         setDeliveryData(readDeliveries(response.data));
                     }
@@ -183,9 +185,9 @@ const Deliverer = () => {    const classes = useStyles();
 
     const handleSelectionChange = (selection) => {
         setSelectedIds(selection);
-        console.log(selection);
+        //console.log(selection);
     };
-    console.log(selectedIds);
+    //console.log(selectedIds);
 
     return (<div className={classes.container}>
         <h1> {title} {delivererUsername}</h1>

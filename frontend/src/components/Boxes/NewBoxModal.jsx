@@ -1,33 +1,13 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
 import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    bgcolor: 'background.paper',
-    border: 'auto',
-    boxShadow: 20,
-    p: 3,
-};
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -86,32 +66,23 @@ function NewDeliveryModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
+
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
-    const [error, setError] = useState('')
 
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
 
-    const [setSubmitted] = useState(false)
-
-    //changing input once already entered
-    const handleName = (e) => {
-      setName(e.target.value)
-      setSubmitted(false)
-    }
-
-    const handleAddress = (e) => {
-      setAddress(e.target.value)
-      setSubmitted(false)
-    }
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
 
     const handleSubmit = (e) => {
       e.preventDefault()
       setLoading(true)
 
       if (name === '' || address === '') {
-        setError('Example error message!')
+          setIsError(true)
+          setMessage('The Box Name or Box Address field is empty')
+          setLoading(false)
       } else {
         const box = {
             name: name,
@@ -119,16 +90,25 @@ function NewDeliveryModal(props) {
             status: "EMPTY"
         }
 
-        DispatcherService.createNewBox(box)
-          .then(() => {
-            setLoading(false)
-            handleClose()
-            reload()
-          })
-          .catch((error) => {
-            console.log('response: ', error.response.data)
-            setLoading(false)
-          })
+        try {
+            DispatcherService.createNewBox(box)
+                .then(() => {
+                    setIsError(false)
+                    setLoading(false)
+                    handleClose()
+                    reload()
+                })
+                .catch((error) => {
+                    console.log(error)
+                    setIsError(true)
+                    setMessage(error.message)
+                    setLoading(false)
+                })
+        }
+        catch (e) {
+            console.error(e);
+        }
+
       }
     }
 
@@ -176,6 +156,13 @@ function NewDeliveryModal(props) {
                             onChange={(e) => setAddress(e.target.value)}/>
                     </Stack>
                 </Paper>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} variant='contained' color='primary'>Close</Button>

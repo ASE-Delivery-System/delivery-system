@@ -64,7 +64,8 @@ const CreateNewUser = () => {
   const [role, setRole] = useState([])
 
   const [setSubmitted] = useState(false)
-  const [setError] = useState(false)
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
 
   const [loading, setLoading] = useState(false)
 
@@ -111,8 +112,9 @@ const CreateNewUser = () => {
 
     try {
       if (username === '' || email === '' || password === '') {
-        //setLoading(false)
-
+        setIsError(true)
+        setMessage('The username or email or password field are empty')
+        setLoading(false)
       } else {
         const user = {
           username: username,
@@ -125,14 +127,22 @@ const CreateNewUser = () => {
           role: role,
         }
 
-        DispatcherService.registerNewUser(user)
-            .then(() => {
-              setLoading(false)
-              navigate('/dispatcher')
-            })
-            .catch((error) => {
-              setLoading(false)
-            })
+        try {
+          DispatcherService.registerNewUser(user)
+              .then(() => {
+                setIsError(false)
+                setLoading(false)
+                navigate('/dispatcher')
+              })
+              .catch((error) => {
+                setIsError(true)
+                setMessage(error.message)
+                setLoading(false)
+              })
+        }
+        catch (e) {
+          console.error(e);
+        }
       }
     }
     catch (e) {
@@ -140,7 +150,7 @@ const CreateNewUser = () => {
       setLoading(false)
     }
   }
-  console.log(role)
+  //console.log(role)
 
   return (
     <div className={classes.container}>
@@ -197,11 +207,13 @@ const CreateNewUser = () => {
             </div>
           </div>
         </Paper>
-        {
-          <div className='form-group'>
-            <div className='alert alert-danger' role='alert'></div>
-          </div>
-        }
+        {isError && (
+            <div className='form-group'>
+              <div className='alert alert-danger' role='alert'>
+                {message}
+              </div>
+            </div>
+        )}
       </div>
     </div>
   )

@@ -66,6 +66,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const reload=()=>window.location.reload();
+
 function EditUserModal(props) {
     const classes = useStyles();
 
@@ -110,61 +112,66 @@ function EditUserModal(props) {
     const [rolesId, setRolesId] = React.useState(clickedRow.rolesId);
     const [roles, setRoles] = React.useState(clickedRow.roles);
 
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
+
     const handleRoleChange = (event) => {
         setRoles(event.target.value);
-        console.log(event.target.value);
+        //console.log(event.target.value);
     };
 
     let rowsSelected = props.selectedRows;
 
-    function handleSubmit() {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        const enteredEmail = newEmailRef.current.value;
+        const enteredUsername = newUsernameRef.current.value;
+        const enteredFirstname = newFirstnameRef.current.value;
+        const enteredLastname = newLastnameRef.current.value;
+        const enteredRfidToken = newRfidTokenRef.current.value;
+        const enteredAddress = newAddressRef.current.value;
 
-           const enteredEmail = newEmailRef.current.value;
-           const enteredUsername = newUsernameRef.current.value;
-           const enteredFirstname = newFirstnameRef.current.value;
-           const enteredLastname = newLastnameRef.current.value;
-           const enteredRfidToken = newRfidTokenRef.current.value;
-           const enteredAddress = newAddressRef.current.value;
-
-            console.log("Entered the Change handler")
-                const bodyToSend = {
-                    id: userId,
-                    username: enteredUsername,
-                    email: enteredEmail,
-                    address: enteredAddress,
-                    firstName: enteredFirstname,
-                    lastName: enteredLastname,
-                    rfidToken: enteredRfidToken,
-                    roles:
-                            [{
-                                id: userRolesId,
-                                name: userRolesName
-                            }],
-                };
-                console.log(bodyToSend);
-                DispatcherService.postUser(userId, bodyToSend)
-                    .then(function (response) {
-                        console.log(response);
-                        update();
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-
-            handleClose();
-
-
-            const handleChange = (event) => {
-                 setEmail(event.target.value);
-                 setAddress(event.target.value);
-                 setFirstname(event.target.value);
-                 setLastname(event.target.value);
-                 setRfidToken(event.target.value);
-                 console.log(event.target.value);
-                 };
+        console.log("Entered the Change handler")
+        const bodyToSend = {
+            id: userId,
+            username: enteredUsername,
+            email: enteredEmail,
+            address: enteredAddress,
+            firstName: enteredFirstname,
+            lastName: enteredLastname,
+            rfidToken: enteredRfidToken,
+            roles:
+                [{
+                    id: userRolesId,
+                    name: userRolesName
+                }],
+        };
+        //console.log(bodyToSend);
+        try {
+            DispatcherService.postUser(userId, bodyToSend)
+                .then(function (response) {
+                    //console.log(response);
+                    setIsError(false)
+                    setLoading(false)
+                    handleClose();
+                    reload()
+                })
+                .catch((error) => {
+                    //console.log(error)
+                    console.log(error)
+                    setIsError(true)
+                    setMessage(error.message)
+                    setLoading(false)
+                })
         }
+        catch (e) {
+            console.error(e)
+        }
+    }
 
-    console.log(userId)
+
+    //console.log(userId)
 
     return (
         <Dialog
@@ -210,6 +217,13 @@ function EditUserModal(props) {
                         <TextField label='New RFID Token' variant='outlined' fullWidth defaultValue={userRfidToken} inputRef={newRfidTokenRef}/>
                     </Stack>
                 </Paper>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} variant='contained' color='primary'>Cancel</Button>

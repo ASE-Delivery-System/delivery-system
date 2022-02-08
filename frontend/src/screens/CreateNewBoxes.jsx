@@ -3,17 +3,11 @@ import {
   Paper,
   Button,
   TextField,
-  RadioGroup,
-  FormLabel,
-  FormControl,
-  FormControlLabel,
-  Radio,
   Stack
 } from '@mui/material'
 import React, {useRef, useState} from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
-import MenuItem from "@mui/material/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -70,28 +64,18 @@ const CreateNewBoxes = () => {
   // registration
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
-  const [role, setRole] = useState([])
 
-  const [setSubmitted] = useState(false)
-  const [setError] = useState(false)
-
-  //changing input once already entered
-  const handleName = (e) => {
-    setName(e.target.value)
-    setSubmitted(false)
-  }
-
-  const handleAddress = (e) => {
-    setAddress(e.target.value)
-    setSubmitted(false)
-  }
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
 
   const handleSubmit = (e) => {
       e.preventDefault()
       setLoading(true)
 
       if (name === '' || address === '') {
-        //setError(true)
+        setIsError(true)
+        setMessage('The Box Name or Box Address field is empty')
+        setLoading(false)
       } else {
         const box = {
           name: name,
@@ -99,15 +83,21 @@ const CreateNewBoxes = () => {
           status: "EMPTY"
         }
 
-        DispatcherService.createNewBox(box)
-          .then(() => {
-            setLoading(false)
-            navigate('/listboxes')
-          })
-          .catch((error) => {
-            console.log('response: ', error.response.data)
-            setLoading(false)
-          })
+        try {
+          DispatcherService.createNewBox(box)
+              .then(() => {
+                setIsError(false)
+                setLoading(false)
+                navigate('/listboxes')
+              })
+        }
+        catch (e) {
+          console.log(e);
+          setIsError(true)
+          setMessage(e.message)
+          setLoading(false)
+        }
+
       }
     }
 
@@ -138,11 +128,13 @@ const CreateNewBoxes = () => {
             {loading ? 'Loading...' : 'Submit'}
           </Button>
         </Paper>
-        {
-          <div className='form-group'>
-            <div className='alert alert-danger' role='alert'></div>
-          </div>
-        }
+        {isError && (
+            <div className='form-group'>
+              <div className='alert alert-danger' role='alert'>
+                {message}
+              </div>
+            </div>
+        )}
       </div>
     </div>
   )

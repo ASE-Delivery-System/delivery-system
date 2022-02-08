@@ -57,6 +57,8 @@ function readUsers(data) {
     return newRows;
 }
 
+const reload=()=>window.location.reload();
+
 function NewDeliveryModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
@@ -73,6 +75,9 @@ function NewDeliveryModal(props) {
     const [listBoxes, setListBoxes] = useState([])
     const [listCustomers, setListCustomers] = useState([])
     const [listDeliverers, setListDeliverers] = useState([])
+
+    const [isError, setIsError] = useState(false);
+    const [message, setMessage] = useState('');
 
     const handleChangeBox = (event) => {
         setSelectedBox(event.target.value);
@@ -100,7 +105,7 @@ function NewDeliveryModal(props) {
         }, [])
     }
     catch (e) {
-        console.log(e);
+        console.error(e);
     }
 
     try {
@@ -108,7 +113,7 @@ function NewDeliveryModal(props) {
             if(isDispatcher) {
                 DispatcherService.getCustomers()
                     .then(function (response) {
-                        console.log(response);
+                        //console.log(response);
                         setListCustomers(readUsers(response.data));
                     })
                 return () => {
@@ -118,7 +123,7 @@ function NewDeliveryModal(props) {
         }, [])
     }
     catch (e) {
-        console.log(e);
+        console.error(e);
     }
 
     try {
@@ -135,7 +140,7 @@ function NewDeliveryModal(props) {
         }, [])
     }
     catch (e) {
-        console.log(e);
+        console.error(e);
     }
 
     const handleSubmit = (e) => {
@@ -147,7 +152,9 @@ function NewDeliveryModal(props) {
         const enteredDelivererId = selectedDeliverer;
 
         if (enteredBoxId === '' || enteredCustomerId === '' || enteredDelivererId === '') {
-            //setError(true);
+            setIsError(true)
+            setMessage('No Target Box or Customer or Deliverer selected')
+            setLoading(false)
         }
         else {
             const delivery = {
@@ -160,14 +167,20 @@ function NewDeliveryModal(props) {
             try {
                 dispatcherService.createNewDelivery(delivery)
                     .then(() => {
+                        setIsError(false)
+                        setLoading(false)
+                        handleClose()
+                        reload()
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        setIsError(true)
+                        setMessage(error.message)
                         setLoading(false)
                     })
             } catch (e) {
-                console.error(e)
-                setLoading(false)
+                console.error(e.message)
             }
-            update();
-            handleClose();
         }
     }
 
@@ -247,6 +260,13 @@ function NewDeliveryModal(props) {
                         </TextField>
                     </Stack>
                 </Paper>
+                {isError && (
+                    <div className='form-group'>
+                        <div className='alert alert-danger' role='alert'>
+                            {message}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} variant='contained' color='primary'>Close</Button>
