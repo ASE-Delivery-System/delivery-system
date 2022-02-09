@@ -126,6 +126,7 @@ function NewUserModal(props) {
                       console.log('response: ', error.response.data)
                       setIsError(true)
                       setLoading(false)
+                      reload()
                       })
           }
           catch (e) {
