@@ -6,7 +6,6 @@ import com.asedelivery.deliveryservice.payload.request.RegisterNewBoxRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.service.BoxService;
 import com.asedelivery.deliveryservice.security.jwt.JwtUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.asedelivery.deliveryservice.service.UserService;
+import com.asedelivery.deliveryservice.service.DeliveryService;
+import com.asedelivery.deliveryservice.payload.request.BoxUserAuthorizationRequest;
 import java.net.URI;
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -30,13 +32,37 @@ public class BoxController {
     @Autowired
     BoxService boxService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    DeliveryService deliveryService;
+
     @GetMapping("") //GET /api/boxes
     public ResponseEntity<List<Box>> getAllBoxes() {
         List<Box> boxes = boxService.findAllBoxes();
         return ResponseEntity.ok().body(boxes);
     }
 
-    @GetMapping("/{id}") //GET /api/boxes/{id}
+    @PostMapping("/user_authorization")
+    public String OpenBox(@Valid @RequestBody BoxUserAuthorizationRequest boxRequest){
+
+        Box actualBox = boxService.findBoxById(boxRequest.getBox_id());
+        User actualUser = userService.findUserById(boxRequest.getUser_id());
+        //MISSING: needs to check if delivery in this box belongs to this user
+
+        if (Objects.isNull(actualBox)) {
+            return "204"; //box not found in the db
+        }
+        else if (Objects.isNull(actualUser)) {
+            return "204"; //user not found in the db
+        }
+        else
+            return "200";
+
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<Box> getBoxById(@PathVariable String id){
         Box box = boxService.findBoxById(id);
         return ResponseEntity.ok(box);
