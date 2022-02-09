@@ -8,6 +8,8 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles'
 import { Container, Grid } from '@mui/material'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBrain, faChartLine, faUserLock } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import station2 from '../images/station2.jpg'
 import MyDeliveries from '../images/mydeliveries.jpg'
@@ -29,9 +31,9 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   cardStyle: {
-    height: '40vh',
-    width: '40vh',
-    padding: 10,
+    minHeight: '30vh',
+    minWidth: '20vh',
+    padding: 5,
   },
   mainStyle: {
     position: 'relative',
@@ -53,7 +55,7 @@ const cardPointOne = (
   <React.Fragment>
     <CardMedia
       component="img"
-      height="140"
+      height="200"
       src={MyDeliveries}
     />
     <CardContent>
@@ -75,7 +77,8 @@ const cardPointTwo = (
   <React.Fragment>
      <CardMedia
        component="img"
-       height="140"
+       height="200"
+       width= "auto"
        src={TrackDelivery}
      />
     <CardContent>
@@ -126,8 +129,8 @@ const Customer = () => {
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
             <h2> {description} </h2>
         </div>
-        <div>
-        <Grid container spacing={5} style={{display: 'flex', justifyContent:'center',padding:1, alignItems:'center'}}>
+        <div style={{ padding: 30 }}>
+        <Grid container spacing={5} style={{display: 'flex', position: 'relative', justifyContent:'center', alignItems:'center'}}>
           <Grid item xs={12} sm={4}>
             <Card variant='outlined' className={classes.cardStyle}>
               {cardPointOne}
