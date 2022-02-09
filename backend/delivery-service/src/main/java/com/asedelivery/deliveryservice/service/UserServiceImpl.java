@@ -88,6 +88,14 @@ public class UserServiceImpl implements UserService{
     public User updateUser(String id, UpdateUserRequest user){
         User userTobeUpdated = findUserById(id);
 
+        if(!userTobeUpdated.getRoles().contains(roleRepository.findByName(ERole.ROLE_DISPATCHER).orElseThrow())){
+            if (!userTobeUpdated.getRfidToken().equals(user.getRfidToken())){
+                if ( userRepository.existsByRfidToken(user.getRfidToken())){
+                    throw new RuntimeException("Token already exists");
+                }
+            }
+        }
+
         userTobeUpdated.setFirstName(user.getFirstName());
         userTobeUpdated.setLastName(user.getLastName());
         userTobeUpdated.setAddress(user.getAddress());
@@ -120,32 +128,23 @@ public class UserServiceImpl implements UserService{
         }
 
         userTobeUpdated.setRoles(roles);
-
         userTobeUpdated.setRfidToken(user.getRfidToken());
-
 
         userTobeUpdated.setUsername(user.getUsername());
         userTobeUpdated.setEmail(user.getEmail());
-
-
         UpdateAuthUserRequest updateAuthUserRequest = new UpdateAuthUserRequest();
         updateAuthUserRequest.setUsername(userTobeUpdated.getUsername());
         updateAuthUserRequest.setEmail(userTobeUpdated.getEmail());
         updateAuthUserRequest.setRole(user.getRole());
 
-        // TODO: make rest post call to identity service
-
-        String response = restTemplate.postForObject("https://ase-identity-service.herokuapp.com/users/auth/"+userTobeUpdated.getId(),
+        String response = restTemplate.postForObject("http://localhost:8084/users/auth/"+userTobeUpdated.getId(),
                 updateAuthUserRequest, String.class);
         System.out.println(response);
+        //ase-identity-service.herokuapp.com
 
         assert response != null;
         if (response.contains("Error") || response.contains("error")){
-            try {
-                throw  new Exception("Got an error from identity");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException("Token already exists");
         }
 
         return userRepository.save(userTobeUpdated);
