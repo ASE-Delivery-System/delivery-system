@@ -70,8 +70,7 @@ function ChangeStatusModal(props) {
                             setLoading(false)
                         })
                 }
-                reload();
-                handleClose();
+
             }
             catch (e) {
                 console.error(e);
@@ -79,6 +78,8 @@ function ChangeStatusModal(props) {
                 setMessage("Update not possible")
                 setLoading(false)
             }
+            update();
+            handleClose();
 
         }
     }

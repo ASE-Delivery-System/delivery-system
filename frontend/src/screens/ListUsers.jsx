@@ -52,13 +52,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-   {title: "Username", field : "username", headerName: "Username",width: 125},
-   {title: "Email", field : "email", headerName: "Email", width: 200},
-   {title: "First Name", field : "firstName", headerName: "First Name"},
-   {title: "Last Name", field : "lastName", headerName: "Last Name"},
-   {title: "Address", field : "address", width: 250, headerName: "Address"},
-   {title: "RFID Token", field : "rfidToken", width: 100, headerName: "RFID Token"},
-   {title: "Role", field : "rolesName", headerName: "Role"},
+   {title: "Username", field : "username", headerName: "Username",width: 125, editable: true},
+   {title: "Email", field : "email", headerName: "Email", width: 200,editable: true},
+   {title: "First Name", field : "firstName", headerName: "First Name", editable: true},
+   {title: "Last Name", field : "lastName", headerName: "Last Name", editable: true},
+   {title: "Address", field : "address", width: 250, headerName: "Address", editable: true},
+   {title: "RFID Token", field : "rfidToken", width: 100, headerName: "RFID Token", editable: true},
+   {title: "Role", field : "rolesName", headerName: "Role", editable: true},
 ];
 
 function ListUsers(){
@@ -233,7 +233,7 @@ function ListUsers(){
                         <Button onClick={openDeleteModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Delete
                         </Button>
-                        <DeleteUserModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
+                        <DeleteUserModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen} update={dataChangedHandler}/>
                         {editModalIsOpen ? <EditUserModal clickedRow={clickedRow} handleOpen={openEditModalHandler} handleClose={closeEditModalHandler} open={editModalIsOpen} update={dataChangedHandler}/> : ''}
                     </Stack>
                 <Paper className={classes.userManagementPaper} component='form'>
@@ -247,7 +247,7 @@ function ListUsers(){
                                 checkboxSelection
                                 disableSelectionOnClick
                                 onSelectionModelChange={handleSelectionChange}
-                                onRowClick={handleRowClick}
+                                onRowDoubleClick={handleRowClick}
                                 editMode="row"
                                 HorizontalAlign="Center"
                                 components={{

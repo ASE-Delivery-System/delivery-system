@@ -232,7 +232,7 @@ function ListBoxes(){
                                 checkboxSelection
                                 disableSelectionOnClick
                                 onSelectionModelChange={handleSelectionChange}
-                                onRowClick={handleRowClick}
+                                onRowDoubleClick={handleRowClick}
                                 editMode="row"
                                 HorizontalAlign="Center"
                                 components={{

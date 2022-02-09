@@ -71,8 +71,6 @@ function ChangeStatusBoxModal(props) {
                             //setMessage(error.message)
                         })
                 }
-                reload();
-                handleClose();
             }
             catch (e) {
                 console.error(e);
@@ -80,6 +78,8 @@ function ChangeStatusBoxModal(props) {
                 setMessage("Update not possible")
                 setLoading(false)
             }
+            update();
+            handleClose();
 
         }
     }

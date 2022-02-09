@@ -53,8 +53,6 @@ function DeleteBoxModal(props) {
                         })
 
                 }
-                reload();
-                handleClose();
             }
             catch (e) {
                 console.error(e);
@@ -62,6 +60,8 @@ function DeleteBoxModal(props) {
                 setMessage("Delete not possible")
                 setLoading(false)
             }
+            update();
+            handleClose();
         }
     }
 

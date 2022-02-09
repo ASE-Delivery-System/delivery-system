@@ -99,8 +99,6 @@ function DeleteDeliveryModal(props) {
                             setLoading(false)
                         })
                 }
-                reload();
-                handleClose();
             }
             catch (e) {
                 console.error(e);
@@ -108,6 +106,8 @@ function DeleteDeliveryModal(props) {
                 setMessage("Delete not possible")
                 setLoading(false)
             }
+            update();
+            handleClose();
 
         }
     }

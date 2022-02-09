@@ -73,6 +73,7 @@ function DeleteUserModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
     const closeHandler = props.handleClose;
+    const update = props.update;
 
     const [loading, setLoading] = useState(false)
     const [isError, setIsError] = useState(false);
@@ -112,8 +113,7 @@ function DeleteUserModal(props) {
                             setLoading(false)
                         })
                 }
-                reload();
-                handleClose();
+
             }
             catch (e) {
                 console.error(e);
@@ -121,6 +121,8 @@ function DeleteUserModal(props) {
                 setMessage("Delete not possible")
                 setLoading(false)
             }
+            update();
+            handleClose();
         }
     }
 
