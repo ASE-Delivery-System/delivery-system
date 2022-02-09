@@ -13,6 +13,7 @@ import CreateNewDelivery from './screens/CreateNewDelivery'
 import ListBoxes from './screens/ListBoxes'
 import ListDeliveries from './screens/ListDeliveries'
 import CreateNewBoxes from './screens/CreateNewBoxes'
+import TrackDelivery from "./screens/TrackDelivery";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
             <Route path='/listboxes' element={<ListBoxes/>} />
             <Route path='/createnewboxes' element={<CreateNewBoxes/>} />
             <Route path='/listdeliveries' element={<ListDeliveries/>} />
+            <Route path='/trackdelivery' element={<TrackDelivery/>} />
         </Routes>
       </main>
       <Footer />

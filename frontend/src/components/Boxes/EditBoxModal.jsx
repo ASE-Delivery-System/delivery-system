@@ -164,13 +164,13 @@ function EditBoxModal(props) {
                         <TextField
                             label='New Box Name'
                             variant='outlined'
-                            helperText="Please enter the new box name"
+                            helperText="Change the box name"
                             defaultValue={boxName}
                             inputRef={newNameRef}/>
                         <TextField
                             label='New Box Address'
                             variant='outlined'
-                            helperText="Please enter the new box address"
+                            helperText="Change the box address"
                             defaultValue={boxAddress}
                             inputRef={newAddressRef}/>
                         <TextField
@@ -179,7 +179,7 @@ function EditBoxModal(props) {
                             label="Status"
                             defaultValue={clickedRow.status}
                             onChange={handleChange}
-                            helperText="Please select the new box status"
+                            helperText="Change the box status"
                         >
                             <MenuItem disabled value="">
                                 <em>None</em>

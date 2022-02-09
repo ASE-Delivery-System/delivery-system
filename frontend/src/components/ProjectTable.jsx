@@ -62,7 +62,6 @@ function ProjectTable(props) {
                         editMode="row"
                         pageSize={10}
                         rowsPerPageOptions={[10]}
-                        checkboxSelection
                         HorizontalAlign="Center"
                         components={{
                           Toolbar: GridToolbar,

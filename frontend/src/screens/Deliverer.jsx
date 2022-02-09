@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'left',
         alignItems: 'center',
+        padding: 20
     },
     boxManagementRoot: {
         margin: 'auto',
@@ -57,7 +58,7 @@ const columns = [
 ];
 
 const Deliverer = () => {    const classes = useStyles();
-    const title = "List of your Deliveries, ";
+    const title = "List of your Deliveries ";
     const description = "Manage your deliveries";
     let delivererId = '';
     let delivererData = '';
@@ -171,10 +172,11 @@ const Deliverer = () => {    const classes = useStyles();
             DelivererService.getDeliveries(delivererId)
                 .then(function (response) {
                     //console.log(response);
-                    if(delivererId === '') {
-                        setDeliveryData(readDeliveries(response.data));
-                    }
+                    setDeliveryData(readDeliveries(response.data));
                     setDataChanged(false);
+                })
+                .catch((error) => {
+                    console.log(error)
                 })
         }
         catch (e) {
@@ -190,7 +192,8 @@ const Deliverer = () => {    const classes = useStyles();
     //console.log(selectedIds);
 
     return (<div className={classes.container}>
-        <h1> {title} {delivererUsername}</h1>
+        <h1> Hi {delivererUsername}</h1>
+        <h2>{title}</h2>
         <h3> {description} </h3>
         <Stack spacing={2} direction="row">
             <Button onClick={openChangeModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>

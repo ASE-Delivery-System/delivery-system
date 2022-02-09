@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'left',
         alignItems: 'center',
+        padding: 20
     },
     boxManagementRoot: {
         margin: 'auto',
@@ -50,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-    { field: 'box', headerName: 'Box', width: 200 },
-    { field: 'trackingCode', headerName: 'Tracking Code', width: 250 },
-    { field: 'status', headerName: 'Status', width: 250 },
+    { field: 'box', headerName: 'Box', width: 250 },
+    { field: 'trackingCode', headerName: 'Tracking Code', width: 350 },
+    { field: 'status', headerName: 'Status', width: 300 },
 
 ];
 
@@ -64,7 +65,7 @@ const Customer = () => {
 
     const classes = useStyles();
 
-    const title = "List of your Deliveries, ";
+    const title = "List of your Deliveries ";
     const description = "Manage your deliveries";
     const [deliveriesData, setDeliveriesData] = useState([])
 
@@ -138,6 +139,9 @@ const Customer = () => {
                         //console.log(response);
                         setDeliveriesData(readDeliveries(response.data));
                     })
+                    .catch((error) => {
+                        console.log(error)
+                    })
             }
             //setUserData(res.data)
         }, [])
@@ -154,6 +158,9 @@ const Customer = () => {
                         //console.log(response);
                         setDeliveriesData(readDeliveries(response.data));
                     })
+                    .catch((error) => {
+                        console.log(error)
+                    })
             }
         }
         catch (e) {
@@ -169,6 +176,9 @@ const Customer = () => {
                         //console.log(response);
                         setDeliveriesData(readDeliveries(response.data));
                     })
+                    .catch((error) => {
+                        console.log(error)
+                    })
             }
         }
         catch (e) {
@@ -177,7 +187,7 @@ const Customer = () => {
     }
 
     return (<div className={classes.container}>
-        <h1> {title} {customerUsername}</h1>
+        <h1> {title}</h1>
         <h3> {description} </h3>
         <Stack spacing={2} direction="row">
             <Button onClick={activeDeliveriesHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>

@@ -208,20 +208,47 @@ function EditUserModal(props) {
                         }}
                         noValidate
                         autoComplete="off"
-                        spacing={1}
+                        spacing={2}
                     >
-                        <InputLabel id="usernameLabel">New Username</InputLabel>
-                        <TextField label='New Username' variant='outlined' fullWidth defaultValue={userUsername} inputRef={newUsernameRef}/>
-                        <InputLabel id="emailLabel">New Email</InputLabel>
-                        <TextField label='New Email' variant='outlined' fullWidth defaultValue={userEmail} inputRef={newEmailRef}/>
-                        <InputLabel id="firstnameLabel">New First Name</InputLabel>
-                        <TextField label='New First Name' variant='outlined' fullWidth defaultValue={userFirstName} inputRef={newFirstnameRef}/>
-                        <InputLabel id="lastnameLabel">New Last Name</InputLabel>
-                        <TextField label='New Last Name' variant='outlined' fullWidth defaultValue={userLastName} inputRef={newLastnameRef}/>
-                        <InputLabel id="addressLabel">New Address</InputLabel>
-                        <TextField label='New Address' variant='outlined' fullWidth defaultValue={userAddress} inputRef={newAddressRef}/>
-                        <InputLabel id="rfidTokenLabel">New RFID Token</InputLabel>
-                        <TextField label='New RFID Token' variant='outlined' fullWidth defaultValue={userRfidToken} inputRef={newRfidTokenRef}/>
+                        <TextField label='New Username'
+                                   variant='outlined'
+                                   fullWidth
+                                   helperText="Change the username"
+                                   defaultValue={userUsername}
+                                   inputRef={newUsernameRef}/>
+                        <TextField label='New Email'
+                                   variant='outlined'
+                                   fullWidth
+                                   helperText="Change the email address"
+                                   defaultValue={userEmail}
+                                   inputRef={newEmailRef}/>
+                        <TextField label='New First Name'
+                                   variant='outlined'
+                                   fullWidth
+                                   helperText="Change the first name"
+                                   defaultValue={userFirstName}
+                                   inputRef={newFirstnameRef}/>
+                        <TextField label='New Last Name'
+                                   variant='outlined'
+                                   fullWidth
+                                   helperText="Change the last name"
+                                   defaultValue={userLastName}
+                                   inputRef={newLastnameRef}/>
+                        <TextField label='New Address'
+                                   variant='outlined'
+                                   fullWidth
+                                   helperText="Change the address"
+                                   defaultValue={userAddress}
+                                   inputRef={newAddressRef}/>
+                        {(!userRoles.includes('ROLE_DISPATCHER') && true && (
+                            <TextField
+                                label='New RFID Token'
+                                variant='outlined'
+                                fullWidth
+                                helperText="Change the RFID token "
+                                defaultValue={userRfidToken}
+                                inputRef={newRfidTokenRef}/>))}
+
                     </Stack>
                 </Paper>
                 {isError && (
