@@ -1,13 +1,13 @@
 <component name="libraryTable">
-  <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.6">
+  <library name="Maven: com.sun.istack:istack-commons-runtime:3.0.8">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.12.6/jackson-databind-2.12.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.12.6/jackson-databind-2.12.6-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.12.6/jackson-databind-2.12.6-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
