@@ -12,8 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBrain, faChartLine, faUserLock } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import station2 from '../images/station2.jpg'
-import MyDeliveries from '../images/mydeliveries.jpg'
-import TrackDelivery from '../images/trackdelivery.jpg'
+//import MyDeliveries from '../images/mydeliveries.jpg'
+//import TrackDelivery from '../images/trackdelivery.jpg'
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -56,7 +56,7 @@ const cardPointOne = (
     <CardMedia
       component="img"
       height="140"
-      src={MyDeliveries}
+      src={station2}
     />
     <CardContent>
       <Typography variant="h5" gutterBottom>
@@ -78,7 +78,7 @@ const cardPointTwo = (
      <CardMedia
        component="img"
        height="140"
-       src={TrackDelivery}
+       src={station2}
      />
     <CardContent>
       <Typography variant="h5" gutterBottom>
