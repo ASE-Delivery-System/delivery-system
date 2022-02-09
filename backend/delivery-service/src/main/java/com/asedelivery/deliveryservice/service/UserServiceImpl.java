@@ -3,6 +3,7 @@ package com.asedelivery.deliveryservice.service;
 import com.asedelivery.deliveryservice.models.ERole;
 import com.asedelivery.deliveryservice.models.Role;
 import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.payload.request.UpdateAuthUserRequest;
 import com.asedelivery.deliveryservice.payload.request.UpdateUserRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.RoleRepository;
@@ -120,15 +121,32 @@ public class UserServiceImpl implements UserService{
 
         userTobeUpdated.setRoles(roles);
 
-        if(user.getRfidToken() != null || !user.getRfidToken().isEmpty()){
-            userTobeUpdated.setRfidToken(user.getRfidToken());
-        }
+        userTobeUpdated.setRfidToken(user.getRfidToken());
+
 
         userTobeUpdated.setUsername(user.getUsername());
         userTobeUpdated.setEmail(user.getEmail());
 
+
+        UpdateAuthUserRequest updateAuthUserRequest = new UpdateAuthUserRequest();
+        updateAuthUserRequest.setUsername(userTobeUpdated.getUsername());
+        updateAuthUserRequest.setEmail(userTobeUpdated.getEmail());
+        updateAuthUserRequest.setRole(user.getRole());
+
         // TODO: make rest post call to identity service
-        // /users/auth/{id}
+
+        String response = restTemplate.postForObject("http://localhost:8084/users/auth/"+userTobeUpdated.getId(),
+                updateAuthUserRequest, String.class);
+        System.out.println(response);
+
+        assert response != null;
+        if (response.contains("Error") || response.contains("error")){
+            try {
+                throw  new Exception("Got an error from identity");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         return userRepository.save(userTobeUpdated);
     }

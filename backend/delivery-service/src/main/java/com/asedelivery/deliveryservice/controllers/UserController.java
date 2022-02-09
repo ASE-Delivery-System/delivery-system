@@ -68,19 +68,6 @@ public class UserController {
 
     @PostMapping("/{id}")
     public ResponseEntity<?> updateUserById(@PathVariable String id, @RequestBody UpdateUserRequest user){
-
-        if (userRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
-
         return ResponseEntity.ok( userService.updateUser(id,user));
     }
 }
