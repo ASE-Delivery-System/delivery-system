@@ -1,11 +1,26 @@
 import * as React from 'react';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
 import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
+import InputLabel from "@mui/material/InputLabel";
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 'auto',
+    bgcolor: 'background.paper',
+    border: 'auto',
+    boxShadow: 20,
+    p: 3,
+};
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -54,6 +69,8 @@ const useStyles = makeStyles((theme) => ({
 const reload=()=>window.location.reload();
 
 function EditUserModal(props) {
+    const classes = useStyles();
+
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
@@ -191,47 +208,20 @@ function EditUserModal(props) {
                         }}
                         noValidate
                         autoComplete="off"
-                        spacing={2}
+                        spacing={1}
                     >
-                        <TextField label='New Username'
-                                   variant='outlined'
-                                   fullWidth
-                                   helperText="Change the username"
-                                   defaultValue={userUsername}
-                                   inputRef={newUsernameRef}/>
-                        <TextField label='New Email'
-                                   variant='outlined'
-                                   fullWidth
-                                   helperText="Change the email address"
-                                   defaultValue={userEmail}
-                                   inputRef={newEmailRef}/>
-                        <TextField label='New First Name'
-                                   variant='outlined'
-                                   fullWidth
-                                   helperText="Change the first name"
-                                   defaultValue={userFirstName}
-                                   inputRef={newFirstnameRef}/>
-                        <TextField label='New Last Name'
-                                   variant='outlined'
-                                   fullWidth
-                                   helperText="Change the last name"
-                                   defaultValue={userLastName}
-                                   inputRef={newLastnameRef}/>
-                        <TextField label='New Address'
-                                   variant='outlined'
-                                   fullWidth
-                                   helperText="Change the address"
-                                   defaultValue={userAddress}
-                                   inputRef={newAddressRef}/>
-                        {(!userRoles.includes('ROLE_DISPATCHER') && true && (
-                            <TextField
-                                label='New RFID Token'
-                                variant='outlined'
-                                fullWidth
-                                helperText="Change the RFID token "
-                                defaultValue={userRfidToken}
-                                inputRef={newRfidTokenRef}/>))}
-
+                        <InputLabel id="usernameLabel">New Username</InputLabel>
+                        <TextField label='New Username' variant='outlined' fullWidth defaultValue={userUsername} inputRef={newUsernameRef}/>
+                        <InputLabel id="emailLabel">New Email</InputLabel>
+                        <TextField label='New Email' variant='outlined' fullWidth defaultValue={userEmail} inputRef={newEmailRef}/>
+                        <InputLabel id="firstnameLabel">New First Name</InputLabel>
+                        <TextField label='New First Name' variant='outlined' fullWidth defaultValue={userFirstName} inputRef={newFirstnameRef}/>
+                        <InputLabel id="lastnameLabel">New Last Name</InputLabel>
+                        <TextField label='New Last Name' variant='outlined' fullWidth defaultValue={userLastName} inputRef={newLastnameRef}/>
+                        <InputLabel id="addressLabel">New Address</InputLabel>
+                        <TextField label='New Address' variant='outlined' fullWidth defaultValue={userAddress} inputRef={newAddressRef}/>
+                        <InputLabel id="rfidTokenLabel">New RFID Token</InputLabel>
+                        <TextField label='New RFID Token' variant='outlined' fullWidth defaultValue={userRfidToken} inputRef={newRfidTokenRef}/>
                     </Stack>
                 </Paper>
                 {isError && (

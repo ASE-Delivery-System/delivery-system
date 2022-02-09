@@ -42,12 +42,6 @@ public class BoxController {
         return ResponseEntity.ok().body(boxes);
     }
 
-    @GetMapping("/empty") //GET /api/boxes
-    public ResponseEntity<List<Box>> getAllEmptyBoxes() {
-        List<Box> boxes = boxService.findAllEmptyBoxes();
-        return ResponseEntity.ok().body(boxes);
-    }
-
     @GetMapping("/{id}") //GET /api/boxes/{id}
     public ResponseEntity<Box> getBoxById(@PathVariable String id){
         Box box = boxService.findBoxById(id);

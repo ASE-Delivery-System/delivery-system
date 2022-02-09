@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'left',
     alignItems: 'center',
-    padding: 20
   },
   boxManagementRoot: {
     margin: 'auto',
@@ -52,32 +51,32 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-    { field: 'targetBox', headerName: 'Target Box', width: 200 },
-    { field: 'targetCustomer', headerName: 'Target Customer', width: 200 },
-    { field: 'deliverer', headerName: 'Deliverer', width: 200 },
-    { field: 'status', headerName: 'Status', width: 200 },
-];
+  { field: 'targetBox', headerName: 'Target Box', width: 200 },
+  { field: 'targetCustomer', headerName: 'Target Customer', width: 200 },
+  { field: 'deliverer', headerName: 'Deliverer', width: 200 },
+  { field: 'status', headerName: 'Status', width: 200 },
+]
 
-const Deliverer = () => {    const classes = useStyles();
-    const title = "List of your Deliveries ";
-    const description = "Manage your deliveries";
-    let delivererId = '';
-    let delivererData = '';
-    let delivererUsername = '';
+const Deliverer = () => {
+  const classes = useStyles()
+  const title = 'List of your Deliveries, '
+  const description = 'Manage your deliveries'
+  let delivererId = ''
+  let delivererData = ''
+  let delivererUsername = ''
 
-    let isDeliverer = false;
+  let isDeliverer = false
 
-    try {
-        delivererData = JSON.parse(localStorage.getItem('user'));
-        if(delivererData!=null && delivererData.roles.includes('ROLE_DELIVERER')) {
-            delivererId = delivererData.id;
-            delivererUsername = delivererData.username;
-            isDeliverer = true;
-            console.log("Current User:")
-            console.log(delivererData);
-        }
+  try {
+    delivererData = JSON.parse(localStorage.getItem('user'))
+    if (delivererData != null && delivererData.roles.includes('ROLE_DELIVERER')) {
+      delivererId = delivererData.id
+      delivererUsername = delivererData.username
+      isDeliverer = true
+      console.log('Current User:')
+      console.log(delivererData)
     }
-    catch (e) {
+  } catch (e) {
     console.error(e)
   }
 

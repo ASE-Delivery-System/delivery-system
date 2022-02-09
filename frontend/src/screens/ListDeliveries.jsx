@@ -54,11 +54,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-    { field: 'id', headerName: 'Tracking Code', width: 210 },
-    { field: 'targetBox', headerName: 'Target Box', width: 130 },
-    { field: 'targetCustomer', headerName: 'Target Customer', width: 190 },
-    { field: 'deliverer', headerName: 'Deliverer', width: 190 },
-    { field: 'status', headerName: 'Status', width: 150 },
+  { field: 'targetBox', headerName: 'Target Box', width: 200 },
+  { field: 'targetCustomer', headerName: 'Target Customer', width: 200 },
+  { field: 'deliverer', headerName: 'Deliverer', width: 200 },
+  { field: 'status', headerName: 'Status', width: 200 },
 ]
 
 function ListDeliveries() {

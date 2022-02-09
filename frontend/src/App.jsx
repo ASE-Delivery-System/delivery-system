@@ -14,8 +14,6 @@ import ListBoxes from './screens/ListBoxes'
 import ListDeliveries from './screens/ListDeliveries'
 import CreateNewBoxes from './screens/CreateNewBoxes'
 import { CustomerRoute, DelivererRoute, DispatcherRoute } from './protected_routes/ProtectedRoutes'
-import TrackDelivery from "./screens/TrackDelivery";
-import CustomerDeliveries from "./screens/CustomerDeliveries";
 
 function App() {
   return (
@@ -40,8 +38,6 @@ function App() {
           <Route path='/listboxes' element={<ListBoxes />} />
           <Route path='/createnewboxes' element={<CreateNewBoxes />} />
           <Route path='/listdeliveries' element={<ListDeliveries />} />
-          <Route path='/trackdelivery' element={<TrackDelivery/>} />
-          <Route path='/customerdeliveries' element={<CustomerDeliveries/>} />
         </Routes>{' '}
       </main>
       <Footer />

@@ -14,5 +14,4 @@ public interface BoxService {
     Box createBox(Box box);
     Boolean existsByName(String name);
     Box updateBoxStatus(String id, EBoxStatus status);
-    List<Box> findAllEmptyBoxes();
 }

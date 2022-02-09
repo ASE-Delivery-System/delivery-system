@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
 
-const reload=()=>window.location.reload();
-
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'relative',
@@ -135,13 +133,11 @@ const CreateNewUser = () => {
                 setIsError(false)
                 setLoading(false)
                 navigate('/dispatcher')
-                reload()
               })
               .catch((error) => {
                 setIsError(true)
                 setMessage(error.message)
                 setLoading(false)
-                reload()
               })
         }
         catch (e) {

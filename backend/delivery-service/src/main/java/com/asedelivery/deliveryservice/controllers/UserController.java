@@ -1,9 +1,7 @@
 package com.asedelivery.deliveryservice.controllers;
 
 import com.asedelivery.deliveryservice.models.User;
-import com.asedelivery.deliveryservice.payload.request.UpdateUserRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
-import com.asedelivery.deliveryservice.repository.UserRepository;
 import com.asedelivery.deliveryservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +16,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    UserRepository userRepository;
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUsers(){
@@ -67,20 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> updateUserById(@PathVariable String id, @RequestBody UpdateUserRequest user){
-
-        if (userRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
-
+    public ResponseEntity<User> updateUserById(@PathVariable String id, @RequestBody User user){
         return ResponseEntity.ok( userService.updateUser(id,user));
     }
 }

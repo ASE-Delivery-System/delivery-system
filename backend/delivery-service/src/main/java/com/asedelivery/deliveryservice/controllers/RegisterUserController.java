@@ -77,15 +77,15 @@ public class RegisterUserController {
 			strRoles.forEach(role -> {
 				switch (role) {
 				case "dispatcher":
-					Role dispatcherRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
+					Role adminRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(dispatcherRole);
+					roles.add(adminRole);
 
 					break;
 				case "deliverer":
-					Role delivererRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
+					Role modRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(delivererRole);
+					roles.add(modRole);
 
 					break;
 				default:
