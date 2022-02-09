@@ -3,10 +3,13 @@ package com.asedelivery.deliveryservice.service;
 import com.asedelivery.deliveryservice.models.ERole;
 import com.asedelivery.deliveryservice.models.Role;
 import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.payload.request.UpdateUserRequest;
+import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.RoleRepository;
 import com.asedelivery.deliveryservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -81,15 +84,52 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(String id, User user) {
+    public User updateUser(String id, UpdateUserRequest user){
         User userTobeUpdated = findUserById(id);
+
         userTobeUpdated.setFirstName(user.getFirstName());
         userTobeUpdated.setLastName(user.getLastName());
         userTobeUpdated.setAddress(user.getAddress());
-        userTobeUpdated.setRfidToken(user.getRfidToken());
-        userTobeUpdated.setRoles(user.getRoles());
+
+        String strRoles = user.getRole();
+        System.out.println(strRoles);
+        Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            switch (strRoles) {
+                case "dispatcher":
+                    Role dispatcherRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(dispatcherRole);
+                    break;
+                case "deliverer":
+                    Role delivererRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(delivererRole);
+                    break;
+                default:
+                    Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(userRole);
+            }
+        }
+
+        userTobeUpdated.setRoles(roles);
+
+        if(user.getRfidToken() != null || !user.getRfidToken().isEmpty()){
+            userTobeUpdated.setRfidToken(user.getRfidToken());
+        }
+
         userTobeUpdated.setUsername(user.getUsername());
         userTobeUpdated.setEmail(user.getEmail());
+
+        // TODO: make rest post call to identity service
+        // /users/auth/{id}
+
         return userRepository.save(userTobeUpdated);
     }
 
