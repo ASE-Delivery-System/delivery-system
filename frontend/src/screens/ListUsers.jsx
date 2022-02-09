@@ -233,7 +233,7 @@ function ListUsers(){
                         <Button onClick={openDeleteModalHandler} color='secondary' variant='contained' edge='end' aria-label='account of current user' aria-controls={'login-menu'} aria-haspopup='true'>
                             Delete
                         </Button>
-                        <DeleteUserModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen}/>
+                        <DeleteUserModal selectedRows={selectedIds} handleOpen={openDeleteModalHandler} handleClose={closeDeleteModalHandler} open={deleteModalIsOpen} update={dataChangedHandler}/>
                         {editModalIsOpen ? <EditUserModal clickedRow={clickedRow} handleOpen={openEditModalHandler} handleClose={closeEditModalHandler} open={editModalIsOpen} update={dataChangedHandler}/> : ''}
                     </Stack>
                 <Paper className={classes.userManagementPaper} component='form'>
@@ -247,7 +247,7 @@ function ListUsers(){
                                 checkboxSelection
                                 disableSelectionOnClick
                                 onSelectionModelChange={handleSelectionChange}
-                                onRowClick={handleRowClick}
+                                onRowDoubleClick={handleRowClick}
                                 editMode="row"
                                 HorizontalAlign="Center"
                                 components={{

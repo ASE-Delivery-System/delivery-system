@@ -13,7 +13,7 @@ const reload=()=>window.location.reload();
 function DeleteBoxModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const update = props.update;
 
     const [loading, setLoading] = useState(false);
@@ -21,6 +21,10 @@ function DeleteBoxModal(props) {
     const [message, setMessage] = useState('');
 
     let rowsSelected = props.selectedRows;
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+    };
 
     function DeleteHandler() {
         console.log("Entered the Delete Handler");
@@ -28,7 +32,7 @@ function DeleteBoxModal(props) {
 
         if (rowsSelected.length === 0) {
             setIsError(true)
-            //setMessage('No rows selected')
+            setMessage('No rows selected')
             setLoading(false)
         }
         else {
@@ -53,7 +57,7 @@ function DeleteBoxModal(props) {
             catch (e) {
                 console.error(e);
                 setIsError(true)
-                //setMessage("Delete not possible")
+                setMessage("Delete not possible")
                 setLoading(false)
             }
             update();

@@ -18,7 +18,7 @@ const reload=()=>window.location.reload();
 function ChangeStatusModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const update = props.update;
 
     const [loading, setLoading] = useState(false);
@@ -29,6 +29,12 @@ function ChangeStatusModal(props) {
     const [message, setMessage] = useState('');
 
     let rowsSelected = props.selectedRows;
+
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+        setNewStatus('')
+    };
 
     const handleChange = (event) => {
         setNewStatus(event.target.value);
@@ -41,7 +47,7 @@ function ChangeStatusModal(props) {
 
         if (rowsSelected.length === 0) {
             setIsError(true)
-            //setMessage('No rows selected')
+            setMessage('No rows selected')
             setLoading(false)
         }
         else {
@@ -59,19 +65,22 @@ function ChangeStatusModal(props) {
                         })
                         .catch((error) => {
                             console.log(error)
+                            //setMessage(error.message)
                             setIsError(true)
                             setLoading(false)
                         })
                 }
+
             }
             catch (e) {
                 console.error(e);
                 setIsError(true)
-                //setMessage(e.message)
+                setMessage("Update not possible")
                 setLoading(false)
             }
             update();
             handleClose();
+
         }
     }
 

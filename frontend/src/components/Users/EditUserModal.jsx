@@ -56,7 +56,7 @@ const reload=()=>window.location.reload();
 function EditUserModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const update = props.update;
     const clickedRow = props.clickedRow;
 
@@ -101,6 +101,11 @@ function EditUserModal(props) {
     const handleRoleChange = (event) => {
         setRoles(event.target.value);
         //console.log(event.target.value);
+    };
+
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
     };
 
     let rowsSelected = props.selectedRows;
@@ -151,7 +156,7 @@ function EditUserModal(props) {
                     //console.log(error)
                     console.log(error)
                     setIsError(true)
-                    //setMessage(error.message)
+                    setMessage(error.message)
                     setLoading(false)
                 })
         }

@@ -62,7 +62,7 @@ const reload=()=>window.location.reload();
 function NewDeliveryModal(props) {
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const update = props.update;
     const isDispatcher = props.loggedIn;
 
@@ -78,6 +78,14 @@ function NewDeliveryModal(props) {
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
+
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+        setSelectedDeliverer('')
+        setSelectedCustomer('')
+        setSelectedBox('')
+    };
 
     const handleChangeBox = (event) => {
         setSelectedBox(event.target.value);
@@ -153,7 +161,7 @@ function NewDeliveryModal(props) {
 
         if (enteredBoxId === '' || enteredCustomerId === '' || enteredDelivererId === '') {
             setIsError(true)
-            //setMessage('No Target Box or Customer or Deliverer selected')
+            setMessage('No Target Box or Customer or Deliverer selected')
             setLoading(false)
         }
         else {
@@ -175,13 +183,14 @@ function NewDeliveryModal(props) {
                     .catch((error) => {
                         console.log(error)
                         setIsError(true)
-                        //setMessage(error.message)
+                        setMessage(error.message)
                         setLoading(false)
                     })
             } catch (e) {
                 console.error(e.message)
             }
         }
+        //resetModal()
     }
 
 
