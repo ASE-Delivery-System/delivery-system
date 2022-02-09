@@ -59,7 +59,7 @@ function EditBoxModal(props) {
 
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const update = props.update;
     const clickedRow = props.clickedRow;
 
@@ -78,6 +78,11 @@ function EditBoxModal(props) {
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
+
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+    };
 
     const handleChange = (event) => {
         setBoxStatus(event.target.value);
@@ -121,7 +126,7 @@ function EditBoxModal(props) {
                 .catch((error) => {
                     console.log(error)
                     setIsError(true)
-                    //setMessage(error.message)
+                    setMessage(error.message)
                     setLoading(false)
                 })
         }

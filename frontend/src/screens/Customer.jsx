@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   cardStyle: {
-    height: '30vh',
-    width: '30vh',
+    height: '40vh',
+    width: '40vh',
     padding: 10,
   },
   mainStyle: {

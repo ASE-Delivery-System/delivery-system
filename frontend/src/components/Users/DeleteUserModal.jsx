@@ -72,7 +72,7 @@ function DeleteUserModal(props) {
     const classes = useStyles()
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
 
     const [loading, setLoading] = useState(false)
     const [isError, setIsError] = useState(false);
@@ -82,13 +82,18 @@ function DeleteUserModal(props) {
 
     //console.log(props.selectedRows.size);
 
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+    };
+
     function DeleteHandler() {
         console.log("entered the handler")
         setLoading(true);
 
         if (rowsSelected.length === 0) {
             setIsError(true)
-            //setMessage('No rows selected')
+            setMessage('No rows selected')
             setLoading(false)
         }
         else {
@@ -107,16 +112,16 @@ function DeleteUserModal(props) {
                             setLoading(false)
                         })
                 }
+                reload();
+                handleClose();
             }
             catch (e) {
                 console.error(e);
                 setIsError(true)
-                //setMessage("Delete not possible")
+                setMessage("Delete not possible")
                 setLoading(false)
             }
         }
-        reload();
-        handleClose();
     }
 
     return (
