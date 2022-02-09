@@ -9,4 +9,4 @@ The system includes functionality for different user roles consisting of dispatc
 ### Architecture of ASE Delivery system 
 
 
-![](../../Downloads/ase-arch.png)
+![](./images/ase-arch.png)
