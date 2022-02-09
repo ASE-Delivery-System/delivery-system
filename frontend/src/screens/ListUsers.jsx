@@ -53,14 +53,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-  { title: 'Username', field: 'username', headerName: 'Username', width: 125, editable: true },
-  { title: 'Email', field: 'email', headerName: 'Email', width: 200, editable: true },
-  { title: 'First Name', field: 'firstName', headerName: 'First Name', editable: true },
-  { title: 'Last Name', field: 'lastName', headerName: 'Last Name', editable: true },
-  { title: 'Address', field: 'address', width: 120, headerName: 'Address', editable: true },
-  { title: 'RFID Token', field: 'rfidToken', width: 100, headerName: 'RFID Token', editable: true },
-  { title: 'Role', field: 'rolesName', headerName: 'Role', editable: true },
-]
+   {title: "Username", field : "username", headerName: "Username",width: 125, editable: true},
+   {title: "Email", field : "email", headerName: "Email", width: 200,editable: true},
+   {title: "First Name", field : "firstName", headerName: "First Name", editable: true},
+   {title: "Last Name", field : "lastName", headerName: "Last Name", editable: true},
+   {title: "Address", field : "address", width: 250, headerName: "Address", editable: true},
+   {title: "RFID Token", field : "rfidToken", width: 100, headerName: "RFID Token", editable: true},
+   {title: "Role", field : "rolesName", headerName: "Role", editable: true},
+];
 
 function ListUsers() {
   const classes = useStyles()
