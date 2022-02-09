@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService{
 
         // TODO: make rest post call to identity service
 
-        String response = restTemplate.postForObject("http://localhost:8084/users/auth/"+userTobeUpdated.getId(),
+        String response = restTemplate.postForObject("https://ase-identity-service.herokuapp.com/users/auth/"+userTobeUpdated.getId(),
                 updateAuthUserRequest, String.class);
         System.out.println(response);
 
