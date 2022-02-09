@@ -8,12 +8,10 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles'
 import { Container, Grid } from '@mui/material'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBrain, faChartLine, faUserLock } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import station2 from '../images/station2.jpg'
-//import MyDeliveries from '../images/mydeliveries.jpg'
-//import TrackDelivery from '../images/trackdelivery.jpg'
+import MyDeliveries from '../images/mydeliveries.jpg'
+import TrackDelivery from '../images/trackdelivery.jpg'
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -56,7 +54,7 @@ const cardPointOne = (
     <CardMedia
       component="img"
       height="140"
-      src={station2}
+      src={MyDeliveries}
     />
     <CardContent>
       <Typography variant="h5" gutterBottom>
@@ -78,7 +76,7 @@ const cardPointTwo = (
      <CardMedia
        component="img"
        height="140"
-       src={station2}
+       src={TrackDelivery}
      />
     <CardContent>
       <Typography variant="h5" gutterBottom>

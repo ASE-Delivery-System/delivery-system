@@ -1,26 +1,11 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
 import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
-import InputLabel from "@mui/material/InputLabel";
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 'auto',
-    bgcolor: 'background.paper',
-    border: 'auto',
-    boxShadow: 20,
-    p: 3,
-};
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -69,8 +54,6 @@ const useStyles = makeStyles((theme) => ({
 const reload=()=>window.location.reload();
 
 function EditUserModal(props) {
-    const classes = useStyles();
-
     const open = props.open
     const handleOpen = props.handleOpen;
     const handleClose = props.handleClose;
