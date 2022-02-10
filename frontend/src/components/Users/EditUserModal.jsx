@@ -68,7 +68,7 @@ function EditUserModal(props) {
     const userLastName = clickedRow.lastName;
     const userUsername = clickedRow.username;
     const userRfidToken = clickedRow.rfidToken;
-    const userRole = clickedRow.rolesName;
+    const userRole = clickedRow.roles;
 
     //const newIdRef = useRef();
     const newEmailRef = useRef();

@@ -109,6 +109,7 @@ function ListUsers(){
 
                 if (roles[0].name === "ROLE_DELIVERER") {
                     rolesName = "deliverer";
+                    rfidToken = null
                 } else if (roles[0].name === "ROLE_CUSTOMER") {
                     rolesName = "customer";
                 } else if (roles[0].name === "ROLE_DISPATCHER") {
@@ -122,7 +123,7 @@ function ListUsers(){
                     "firstName": item.firstName,
                     "lastName": item.lastName,
                     "address": item.address,
-                    "rfidToken": item.rfidToken,
+                    "rfidToken": rfidToken,
                     "roles" : roles[0].name,
                     "rolesName": rolesName,
                     "rolesId": roles[0].id
