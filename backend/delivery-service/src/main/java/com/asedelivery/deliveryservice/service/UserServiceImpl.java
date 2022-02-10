@@ -5,12 +5,10 @@ import com.asedelivery.deliveryservice.models.Role;
 import com.asedelivery.deliveryservice.models.User;
 import com.asedelivery.deliveryservice.payload.request.UpdateAuthUserRequest;
 import com.asedelivery.deliveryservice.payload.request.UpdateUserRequest;
-import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.RoleRepository;
 import com.asedelivery.deliveryservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -92,15 +90,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateUser(String id, UpdateUserRequest user){
         User userTobeUpdated = findUserById(id);
+        Role roleOfUser = roleRepository.findByName(ERole.ROLE_DISPATCHER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 
-        if(!userTobeUpdated.getRoles().contains(roleRepository.findByName(ERole.ROLE_DISPATCHER).orElseThrow())){
+        if(userTobeUpdated.getRoles().iterator().next().getName() != roleOfUser.getName()){
+
             if (!userTobeUpdated.getRfidToken().equals(user.getRfidToken())){
                 if ( userRepository.existsByRfidToken(user.getRfidToken())){
                     throw new RuntimeException("Token already exists");
                 }
             }
         }
-
         userTobeUpdated.setFirstName(user.getFirstName());
         userTobeUpdated.setLastName(user.getLastName());
         userTobeUpdated.setAddress(user.getAddress());
@@ -144,14 +144,11 @@ public class UserServiceImpl implements UserService{
 
         String response = restTemplate.postForObject("https://ase-identity-service.herokuapp.com/users/auth/"+userTobeUpdated.getId(),
                 updateAuthUserRequest, String.class);
-        System.out.println(response);
-        //ase-identity-service.herokuapp.com
 
         assert response != null;
         if (response.contains("Error") || response.contains("error")){
             throw new RuntimeException("Error while trying to update the user in auth DB. User not updated");
         }
-
         return userRepository.save(userTobeUpdated);
     }
 
