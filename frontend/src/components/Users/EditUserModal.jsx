@@ -61,45 +61,31 @@ function EditUserModal(props) {
     const clickedRow = props.clickedRow;
 
     const userId = clickedRow.id;
-    const userPassword = clickedRow.password;
+    //const userPassword = clickedRow.password;
     const userEmail = clickedRow.email;
     const userAddress = clickedRow.address;
     const userFirstName = clickedRow.firstName;
     const userLastName = clickedRow.lastName;
     const userUsername = clickedRow.username;
     const userRfidToken = clickedRow.rfidToken;
-    const userRoles = clickedRow.roles;
-    const userRolesName = clickedRow.roles;
-    const userRolesId = clickedRow.rolesId;
+    const userRole = clickedRow.rolesName;
 
-    const newIdRef = useRef();
+    //const newIdRef = useRef();
     const newEmailRef = useRef();
     const newAddressRef = useRef();
     const newFirstnameRef = useRef();
     const newLastnameRef = useRef();
     const newUsernameRef = useRef();
     const newRfidTokenRef = useRef();
-    const newRolesRef = useRef();
-    const newRolesIdRef = useRef();
-    const newRolesNameRef = useRef();
 
     const [loading, setLoading] = useState(false);
-    const [email, setEmail] = React.useState(clickedRow.email);
-    const [address, setAddress] = React.useState(clickedRow.address);
-    const [firstName, setFirstname] = React.useState(clickedRow.firstName);
-    const [lastName, setLastname] = React.useState(clickedRow.lastName);
-    const [username, setUsername] = React.useState(clickedRow.username);
-    const [rfidToken, setRfidToken] = React.useState(clickedRow.rfidToken);
-    // const [roles, setRoles] = React.useState(clickedRow.roles);
-    const [rolesName, setRolesName] = React.useState(clickedRow.roles);
-    const [rolesId, setRolesId] = React.useState(clickedRow.rolesId);
-    const [roles, setRoles] = React.useState(clickedRow.roles);
+    const [role, setRole] = useState(clickedRow.rolesName);
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
 
     const handleRoleChange = (event) => {
-        setRoles(event.target.value);
+        setRole(event.target.value);
         //console.log(event.target.value);
     };
 
@@ -122,27 +108,26 @@ function EditUserModal(props) {
         let bodyToSend = null;
 
         console.log("Entered the Change handler")
-        if (enteredUsername === '' || enteredEmail === '' || userRoles === '' || enteredFirstname === ''|| enteredLastname === '') {
+        if (enteredUsername === '' || enteredEmail === '' || userRole === '' || enteredFirstname === ''|| enteredLastname === '') {
             setIsError(true)
             setLoading(false)
             setMessage('Please fill in first name, last name, username, email, password, and role');
         } else {
-        const bodyToSend = {
-            id: userId,
+            bodyToSend = {
             username: enteredUsername,
             email: enteredEmail,
-            address: enteredAddress,
+            role: role,
             firstName: enteredFirstname,
             lastName: enteredLastname,
             rfidToken: enteredRfidToken,
-            role: userRoles,
+            address: enteredAddress
             }
-         };
-        //console.log(bodyToSend);
+         }
+        console.log(bodyToSend);
         try {
             DispatcherService.postUser(userId, bodyToSend)
                 .then(function (response) {
-                    //console.log(response);
+                    console.log(response);
                     setIsError(false)
                     setLoading(false)
                     handleClose();
@@ -198,13 +183,13 @@ function EditUserModal(props) {
                               id="outlined-select-box"
                               select
                               label="Role"
-                              defaultValue={clickedRow.roles}
+                              defaultValue={clickedRow.rolesName}
                               onChange={handleRoleChange}
                               helperText="Change the user role"
                           >
-                              <MenuItem value={'ROLE_CUSTOMER'}>Customer</MenuItem>
-                              <MenuItem value={'ROLE_DELIVERER'}>Deliverer</MenuItem>
-                              <MenuItem value={'ROLE_DISPATCHER'}>Dispatcher</MenuItem>
+                              <MenuItem value={'customer'}>Customer</MenuItem>
+                              <MenuItem value={'deliverer'}>Deliverer</MenuItem>
+                              <MenuItem value={'dispatcher'}>Dispatcher</MenuItem>
                           </TextField>
                         <TextField label='New Username'
                                    variant='outlined'
@@ -236,7 +221,7 @@ function EditUserModal(props) {
                                    helperText="Change the address"
                                    defaultValue={userAddress}
                                    inputRef={newAddressRef}/>
-                        {(!userRoles.includes('ROLE_DISPATCHER') && true && (
+                        {(!userRole.includes('ROLE_DISPATCHER') && true && (
                             <TextField
                                 label='New RFID Token'
                                 variant='outlined'

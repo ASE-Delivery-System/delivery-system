@@ -107,6 +107,14 @@ function ListUsers(){
                 rfidToken = item.rfidToken;
                 roles = item.roles;
 
+                if (roles[0].name === "ROLE_DELIVERER") {
+                    rolesName = "deliverer";
+                } else if (roles[0].name === "ROLE_CUSTOMER") {
+                    rolesName = "customer";
+                } else if (roles[0].name === "ROLE_DISPATCHER") {
+                    rolesName = "dispatcher";
+                }
+
                 return {
                     "id": item.id,
                     "username": item.username,
@@ -116,16 +124,7 @@ function ListUsers(){
                     "address": item.address,
                     "rfidToken": item.rfidToken,
                     "roles" : roles[0].name,
-                    "rolesName": item.roles.map((roles) => {
-                         switch (roles.name) {
-                             case "ROLE_DELIVERER":
-                                 return "Deliverer";
-                             case "ROLE_CUSTOMER":
-                                 return "Customer";
-                             case "ROLE_DISPATCHER":
-                                 return "Dispatcher";
-                             }
-                         }),
+                    "rolesName": rolesName,
                     "rolesId": roles[0].id
                 }
             });
@@ -153,6 +152,8 @@ function ListUsers(){
     catch (e) {
         console.error(e);
     }
+
+    console.log(UserData)
     const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [changeModalIsOpen, setChangeModalIsOpen] = useState(false);
