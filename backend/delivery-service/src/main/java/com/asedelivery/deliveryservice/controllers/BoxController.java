@@ -70,25 +70,25 @@ public class BoxController {
             List<Delivery> delivererDeliveries = deliveryService.getAllDeliveriesOfDeliverer(actualUser.getId());
             if (!delivererDeliveries.isEmpty())
             {
-                if(delivererDeliveries.getTargetBoxId().contains(actualBox.getId()))
-                    return "200";
-                else
-                    return "204";
-
+                delivererDeliveries.stream().map(delivery->{
+                    if(delivery.getTargetBoxId().contains(actualBox.getId())
+                        return "200";
+                })
             }
         }
         else if (userRoles.contains("ROLE_CUSTOMER")){
             List<Delivery> customerDeliveries = deliveryService.getAllActiveDeliveries(actualUser.getId());
             if (!customerDeliveries.isEmpty())
             {
-               if(customerDeliveries.getTargetBoxId().contains(actualBox.getId()))
-                   return "200";
-               else
-                   return "204";
+                customerDeliveries.stream().map(delivery->{
+                    if(customerDeliveries.getTargetBoxId().contains(actualBox.getId()))
+                        return "200";
+                })
 
             }
 
         }
+        return "204";
     }
 
     @GetMapping("/{id}")
