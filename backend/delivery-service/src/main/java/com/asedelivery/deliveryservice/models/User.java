@@ -38,7 +38,6 @@ public class User {
   @NotBlank
   private String lastName;
 
-  @Indexed(unique=true)
   private String rfidToken;
 
   @NotBlank
