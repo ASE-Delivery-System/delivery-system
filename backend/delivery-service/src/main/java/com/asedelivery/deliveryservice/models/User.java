@@ -1,6 +1,7 @@
 package com.asedelivery.deliveryservice.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -37,6 +38,7 @@ public class User {
   @NotBlank
   private String lastName;
 
+  @Indexed(unique=true)
   private String rfidToken;
 
   @NotBlank

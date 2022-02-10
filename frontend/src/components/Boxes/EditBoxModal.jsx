@@ -59,7 +59,7 @@ function EditBoxModal(props) {
 
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const update = props.update;
     const clickedRow = props.clickedRow;
 
@@ -78,6 +78,11 @@ function EditBoxModal(props) {
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
+
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+    };
 
     const handleChange = (event) => {
         setBoxStatus(event.target.value);
@@ -121,7 +126,7 @@ function EditBoxModal(props) {
                 .catch((error) => {
                     console.log(error)
                     setIsError(true)
-                    //setMessage(error.message)
+                    setMessage(error.message)
                     setLoading(false)
                 })
         }
@@ -164,13 +169,13 @@ function EditBoxModal(props) {
                         <TextField
                             label='New Box Name'
                             variant='outlined'
-                            helperText="Please enter the new box name"
+                            helperText="Change the box name"
                             defaultValue={boxName}
                             inputRef={newNameRef}/>
                         <TextField
                             label='New Box Address'
                             variant='outlined'
-                            helperText="Please enter the new box address"
+                            helperText="Change the box address"
                             defaultValue={boxAddress}
                             inputRef={newAddressRef}/>
                         <TextField
@@ -179,7 +184,7 @@ function EditBoxModal(props) {
                             label="Status"
                             defaultValue={clickedRow.status}
                             onChange={handleChange}
-                            helperText="Please select the new box status"
+                            helperText="Change the box status"
                         >
                             <MenuItem disabled value="">
                                 <em>None</em>

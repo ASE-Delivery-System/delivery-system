@@ -4,9 +4,11 @@ import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 import time
 import requests
+from requests import Session
 import json
-from gpiozero import LightSensor, Buzzer
-from flask import Flask, jsonify
+import os
+
+os.environ["NO_PROXY"] = "127.0.0.1"
 
 reader = SimpleMFRC522()
 
@@ -21,20 +23,13 @@ GPIO.setwarnings ( False )
 GPIO.setup(green_pin,GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(red_pin,GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(rfid_reader,GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(lightsensor_pin, GPIO.IN)
-
-app = Flask(__name__)
-
-config = {
-        "DEBUG": True
-    }
 
 f = open("config_file.json")
+hostname = "https://ase-discovery-server.herokuapp.com/eureka" #ase-delivery-eureka...
+hostURL = "http://httpbin.org/post" #this one is for testing
 
+session=requests.Session()
 box_config = json.load(f)
-#print(box_config)
-app.config.from_mapping(config)
-
 
 def light_led(color,sec = 3):
     GPIO.output(color,GPIO.HIGH)
@@ -45,30 +40,36 @@ def merge(dict1, dict2):
     result = {**dict1, **dict2}
     return result
 
-#send the info of the config file of the box
-@app.route("/boxconfig", methods = ["GET","POST"])
-def show_box_config():
-    return json.dumps(box_config)
+def httpRequest(method, url, content=""):
+    if method == "GET":
+        r = session.get(url)
+        return r
+    elif method == "POST":
+        r = session.post(url,json=content)
+        return r
+    else:
+        raise ValueError("Method not found")
 
 #send user id and box data when they try to access the box
-@app.route("/verify_authorization", methods = ["GET","POST"])
 def user_authorization():
-    print("Scan your card!")
-    id, text = reader.read()
-    user = {"user_id": str(text)}
-    print(user)
-    return json.dumps(merge(box_config, user))
+    try:
+        while True:
+            print("Scan your card!")
+            id, text = reader.read()
+            print(text)
+            user = {"user_id": str(text)}
+            r = httpRequest("POST", hostURL, content = merge(box_config, user))
+            #r = httpRequest("POST", hostname+"/user_authorization", content = merge(box_config, user))
+            print(r.text)
+            if r.status_code == "200":
+                light_led(green_pin)
+            else:
+                if r.status_code == "204":
+                    light_led(red_pin)
+            time.sleep(5)
+    except KeyboardInterrupt:
+        print("Scanning interrupted!")
 
-#check if box status changed -> check if closed correct
-@app.route("/status_changed/<string:ischanged>",  methods = ["GET","POST"])
-def verify_box(ischanged):
-    if ischanged=="true":
-        if str(GPIO.input(lightsensor_pin)) == "0": # dark
-            light_led(green_pin)
-            return "closed"
-        else: #light
-            light_led(red_pin)
-            return "error"
-    return "closed"
-    
-app.run(port=8000)
+user_authorization()
+GPIO.cleanup()
+

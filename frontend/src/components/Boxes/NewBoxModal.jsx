@@ -65,7 +65,7 @@ function NewDeliveryModal(props) {
     const classes = useStyles()
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
 
     const [loading, setLoading] = useState(false)
 
@@ -74,6 +74,13 @@ function NewDeliveryModal(props) {
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
+
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+        setName('')
+        setAddress('')
+    };
 
     const handleSubmit = (e) => {
       e.preventDefault()
@@ -101,7 +108,7 @@ function NewDeliveryModal(props) {
                 .catch((error) => {
                     console.log(error)
                     setIsError(true)
-                    //setMessage(error.message)
+                    setMessage(error.message)
                     setLoading(false)
                 })
         }

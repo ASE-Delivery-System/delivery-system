@@ -1,10 +1,12 @@
 # ase-delivery-system
 
-When you want to push the last changes please create a new branch with name (for eg. XXX_feature) 
+ASE Delivery system was developed as part of the Advanced Topics in Software Engineering class. 
+Based on the scope of the project description, we have developed a delivery system that coordinates 
+the delivery from a central depot via RFID pick-up boxes to customers. 
 
-and then make a merge request in order that we review the last changes 
-
+The system includes functionality for different user roles consisting of dispatchers, deliverers, and customers.
 
 ### Architecture of ASE Delivery system 
 
-![asearch](/uploads/14566428385ffe686a4d8c3c5dd9d885/asearch.png)
+
+![](./images/ase-arch.png)

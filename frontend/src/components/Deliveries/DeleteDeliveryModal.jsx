@@ -60,7 +60,7 @@ function DeleteDeliveryModal(props) {
     const classes = useStyles()
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const update = props.update;
 
     const [loading, setLoading] = useState(false);
@@ -69,13 +69,18 @@ function DeleteDeliveryModal(props) {
 
     let rowsSelected = props.selectedRows;
 
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+    };
+
     function DeleteHandler() {
         console.log("Entered the Delete handler")
         setLoading(true);
 
         if (rowsSelected.length === 0) {
             setIsError(true)
-            //setMessage('No rows selected')
+            setMessage('No rows selected')
             setLoading(false)
         }
         else {
@@ -89,6 +94,7 @@ function DeleteDeliveryModal(props) {
                         })
                         .catch((error) => {
                             console.log(error)
+                            //setMessage(error.message)
                             setIsError(true)
                             setLoading(false)
                         })
@@ -97,11 +103,12 @@ function DeleteDeliveryModal(props) {
             catch (e) {
                 console.error(e);
                 setIsError(true)
-                //setMessage(e.message)
+                setMessage("Delete not possible")
                 setLoading(false)
             }
             update();
             handleClose();
+
         }
     }
 

@@ -80,7 +80,7 @@ function NewUserModal(props) {
     const classes = useStyles()
     const open = props.open
     const handleOpen = props.handleOpen;
-    const handleClose = props.handleClose;
+    const closeHandler = props.handleClose;
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
@@ -92,6 +92,11 @@ function NewUserModal(props) {
 
     const [setSubmitted] = useState(false)
 
+    const handleClose = () => {
+        closeHandler();
+        setIsError(false)
+
+    };
     //changing input once already entered
 
     const handleSubmit = (e) => {
@@ -126,6 +131,7 @@ function NewUserModal(props) {
                       console.log('response: ', error.response.data)
                       setIsError(true)
                       setLoading(false)
+                      setMessage(error.message)
                       })
           }
           catch (e) {

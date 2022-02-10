@@ -59,4 +59,9 @@ public class BoxServiceImpl implements BoxService{
         return boxRepository.save(boxStatusToBeUpdated);
     }
 
+    @Override
+    public List<Box> findAllEmptyBoxes() {
+        return boxRepository.findEmptyBoxes(EBoxStatus.EMPTY.toString());
+    }
+
 }

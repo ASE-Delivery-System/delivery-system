@@ -12,9 +12,13 @@ public interface UserRepository extends MongoRepository<User, String> {
 
   Boolean existsByUsername(String username);
 
+  Boolean existsByRfidToken(String rfidToken);
+
   Boolean existsByEmail(String email);
 
   User findUserById(String id);
+
+  User findUserByRfidToken(String rfidToken);
 
   List<User> getUsersByFirstName(String firstName);
 

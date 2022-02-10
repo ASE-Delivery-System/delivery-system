@@ -77,15 +77,15 @@ public class RegisterUserController {
 			strRoles.forEach(role -> {
 				switch (role) {
 				case "dispatcher":
-					Role adminRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
+					Role dispatcherRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
+					roles.add(dispatcherRole);
 
 					break;
 				case "deliverer":
-					Role modRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
+					Role delivererRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(modRole);
+					roles.add(delivererRole);
 
 					break;
 				default:
@@ -103,6 +103,9 @@ public class RegisterUserController {
 				.collect(Collectors.toList());
 
 		if (authorities.contains("ROLE_DELIVERER") || authorities.contains("ROLE_CUSTOMER")){
+			if ( userRepository.existsByRfidToken(registerUserRequest.getRfidToken())){
+				throw new RuntimeException("Token already exists");
+			}
 			user.setRfidToken(registerUserRequest.getRfidToken());
 		}
 
