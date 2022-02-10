@@ -83,6 +83,49 @@ public class BoxController {
         return "204";
     }
 
+    @PostMapping("/box_closed")
+    public ResponseEntity<MessageResponse> BoxStatus(@Valid @RequestBody BoxUserAuthorizationRequest boxRequest){
+        Box actualBox = boxService.findBoxById(boxRequest.getBox_id());
+        User actualUser = userService.findUserByRfidToken(boxRequest.getUser_id());
+
+        List<String> userRoles = actualUser.getRoles().stream()
+                .map(role -> role.getName().name())
+                .collect(Collectors.toList());
+
+        if (getStatus_closed.equals("available")){//box properly closed
+            if (userRoles.contains("ROLE_CUSTOMER")){
+                List<Delivery> customerDeliveries = deliveryService.getDeliveredDeliveriesOfCustomer(actualUser.getId());
+
+                for (Delivery customDelivery: customerDeliveries)
+                    if(customDelivery.getTargetBox().getId().equals(actualBox.getId()))
+                    {
+                        customDelivery.setStatus(EDeliveryStatus.PICKED_UP);
+                        customDelivery.setCustomer(null);
+                        customDelivery.setDeliverer(null);
+                        deliveryService.deleteDeliveryById(customDelivery.getId());
+                    }
+                actualBox.setStatus(EBoxStatus.EMPTY); //customer picked it up
+                return ResponseEntity.ok(new MessageResponse("Status of box with id: "+actualBox.getId()+" has been changed!"));
+
+            }
+            else
+                if (userRoles.contains("ROLE_CUSTOMER")
+                {
+                    List<Delivery> delivererDeliveries = deliveryService.getOutForDeliveryDeliveries(actualUser.getId());
+                    for (Delivery deliverDelivery: delivererDeliveries)
+                        if(delivererDeliveries.getTargetBox().getId().equals(actualBox.getId()))
+                        {
+                            delivererDeliveries.setStatus(EDeliveryStatus.DELIVERED);
+                        }
+                    actualBox.setStatus(EBoxStatus.TAKEN); //box taken because of delivery--don't know if it's needed
+                    return ResponseEntity.ok(new MessageResponse("Status of box with id: "+actualBox.getId()+" has been changed!"));
+                }
+        }
+        return ResponseEntity.ok(new MessageResponse("Status of box with id: "+actualBox.getId()+" has not been changed!"));
+
+    }
+
+
     @GetMapping("/empty") //GET /api/boxes
     public ResponseEntity<List<Box>> getAllEmptyBoxes() {
         List<Box> boxes = boxService.findAllEmptyBoxes();
