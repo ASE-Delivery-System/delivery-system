@@ -70,6 +70,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User findUserByRfidToken(String id) {
+        return userRepository.findUserByRfidToken(id);
+    }
+
+    @Override
     public void deleteUserById(String id) {
         userRepository.deleteById(id);
     }

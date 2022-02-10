@@ -16,6 +16,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.asedelivery.deliveryservice.service.UserService;
 import com.asedelivery.deliveryservice.service.DeliveryService;
 import com.asedelivery.deliveryservice.payload.request.BoxUserAuthorizationRequest;
+import com.asedelivery.deliveryservice.payload.request.DeliveryRequest;
+
 import java.net.URI;
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -38,6 +40,9 @@ public class BoxController {
     @Autowired
     DeliveryService deliveryService;
 
+    @Autowired
+    DeliveryRequest deliveryRequest;
+
     @GetMapping("") //GET /api/boxes
     public ResponseEntity<List<Box>> getAllBoxes() {
         List<Box> boxes = boxService.findAllBoxes();
@@ -48,8 +53,7 @@ public class BoxController {
     public String OpenBox(@Valid @RequestBody BoxUserAuthorizationRequest boxRequest){
 
         Box actualBox = boxService.findBoxById(boxRequest.getBox_id());
-        User actualUser = userService.findUserById(boxRequest.getUser_id());
-        //MISSING: needs to check if delivery in this box belongs to this user
+        User actualUser = userService.findUserByRfidToken(boxRequest.getUser_id());
 
         if (Objects.isNull(actualBox)) {
             return "204"; //box not found in the db
@@ -57,9 +61,34 @@ public class BoxController {
         else if (Objects.isNull(actualUser)) {
             return "204"; //user not found in the db
         }
-        else
-            return "200";
+        List<String> userRoles = actualUser.getRoles().stream()
+                .map(role -> role.getName().name())
+                .collect(Collectors.toList());
 
+        //check if delivery in this box belongs to this user
+        if (userRoles.contains("ROLE_DELIVERER")){
+            List<Delivery> delivererDeliveries = deliveryService.getAllDeliveriesOfDeliverer(actualUser.getId());
+            if (!delivererDeliveries.isEmpty())
+            {
+                if(delivererDeliveries.getTargetBoxId().contains(actualBox.getId()))
+                    return "200";
+                else
+                    return "204";
+
+            }
+        }
+        else if (userRoles.contains("ROLE_CUSTOMER")){
+            List<Delivery> customerDeliveries = deliveryService.getAllActiveDeliveries(actualUser.getId());
+            if (!customerDeliveries.isEmpty())
+            {
+               if(customerDeliveries.getTargetBoxId().contains(actualBox.getId()))
+                   return "200";
+               else
+                   return "204";
+
+            }
+
+        }
     }
 
     @GetMapping("/{id}")

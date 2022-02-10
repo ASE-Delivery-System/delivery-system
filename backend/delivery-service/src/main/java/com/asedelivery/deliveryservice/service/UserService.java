@@ -11,6 +11,7 @@ public interface UserService {
     List<User> findDeliverers();
     List<User> findDispatchers();
     User findUserById(String id);
+    User findUserByRfidToken(String id);
     void deleteUserById(String id);
     User updateUser(String id, User user);
     List<User> findUsersByFirstName(String firstName);

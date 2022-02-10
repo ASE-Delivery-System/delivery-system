@@ -116,10 +116,4 @@ public class DeliveryServiceImpl implements DeliveryService{
         deliveryRepository.deleteById(id);
     }
 
-    @Override
-    public List<Delivery> findDeliveriesByUserBox(String userId, String boxId)
-    {
-       //TODO
-
-    }
 }
