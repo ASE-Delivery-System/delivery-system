@@ -58,7 +58,7 @@ public class BoxController {
 
         //check if delivery in this box belongs to this user
         if (userRoles.contains("ROLE_DELIVERER")){
-            List<Delivery> delivererDeliveries = deliveryService.getAllDeliveriesOfDeliverer(actualUser.getId());
+            List<Delivery> delivererDeliveries = deliveryService.getOutForDeliveryDeliveries(actualUser.getId());
             if (!delivererDeliveries.isEmpty())
             {
                 List<String> boxesDeliverer = delivererDeliveries.stream()
@@ -70,7 +70,7 @@ public class BoxController {
             }
         }
         else if (userRoles.contains("ROLE_CUSTOMER")){
-            List<Delivery> customerDeliveries = deliveryService.getAllActiveDeliveries(actualUser.getId());
+            List<Delivery> customerDeliveries = deliveryService.getDeliveredDeliveriesOfCustomer(actualUser.getId());
             if (!customerDeliveries.isEmpty())
             {
                 List<String> boxesCustomer = customerDeliveries.stream()
