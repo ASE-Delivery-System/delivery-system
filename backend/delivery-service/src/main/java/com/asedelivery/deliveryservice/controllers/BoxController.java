@@ -61,14 +61,11 @@ public class BoxController {
             List<Delivery> delivererDeliveries = deliveryService.getAllDeliveriesOfDeliverer(actualUser.getId());
             if (!delivererDeliveries.isEmpty())
             {
-                List<String> flags = delivererDeliveries.stream().map(delivery->{
-                    if(delivery.getTargetBox().getId().contains(actualBox.getId()))
-                        return "200";
-                    return "204";
-                }).collect(Collectors.toList());
-
-                if(flags.contains("204")){
-                    return "204";
+                List<String> boxesDeliverer = delivererDeliveries.stream()
+                        .map(delivery->delivery.getTargetBox().getId())
+                        .collect(Collectors.toList());
+                if(boxesDeliverer.contains(actualBox.getId())){
+                    return "200";
                 }
             }
         }
@@ -76,14 +73,12 @@ public class BoxController {
             List<Delivery> customerDeliveries = deliveryService.getAllActiveDeliveries(actualUser.getId());
             if (!customerDeliveries.isEmpty())
             {
-                List<String> flags = customerDeliveries.stream().map(delivery->{
-                    if(delivery.getTargetBox().getId().contains(actualBox.getId()))
-                        return "200";
-                    return "204";
-                }).collect(Collectors.toList());
-
+                List<String> boxesCustomer = customerDeliveries.stream()
+                        .map(delivery->(delivery.getTargetBox().getId()))
+                        .collect(Collectors.toList());
+                if(boxesCustomer.contains(actualBox.getId()))
+                    return "200";
             }
-
         }
         return "204";
     }
