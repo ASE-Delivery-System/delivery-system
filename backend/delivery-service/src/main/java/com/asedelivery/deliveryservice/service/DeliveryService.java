@@ -14,4 +14,6 @@ public interface DeliveryService {
     List<Delivery> getAllActiveDeliveries(String customerId);
     List<Delivery> getAllPastDeliveries(String customerId);
     void deleteDeliveryById(String id);
+    List<Delivery> getOutForDeliveryDeliveries(String delivererId);
+    List<Delivery> getDeliveredDeliveriesOfCustomer(String customerId);
 }

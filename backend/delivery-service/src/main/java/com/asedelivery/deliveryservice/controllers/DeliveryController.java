@@ -37,6 +37,16 @@ public class DeliveryController {
         return ResponseEntity.ok( deliveryService.getAllDeliveries());
     }
 
+    @GetMapping("/{id}/out-for-delivery")
+    public ResponseEntity<List<Delivery>> getOutForDeliveryDeliveries(@PathVariable String id){
+        return ResponseEntity.ok( deliveryService.getOutForDeliveryDeliveries(id));
+    }
+
+    @GetMapping("/{id}/delivered")
+    public ResponseEntity<List<Delivery>> getDeliveredDeliveries(@PathVariable String id){
+        return ResponseEntity.ok( deliveryService.getDeliveredDeliveriesOfCustomer(id));
+    }
+
     @PostMapping("")
     public ResponseEntity<?> createDelivery(@Valid @RequestBody DeliveryRequest deliveryRequest){
 
