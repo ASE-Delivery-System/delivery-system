@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {useEffect, useRef, useState} from "react";
-import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, Paper, Stack, TextField, MenuItem} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import DispatcherService from "../../services/dispatcher.service";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -86,8 +86,8 @@ function EditUserModal(props) {
     const userUsername = clickedRow.username;
     const userRfidToken = clickedRow.rfidToken;
     const userRoles = clickedRow.roles;
-    const userRolesName = clickedRow.roles;
-    const userRolesId = clickedRow.rolesId;
+    //const userRolesName = clickedRow.rolesName;
+    //const userRolesId = clickedRow.rolesId;
 
     const newIdRef = useRef();
     const newEmailRef = useRef();
@@ -97,8 +97,8 @@ function EditUserModal(props) {
     const newUsernameRef = useRef();
     const newRfidTokenRef = useRef();
     const newRolesRef = useRef();
-    const newRolesIdRef = useRef();
-    const newRolesNameRef = useRef();
+    //const newRolesIdRef = useRef();
+    //const newRolesNameRef = useRef();
 
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = React.useState(clickedRow.email);
@@ -107,10 +107,9 @@ function EditUserModal(props) {
     const [lastName, setLastname] = React.useState(clickedRow.lastName);
     const [username, setUsername] = React.useState(clickedRow.username);
     const [rfidToken, setRfidToken] = React.useState(clickedRow.rfidToken);
-    // const [roles, setRoles] = React.useState(clickedRow.roles);
-    const [rolesName, setRolesName] = React.useState(clickedRow.roles);
-    const [rolesId, setRolesId] = React.useState(clickedRow.rolesId);
     const [roles, setRoles] = React.useState(clickedRow.roles);
+    //const [rolesName, setRolesName] = React.useState(clickedRow.roles);
+    //const [rolesId, setRolesId] = React.useState(clickedRow.rolesId);
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
@@ -134,7 +133,7 @@ function EditUserModal(props) {
         let bodyToSend = null;
 
         console.log("Entered the Change handler")
-        if (enteredUsername === '' || enteredEmail === '' || userRolesName === '' || enteredFirstname === ''|| enteredLastname === '') {
+        if (enteredUsername === '' || enteredEmail === '' || userRoles === '' || enteredFirstname === ''|| enteredLastname === '') {
             setIsError(true)
             setLoading(false)
             setMessage('Please fill in first name, last name, username, email, password, and role');
@@ -147,11 +146,7 @@ function EditUserModal(props) {
             firstName: enteredFirstname,
             lastName: enteredLastname,
             rfidToken: enteredRfidToken,
-            roles:
-                [{
-                    id: userRolesId,
-                    name: userRolesName
-                }],
+            role: userRoles,
             }
          };
         //console.log(bodyToSend);
@@ -210,6 +205,20 @@ function EditUserModal(props) {
                         autoComplete="off"
                         spacing={1}
                     >
+                            <TextField
+                                id="outlined-select-box"
+                                select
+                                defaultValue={clickedRow.roles}
+                                onChange={handleRoleChange}
+                                helperText="Please select the new role"
+                            >
+                                <MenuItem disabled value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={'ROLE_CUSTOMER'}>Customer</MenuItem>
+                                <MenuItem value={'ROLE_DELIVERER'}>Deliverer</MenuItem>
+                                <MenuItem value={'ROLE_DISPATCHER'}>Dispatcher</MenuItem>
+                            </TextField>
                         <InputLabel id="usernameLabel">New Username</InputLabel>
                         <TextField label='New Username' variant='outlined' fullWidth defaultValue={userUsername} inputRef={newUsernameRef}/>
                         <InputLabel id="emailLabel">New Email</InputLabel>
