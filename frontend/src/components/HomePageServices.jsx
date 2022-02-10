@@ -46,6 +46,7 @@ const cardPointOne = (
   </React.Fragment>
 )
 
+
 const cardPointTwo = (
   <React.Fragment>
      <CardMedia
