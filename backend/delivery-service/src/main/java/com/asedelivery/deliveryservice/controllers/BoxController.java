@@ -1,29 +1,23 @@
 package com.asedelivery.deliveryservice.controllers;
 
 import com.asedelivery.deliveryservice.models.Box;
+import com.asedelivery.deliveryservice.models.Delivery;
 import com.asedelivery.deliveryservice.models.EBoxStatus;
+import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.payload.request.BoxStatusUpdateRequest;
 import com.asedelivery.deliveryservice.payload.request.RegisterNewBoxRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.service.BoxService;
-import com.asedelivery.deliveryservice.security.jwt.JwtUtils;
+import com.asedelivery.deliveryservice.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.asedelivery.deliveryservice.service.UserService;
-import com.asedelivery.deliveryservice.service.DeliveryService;
 import com.asedelivery.deliveryservice.payload.request.BoxUserAuthorizationRequest;
-import com.asedelivery.deliveryservice.payload.request.DeliveryRequest;
 
-import java.net.URI;
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,9 +33,6 @@ public class BoxController {
 
     @Autowired
     DeliveryService deliveryService;
-
-    @Autowired
-    DeliveryRequest deliveryRequest;
 
     @GetMapping("") //GET /api/boxes
     public ResponseEntity<List<Box>> getAllBoxes() {
@@ -70,20 +61,26 @@ public class BoxController {
             List<Delivery> delivererDeliveries = deliveryService.getAllDeliveriesOfDeliverer(actualUser.getId());
             if (!delivererDeliveries.isEmpty())
             {
-                delivererDeliveries.stream().map(delivery->{
-                    if(delivery.getTargetBoxId().contains(actualBox.getId())
+                List<String> flags = delivererDeliveries.stream().map(delivery->{
+                    if(delivery.getTargetBox().getId().contains(actualBox.getId()))
                         return "200";
-                })
+                    return "204";
+                }).collect(Collectors.toList());
+
+                if(flags.contains("204")){
+                    return "204";
+                }
             }
         }
         else if (userRoles.contains("ROLE_CUSTOMER")){
             List<Delivery> customerDeliveries = deliveryService.getAllActiveDeliveries(actualUser.getId());
             if (!customerDeliveries.isEmpty())
             {
-                customerDeliveries.stream().map(delivery->{
-                    if(customerDeliveries.getTargetBoxId().contains(actualBox.getId()))
+                List<String> flags = customerDeliveries.stream().map(delivery->{
+                    if(delivery.getTargetBox().getId().contains(actualBox.getId()))
                         return "200";
-                })
+                    return "204";
+                }).collect(Collectors.toList());
 
             }
 
@@ -91,7 +88,13 @@ public class BoxController {
         return "204";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/empty") //GET /api/boxes
+    public ResponseEntity<List<Box>> getAllEmptyBoxes() {
+        List<Box> boxes = boxService.findAllEmptyBoxes();
+        return ResponseEntity.ok().body(boxes);
+    }
+
+    @GetMapping("/{id}") //GET /api/boxes/{id}
     public ResponseEntity<Box> getBoxById(@PathVariable String id){
         Box box = boxService.findBoxById(id);
         return ResponseEntity.ok(box);
@@ -126,6 +129,19 @@ public class BoxController {
                     .body( new MessageResponse("Box Not Found"));
         }
         return ResponseEntity.ok( boxService.updateBox(id,box));
+    }
+
+    @PostMapping("/status/{id}")
+    public ResponseEntity<?> updateBoxStatusById(@PathVariable String id, @RequestBody BoxStatusUpdateRequest status){
+        Box boxToBeUpdated = boxService.findBoxById(id);
+
+        if (Objects.isNull(boxToBeUpdated)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body( new MessageResponse("Box Not Found"));
+        }
+
+        return ResponseEntity.ok( boxService.updateBoxStatus(id, EBoxStatus.valueOf(status.getStatus())));
     }
 
     @DeleteMapping("/{id}")

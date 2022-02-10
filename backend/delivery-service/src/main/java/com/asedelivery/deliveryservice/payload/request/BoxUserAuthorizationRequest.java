@@ -1,22 +1,6 @@
-import com.asedelivery.deliveryservice.models.Box;
-import com.asedelivery.deliveryservice.models.EDeliveryStatus;
-import com.asedelivery.deliveryservice.models.User;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 package com.asedelivery.deliveryservice.payload.request;
 
-import com.asedelivery.deliveryservice.models.Box;
-import com.asedelivery.deliveryservice.models.EDeliveryStatus;
-import com.asedelivery.deliveryservice.models.User;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class BoxUserAuthorizationRequest {
 

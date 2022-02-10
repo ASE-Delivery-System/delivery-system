@@ -4,6 +4,9 @@ import javax.validation.constraints.*;
 import java.util.Set;
 
 public class RegisterUserRequest {
+
+    private String id;
+
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
@@ -27,12 +30,19 @@ public class RegisterUserRequest {
     @Size(min = 1, max = 20)
     private String lastName;
 
-    @Size(min = 4, max = 10)
     private String rfidToken;
 
     @NotBlank
     @Size(min = 1, max = 50)
     private String address;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;

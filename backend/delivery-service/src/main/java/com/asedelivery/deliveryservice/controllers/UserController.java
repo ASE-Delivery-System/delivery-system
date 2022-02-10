@@ -1,7 +1,9 @@
 package com.asedelivery.deliveryservice.controllers;
 
 import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.payload.request.UpdateUserRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
+import com.asedelivery.deliveryservice.repository.UserRepository;
 import com.asedelivery.deliveryservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUsers(){
@@ -62,7 +67,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<User> updateUserById(@PathVariable String id, @RequestBody User user){
+    public ResponseEntity<?> updateUserById(@PathVariable String id, @RequestBody UpdateUserRequest user){
         return ResponseEntity.ok( userService.updateUser(id,user));
     }
 }

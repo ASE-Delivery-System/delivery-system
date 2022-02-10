@@ -1,6 +1,7 @@
 package com.asedelivery.deliveryservice.service;
 
 import com.asedelivery.deliveryservice.models.Box;
+import com.asedelivery.deliveryservice.models.EBoxStatus;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface BoxService {
     Box updateBox(String id, Box box);
     Box createBox(Box box);
     Boolean existsByName(String name);
+    Box updateBoxStatus(String id, EBoxStatus status);
+    List<Box> findAllEmptyBoxes();
 }

@@ -3,7 +3,8 @@ import { Paper, Button, TextField, RadioGroup, FormLabel, FormControl, FormContr
 import React, { useState } from 'react'
 import DispatcherService from '../services/dispatcher.service'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+
+const reload=()=>window.location.reload();
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -65,7 +66,8 @@ const CreateNewUser = () => {
   const [role, setRole] = useState([])
 
   const [setSubmitted] = useState(false)
-  const [setError] = useState(false)
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
 
   const [loading, setLoading] = useState(false)
 
@@ -107,34 +109,52 @@ const CreateNewUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('bla bla ')
+    //console.log('bla bla ')
     setLoading(true)
 
-    if (username === '' || email === '' || password === '') {
-      setError(true)
-    } else {
-      const user = {
-        username: username,
-        password: password,
-        email: email,
-        firstName: firstname,
-        lastName: lastname,
-        rfidToken: rfidToken,
-        address: address,
-        role: role,
-      }
+    try {
+      if (username === '' || email === '' || password === '' || role === '' || firstname === ''|| lastname === '') {
+          setIsError(true)
+          setLoading(false)
+          setMessage('Please fill in first name, last name, username, email, password, and role');
+        } else {
+        const user = {
+          username: username,
+          password: password,
+          email: email,
+          firstName: firstname,
+          lastName: lastname,
+          rfidToken: rfidToken,
+          address: address,
+          role: role,
+        }
 
-      DispatcherService.registerNewUser(user)
-        .then(() => {
-          setLoading(false)
-          navigate('/dispatcher')
-        })
-        .catch((error) => {
-          setLoading(false)
-        })
+        try {
+          DispatcherService.registerNewUser(user)
+              .then(() => {
+                setIsError(false)
+                setLoading(false)
+                navigate('/dispatcher')
+                reload()
+              })
+              .catch((error) => {
+                setIsError(true)
+                setMessage(error.message)
+                setLoading(false)
+                reload()
+              })
+        }
+        catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    catch (e) {
+      console.error(e);
+      setLoading(false)
     }
   }
-  console.log(role)
+  //console.log(role)
 
   return (
     <div className={classes.container}>
@@ -191,11 +211,13 @@ const CreateNewUser = () => {
             </div>
           </div>
         </Paper>
-        {
-          <div className='form-group'>
-            <div className='alert alert-danger' role='alert'></div>
-          </div>
-        }
+        {isError && (
+            <div className='form-group'>
+              <div className='alert alert-danger' role='alert'>
+                {message}
+              </div>
+            </div>
+        )}
       </div>
     </div>
   )

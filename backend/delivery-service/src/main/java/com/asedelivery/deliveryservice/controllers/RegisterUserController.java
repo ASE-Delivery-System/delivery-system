@@ -77,15 +77,15 @@ public class RegisterUserController {
 			strRoles.forEach(role -> {
 				switch (role) {
 				case "dispatcher":
-					Role adminRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
+					Role dispatcherRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
+					roles.add(dispatcherRole);
 
 					break;
 				case "deliverer":
-					Role modRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
+					Role delivererRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(modRole);
+					roles.add(delivererRole);
 
 					break;
 				default:
@@ -103,17 +103,30 @@ public class RegisterUserController {
 				.collect(Collectors.toList());
 
 		if (authorities.contains("ROLE_DELIVERER") || authorities.contains("ROLE_CUSTOMER")){
+			if ( userRepository.existsByRfidToken(registerUserRequest.getRfidToken())){
+				throw new RuntimeException("Token already exists");
+			}
 			user.setRfidToken(registerUserRequest.getRfidToken());
 		}
 
-		UserRegisterObj user_to_be_registered = new UserRegisterObj(registerUserRequest.getUsername(),registerUserRequest.getEmail(),registerUserRequest.getPassword());
+		User savedUser = userRepository.save(user);
+		System.out.println(savedUser.getId());
+
+		String savedUserId = savedUser.getId();
+
+		UserRegisterObj user_to_be_registered = new UserRegisterObj(
+				savedUserId,
+				registerUserRequest.getUsername(),
+				registerUserRequest.getEmail(),
+				registerUserRequest.getPassword());
+
 		user_to_be_registered.setRoles(registerUserRequest.getRoles());
 
 		// HERE WE MAKE THE CALL TO THE IDENTITY SERVICE TO ACTUALLY SIGN UP THE USER THAT WE WANT TO REGISTER BUT ONLY WITH
 		// THE INFORMATION NEEDED TO LOG IN (IE. USERNAME PASSWORD EMAIL) NOTHING MORE THAN THOSE INFOS
 		restTemplate.postForObject("https://ase-identity-service.herokuapp.com/api/auth/signup", user_to_be_registered, String.class);
+//		restTemplate.postForObject("http://localhost:8084/api/auth/signup", user_to_be_registered, String.class);
 
-		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("User to be registered registered successfully!"));
 	}
 }

@@ -3,11 +3,16 @@ package com.asedelivery.deliveryservice.service;
 import com.asedelivery.deliveryservice.models.ERole;
 import com.asedelivery.deliveryservice.models.Role;
 import com.asedelivery.deliveryservice.models.User;
+import com.asedelivery.deliveryservice.payload.request.UpdateAuthUserRequest;
+import com.asedelivery.deliveryservice.payload.request.UpdateUserRequest;
+import com.asedelivery.deliveryservice.payload.response.MessageResponse;
 import com.asedelivery.deliveryservice.repository.RoleRepository;
 import com.asedelivery.deliveryservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -19,6 +24,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<User> findAllUsers() {
@@ -76,19 +84,74 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void deleteUserById(String id) {
+        // Do e post request to identity service!
+        restTemplate.delete("https://ase-identity-service.herokuapp.com/users/auth/"+ id, String.class);
         userRepository.deleteById(id);
     }
 
     @Override
-    public User updateUser(String id, User user) {
+    public User updateUser(String id, UpdateUserRequest user){
         User userTobeUpdated = findUserById(id);
+
+        if(!userTobeUpdated.getRoles().contains(roleRepository.findByName(ERole.ROLE_DISPATCHER).orElseThrow())){
+            if (!userTobeUpdated.getRfidToken().equals(user.getRfidToken())){
+                if ( userRepository.existsByRfidToken(user.getRfidToken())){
+                    throw new RuntimeException("Token already exists");
+                }
+            }
+        }
+
         userTobeUpdated.setFirstName(user.getFirstName());
         userTobeUpdated.setLastName(user.getLastName());
         userTobeUpdated.setAddress(user.getAddress());
+
+        String strRoles = user.getRole();
+        System.out.println(strRoles);
+        Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            switch (strRoles) {
+                case "dispatcher":
+                    Role dispatcherRole = roleRepository.findByName(ERole.ROLE_DISPATCHER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(dispatcherRole);
+                    break;
+                case "deliverer":
+                    Role delivererRole = roleRepository.findByName(ERole.ROLE_DELIVERER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(delivererRole);
+                    break;
+                default:
+                    Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(userRole);
+            }
+        }
+
+        userTobeUpdated.setRoles(roles);
         userTobeUpdated.setRfidToken(user.getRfidToken());
-        userTobeUpdated.setRoles(user.getRoles());
+
         userTobeUpdated.setUsername(user.getUsername());
         userTobeUpdated.setEmail(user.getEmail());
+        UpdateAuthUserRequest updateAuthUserRequest = new UpdateAuthUserRequest();
+        updateAuthUserRequest.setUsername(userTobeUpdated.getUsername());
+        updateAuthUserRequest.setEmail(userTobeUpdated.getEmail());
+        updateAuthUserRequest.setRole(user.getRole());
+
+        String response = restTemplate.postForObject("https://ase-identity-service.herokuapp.com/users/auth/"+userTobeUpdated.getId(),
+                updateAuthUserRequest, String.class);
+        System.out.println(response);
+        //ase-identity-service.herokuapp.com
+
+        assert response != null;
+        if (response.contains("Error") || response.contains("error")){
+            throw new RuntimeException("Token already exists");
+        }
+
         return userRepository.save(userTobeUpdated);
     }
 
