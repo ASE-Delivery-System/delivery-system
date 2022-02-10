@@ -102,7 +102,7 @@ function NewDeliveryModal(props) {
     try {
         useEffect(()=>{
             if(isDispatcher) {
-                DispatcherService.getBoxes()
+                DispatcherService.getEmptyBoxes()
                     .then(function (response) {
                         setListBoxes(readBoxes(response.data));
                     })
@@ -231,7 +231,7 @@ function NewDeliveryModal(props) {
                             label="Select"
                             value={selectedBox}
                             onChange={handleChangeBox}
-                            helperText="Please select a target box"
+                            helperText="Please select an empty box"
                         >
                             {listBoxes.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>

@@ -45,6 +45,10 @@ const getBoxById = async (id) => {
   return await axios.get(API_URL_GET_BOXES + "/" + id,{ headers: authHeader() })
 }
 
+const getEmptyBoxes = async () => {
+    return await axios.get(API_URL_GET_BOXES + '/empty', { headers: authHeader() })
+}
+
 const createNewBox = async (box) => {
   return await axios.post(API_URL_GET_BOXES, box, { headers: authHeader() })
 }
@@ -89,6 +93,7 @@ const DispatcherService = {
     changeStatusDelivery,
     deleteDelivery,
     getBoxes,
+    getEmptyBoxes,
     createNewBox,
     deleteBox,
     getBoxById,
