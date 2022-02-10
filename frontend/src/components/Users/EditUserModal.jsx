@@ -230,14 +230,14 @@ function EditUserModal(props) {
                         <InputLabel id="addressLabel">New Address</InputLabel>
                         <TextField label='New Address' variant='outlined' fullWidth defaultValue={userAddress} inputRef={newAddressRef}/>
 
-                       {!roles.includes('ROLE_DISPATCHER') ? (
-                        <div className={classes.userManagementRow}>
-                            <InputLabel id="rfidTokenLabel">New RFID Token</InputLabel>
-                            <TextField variant='outlined' fullWidth defaultValue={userRfidToken} inputRef={newRfidTokenRef} />
-                        </div>
-                       ) : (
-                         <></>
-                       )}
+                       {(!userRoles.includes('ROLE_DISPATCHER') && true && (
+                        <TextField
+                            label="New RFID Token"
+                            variant="outlined"
+                            fullWidth
+                            helperText="Change the RFID Token"
+                            defaultValue={userRfidToken}
+                            inputRef={newRfidTokenRef}/>))}
                     </Stack>
                 </Paper>
                 {isError && (
