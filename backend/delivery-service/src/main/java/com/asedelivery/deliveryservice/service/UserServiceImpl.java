@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService{
 
         assert response != null;
         if (response.contains("Error") || response.contains("error")){
-            throw new RuntimeException("Token already exists");
+            throw new RuntimeException("Error while trying to update the user in auth DB. User not updated");
         }
 
         return userRepository.save(userTobeUpdated);
