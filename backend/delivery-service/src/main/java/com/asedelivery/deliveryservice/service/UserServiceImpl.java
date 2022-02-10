@@ -78,6 +78,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User findUserByRfidToken(String id) {
+        return userRepository.findUserByRfidToken(id);
+    }
+
+    @Override
     public void deleteUserById(String id) {
         // Do e post request to identity service!
         restTemplate.delete("https://ase-identity-service.herokuapp.com/users/auth/"+ id, String.class);

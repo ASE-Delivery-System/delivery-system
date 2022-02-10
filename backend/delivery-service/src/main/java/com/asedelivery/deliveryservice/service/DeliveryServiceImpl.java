@@ -135,4 +135,15 @@ public class DeliveryServiceImpl implements DeliveryService{
         // delete the delivery
         deliveryRepository.deleteById(id);
     }
+
+    @Override
+    public List<Delivery> getOutForDeliveryDeliveries(String delivererId) {
+        return deliveryRepository.findOutForDeliveryDeliveriesOfDeliverer(delivererId, EDeliveryStatus.OUT_FOR_DELIVERY);
+    }
+
+    @Override
+    public List<Delivery> getDeliveredDeliveriesOfCustomer(String customerId) {
+        return deliveryRepository.findDeliveredDeliveriesOfCustomer(customerId, EDeliveryStatus.DELIVERED);
+    }
+
 }
