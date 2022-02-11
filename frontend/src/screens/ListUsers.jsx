@@ -109,11 +109,11 @@ function ListUsers(){
 
                 if (roles[0].name === "ROLE_DELIVERER") {
                     rolesName = "deliverer";
-                    rfidToken = null
                 } else if (roles[0].name === "ROLE_CUSTOMER") {
                     rolesName = "customer";
                 } else if (roles[0].name === "ROLE_DISPATCHER") {
                     rolesName = "dispatcher";
+                    rfidToken = null
                 }
 
                 return {
@@ -220,6 +220,7 @@ function ListUsers(){
 
     const handleRowClick = (row) => {
         //Open an edit modal
+        console.log(row.row)
         setEditModalIsOpen(true);
         setClickedRow(row.row);
     }
