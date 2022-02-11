@@ -61,7 +61,6 @@ function EditUserModal(props) {
     const clickedRow = props.clickedRow;
 
     const userId = clickedRow.id;
-    //const userPassword = clickedRow.password;
     const userEmail = clickedRow.email;
     const userAddress = clickedRow.address;
     const userFirstName = clickedRow.firstName;
@@ -70,17 +69,16 @@ function EditUserModal(props) {
     const userRfidToken = clickedRow.rfidToken;
     const userRole = clickedRow.roles;
 
-    //const newIdRef = useRef();
     const newEmailRef = useRef();
     const newAddressRef = useRef();
     const newFirstnameRef = useRef();
     const newLastnameRef = useRef();
     const newUsernameRef = useRef();
-    //const newRfidTokenRef = useRef();
-
-    const [loading, setLoading] = useState(false);
     const [newRole, setNewRole] = useState(clickedRow.rolesName);
     const [newRfidToken, setNewRfidToken] = useState(clickedRow.rfidToken);
+
+    const [loading, setLoading] = useState(false);
+
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
@@ -110,7 +108,6 @@ function EditUserModal(props) {
         const enteredFirstname = newFirstnameRef.current.value;
         const enteredLastname = newLastnameRef.current.value;
         const enteredAddress = newAddressRef.current.value;
-        //const enteredRfidToken = newRfidTokenRef.current.value;
         let bodyToSend = null;
 
         console.log("Entered the Change handler")
