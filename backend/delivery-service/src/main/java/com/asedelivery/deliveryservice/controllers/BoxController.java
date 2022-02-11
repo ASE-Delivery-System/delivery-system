@@ -109,7 +109,7 @@ public class BoxController {
 
             }
             else
-                if (userRoles.contains("ROLE_CUSTOMER")
+                if (userRoles.contains("ROLE_DELIVERER")
                 {
                     List<Delivery> delivererDeliveries = deliveryService.getOutForDeliveryDeliveries(actualUser.getId());
                     for (Delivery deliverDelivery: delivererDeliveries)
