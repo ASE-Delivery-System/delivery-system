@@ -90,7 +90,7 @@ function NewUserModal(props) {
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
 
-    const [setSubmitted] = useState(false)
+    //const [setSubmitted] = useState(false)
 
     const handleClose = () => {
         closeHandler();
