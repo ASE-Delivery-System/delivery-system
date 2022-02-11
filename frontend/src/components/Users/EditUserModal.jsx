@@ -88,6 +88,7 @@ function EditUserModal(props) {
         //console.log(event.target.value);
     };
 
+
     const handleRfidTokenChange = (event) => {
         setNewRfidToken(event.target.value);
             //console.log(event.target.value);
