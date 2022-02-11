@@ -38,7 +38,7 @@ and then after the package is done type the following command to run the project
 
 do this for each service.
 
-To run the frontend, under frontend folder type the following commands: 
+To run the frontend, go under frontend folder type the following commands: 
 
 ``` npm install ```
 
@@ -46,6 +46,26 @@ To run the frontend, under frontend folder type the following commands:
 
 
 #### Using Docker
+
+You need to have docker and docker-compose installed and then run under ase-delivery-system folder the following command:
+
+``` docker-compose up ``` 
+
+You might have to wait some time
+
+## Built With
+
+* [Java](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) -  Java 11
+* [Spring Boot](https://spring.io/projects/spring-boot) - Spring Boot
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [Docker](https://www.docker.com/) - Containerized App
+* [Reactjs](https://reactjs.org/) - A JavaScript library for building user interfaces
+* [ApiGateway](https://spring.io/projects/spring-cloud-gateway) - Spring Cloud Gateway
+* [Service Discovery](https://spring.io/guides/gs/service-registration-and-discovery/) - Service Registration and Discovery with Eureka
+* [MUI](https://mui.com/) - The React UI library
+* [MongoDB](https://www.mongodb.com/) - NoSQL Database
+* [Heroku](https://en.wikipedia.org/wiki/Heroku) - Cloud provider
+
 
 ### Versioning
 

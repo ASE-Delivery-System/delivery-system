@@ -1,0 +1,61 @@
+version: '3'
+services:
+  identity-service:
+    image: 'identity-service:latest'
+    build:
+      context: ./identity-service
+    container_name: identity-service
+    depends_on:
+      - discovery-server
+      - api-gateway
+    ports:
+      - '8084:8084'
+
+  delivery-service:
+    image: 'delivery-service:latest'
+    build:
+      context: ./delivery-service
+    container_name: delivery-service
+    depends_on:
+      - discovery-server
+      - api-gateway
+    ports:
+      - '8083:8083'
+
+  email-service:
+    image: 'email-service:latest'
+    build:
+      context: ./email-service
+    container_name: email-service
+    depends_on:
+      - discovery-server
+      - api-gateway
+    ports:
+      - '8088:8088'
+
+  api-gateway:
+    image: 'api-gateway:latest'
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    depends_on:
+      - discovery-server
+    ports:
+      - '8080:8080'
+
+  discovery-server:
+    image: 'discovery-server:latest'
+    build:
+      context: ./discovery-server
+    container_name: discovery-server
+    ports:
+      - '8761:8761'
+
+
+  frontend:
+    image: 'ase-delivery-system:latest'
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - '3000:3000'
