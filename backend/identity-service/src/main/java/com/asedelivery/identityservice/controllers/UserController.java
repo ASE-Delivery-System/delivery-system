@@ -49,11 +49,13 @@ public class UserController {
                         .badRequest()
                         .body(new MessageResponse("Error: Username is already taken!"));
             }
+        }
 
+        if(!updateUserRequest.getEmail().equals(userToBeUpdated.get().getEmail())){
             if (userRepository.existsByEmail(updateUserRequest.getEmail())) {
                 return ResponseEntity
                         .badRequest()
-                        .body(new MessageResponse("Error: Email is already in use!"));
+                        .body(new MessageResponse("Error: Emaili is already in use!"));
             }
         }
 
