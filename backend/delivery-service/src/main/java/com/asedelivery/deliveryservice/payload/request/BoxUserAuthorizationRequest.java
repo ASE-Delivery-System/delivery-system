@@ -6,7 +6,7 @@ public class BoxUserAuthorizationRequest {
 
     @NotBlank
     private String box_id;
-
+    
     @NotBlank
     private String box_name;
 
@@ -15,6 +15,8 @@ public class BoxUserAuthorizationRequest {
 
     @NotBlank
     private String box_address;
+
+    private String status_closed;
 
     public String getBox_id() {
         return box_id;
@@ -47,4 +49,13 @@ public class BoxUserAuthorizationRequest {
     public void setBox_address(String box_address) {
         this.box_address = box_address;
     }
+
+    public String getStatus_closed() {
+        return status_closed;
+    }
+
+    public void setStatus_closed(String status_closed) {
+        this.status_closed = status_closed;
+    }
+
 }
