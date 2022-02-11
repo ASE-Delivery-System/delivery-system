@@ -113,7 +113,7 @@ const CreateNewUser = () => {
     setLoading(true)
 
     try {
-      if (username === '' || email === '' || password === '' || role === '' || firstname === ''|| lastname === '') {
+      if (username === '' || email === '' || password === '' || role.length === 0 || firstname === ''|| lastname === '') {
           setIsError(true)
           setLoading(false)
           setMessage('Please fill in first name, last name, username, email, password, and role');
