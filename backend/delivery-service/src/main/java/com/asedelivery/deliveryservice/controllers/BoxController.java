@@ -11,6 +11,7 @@ import com.asedelivery.deliveryservice.service.BoxService;
 import com.asedelivery.deliveryservice.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.asedelivery.deliveryservice.service.UserService;
 import com.asedelivery.deliveryservice.payload.request.BoxUserAuthorizationRequest;
@@ -35,6 +36,7 @@ public class BoxController {
     DeliveryService deliveryService;
 
     @GetMapping("") //GET /api/boxes
+    @PreAuthorize("hasRole('ROLE_DISPATCHER')")
     public ResponseEntity<List<Box>> getAllBoxes() {
         List<Box> boxes = boxService.findAllBoxes();
         return ResponseEntity.ok().body(boxes);
@@ -96,6 +98,7 @@ public class BoxController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('ROLE_DISPATCHER')")
     public ResponseEntity<?> createBox(@Valid @RequestBody RegisterNewBoxRequest newBoxRequest) {
 
         if (boxService.existsByName(newBoxRequest.getName())) {

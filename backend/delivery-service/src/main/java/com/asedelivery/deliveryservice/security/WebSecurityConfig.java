@@ -56,12 +56,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests().antMatchers("/user/auth/**").hasRole("DISPATCHER")
+			.authorizeRequests().antMatchers("/user/auth/**").permitAll() //hasRole("DISPATCHER")
 				.antMatchers("/users/**").hasRole("DISPATCHER")
+				.antMatchers("/deliveries/**").authenticated()
+				.antMatchers("/boxes/**").permitAll()
 				.antMatchers("/v3/*").permitAll()
 			.antMatchers("/swagger-ui/*").permitAll()
 			.antMatchers("/swagger-ui.html").permitAll()
-			.anyRequest().permitAll();
+			.anyRequest().denyAll();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

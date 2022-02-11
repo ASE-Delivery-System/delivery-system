@@ -104,7 +104,7 @@ public class RegisterUserController {
 
 		if (authorities.contains("ROLE_DELIVERER") || authorities.contains("ROLE_CUSTOMER")){
 			if ( userRepository.existsByRfidToken(registerUserRequest.getRfidToken())){
-				throw new RuntimeException("Token already exists");
+				throw new RuntimeException("Token already existsss");
 			}
 			user.setRfidToken(registerUserRequest.getRfidToken());
 		}

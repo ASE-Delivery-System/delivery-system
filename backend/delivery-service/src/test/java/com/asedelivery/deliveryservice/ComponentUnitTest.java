@@ -30,7 +30,6 @@ public class ComponentUnitTest {
         assertNotNull(applicationContext.getBean(DeliveryService.class));
         assertNotNull(applicationContext.getBean(UserService.class));
         assertNotNull(applicationContext.getBean(BoxController.class));
-        assertNotNull(applicationContext.getBean(CustomerController.class));
         assertNotNull(applicationContext.getBean(DeliveryController.class));
         assertNotNull(applicationContext.getBean(RegisterUserController.class));
         assertNotNull(applicationContext.getBean(UserController.class));

@@ -36,6 +36,7 @@ public class Box {
     @DBRef
     private User deliverer;
 
+    @DBRef
     private List<Delivery> deliveries;
 
     public Box() {

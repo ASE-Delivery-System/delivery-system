@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService{
         User userTobeUpdated = findUserById(id);
         Role roleOfUser = roleRepository.findByName(ERole.ROLE_DISPATCHER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-
+        System.out.println("asdasdas");
         if(userTobeUpdated.getRoles().iterator().next().getName() != roleOfUser.getName()){
 
             if (!userTobeUpdated.getRfidToken().equals(user.getRfidToken())){
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService{
         updateAuthUserRequest.setEmail(userTobeUpdated.getEmail());
         updateAuthUserRequest.setRole(user.getRole());
 
-        String response = restTemplate.postForObject("https://ase-identity-service.herokuapp.com/users/auth/"+userTobeUpdated.getId(),
+        String response = restTemplate.postForObject("http://localhost:8084/users/auth/"+userTobeUpdated.getId(),
                 updateAuthUserRequest, String.class);
 
         assert response != null;

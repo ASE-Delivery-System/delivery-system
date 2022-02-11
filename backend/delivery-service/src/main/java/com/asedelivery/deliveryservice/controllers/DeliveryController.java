@@ -6,12 +6,12 @@ import com.asedelivery.deliveryservice.models.EBoxStatus;
 import com.asedelivery.deliveryservice.models.User;
 import com.asedelivery.deliveryservice.payload.request.DeliveryRequest;
 import com.asedelivery.deliveryservice.payload.response.MessageResponse;
-import com.asedelivery.deliveryservice.repository.BoxRepository;
 import com.asedelivery.deliveryservice.service.BoxService;
 import com.asedelivery.deliveryservice.service.DeliveryService;
 import com.asedelivery.deliveryservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,6 +33,7 @@ public class DeliveryController {
     UserService userService;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_DISPATCHER')")
     public ResponseEntity<List<Delivery>> getAllDeliveries(){
         return ResponseEntity.ok( deliveryService.getAllDeliveries());
     }
@@ -48,6 +49,7 @@ public class DeliveryController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_DISPATCHER')")
     public ResponseEntity<?> createDelivery(@Valid @RequestBody DeliveryRequest deliveryRequest){
 
         Box targetBox = boxService.findBoxById(deliveryRequest.getTargetBoxId());
