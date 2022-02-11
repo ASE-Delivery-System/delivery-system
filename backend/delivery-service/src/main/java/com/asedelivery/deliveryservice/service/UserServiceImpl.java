@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService{
         updateAuthUserRequest.setEmail(userTobeUpdated.getEmail());
         updateAuthUserRequest.setRole(user.getRole());
 
-        String response = restTemplate.postForObject("http://localhost:8084/users/auth/"+userTobeUpdated.getId(),
+        String response = restTemplate.postForObject("https://ase-identity-service.herokuapp.com/users/auth/"+userTobeUpdated.getId(),
                 updateAuthUserRequest, String.class);
 
         assert response != null;
