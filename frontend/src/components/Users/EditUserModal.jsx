@@ -76,18 +76,23 @@ function EditUserModal(props) {
     const newFirstnameRef = useRef();
     const newLastnameRef = useRef();
     const newUsernameRef = useRef();
-    const newRfidTokenRef = useRef();
+    //const newRfidTokenRef = useRef();
 
     const [loading, setLoading] = useState(false);
-    const [role, setRole] = useState(clickedRow.rolesName);
-    const [rfidToken, setRfidToken] = useState(clickedRow.rfidToken);
+    const [newRole, setNewRole] = useState(clickedRow.rolesName);
+    const [newRfidToken, setNewRfidToken] = useState(clickedRow.rfidToken);
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
 
     const handleRoleChange = (event) => {
-        setRole(event.target.value);
+        setNewRole(event.target.value);
         //console.log(event.target.value);
+    };
+
+    const handleRfidTokenChange = (event) => {
+        setNewRfidToken(event.target.value);
+            //console.log(event.target.value);
     };
 
     const handleClose = () => {
@@ -105,6 +110,7 @@ function EditUserModal(props) {
         const enteredFirstname = newFirstnameRef.current.value;
         const enteredLastname = newLastnameRef.current.value;
         const enteredAddress = newAddressRef.current.value;
+        //const enteredRfidToken = newRfidTokenRef.current.value;
         let bodyToSend = null;
 
         console.log("Entered the Change handler")
@@ -116,10 +122,10 @@ function EditUserModal(props) {
             bodyToSend = {
             username: enteredUsername,
             email: enteredEmail,
-            role: role,
+            role: newRole,
             firstName: enteredFirstname,
             lastName: enteredLastname,
-            rfidToken: rfidToken,
+            rfidToken: newRfidToken,
             address: enteredAddress
             }
          }
@@ -134,7 +140,7 @@ function EditUserModal(props) {
                     reload()
                 })
                 .catch((error) => {
-                    //console.log(error)
+                    console.log(error.response.data)
                     console.log(error)
                     setIsError(true)
                     setMessage(error.message)
@@ -222,14 +228,14 @@ function EditUserModal(props) {
                                    helperText="Change the address"
                                    defaultValue={userAddress}
                                    inputRef={newAddressRef}/>
-                        {(!role.includes('dispatcher') && true && (
+                        {(!newRole.includes('dispatcher') && true && (
                             <TextField
                                 label='New RFID Token'
                                 variant='outlined'
                                 fullWidth
                                 helperText="Change the RFID token "
-                                defaultValue={userRfidToken}
-                                inputRef={newRfidTokenRef}/>))}
+                                defaultValue={clickedRow.rfidToken}
+                                onChange={handleRfidTokenChange} />))}
                     </Stack>
                 </Paper>
                 {isError && (
