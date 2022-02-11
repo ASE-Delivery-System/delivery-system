@@ -3,7 +3,7 @@ services:
   identity-service:
     image: 'identity-service:latest'
     build:
-      context: ./identity-service
+      context: ./backend/identity-service
     container_name: identity-service
     depends_on:
       - discovery-server
@@ -14,7 +14,7 @@ services:
   delivery-service:
     image: 'delivery-service:latest'
     build:
-      context: ./delivery-service
+      context: ./backend/delivery-service
     container_name: delivery-service
     depends_on:
       - discovery-server
@@ -25,7 +25,7 @@ services:
   email-service:
     image: 'email-service:latest'
     build:
-      context: ./email-service
+      context: ./backend/email-service
     container_name: email-service
     depends_on:
       - discovery-server
@@ -36,7 +36,7 @@ services:
   api-gateway:
     image: 'api-gateway:latest'
     build:
-      context: ./api-gateway
+      context: ./backend/api-gateway
     container_name: api-gateway
     depends_on:
       - discovery-server
@@ -46,7 +46,7 @@ services:
   discovery-server:
     image: 'discovery-server:latest'
     build:
-      context: ./discovery-server
+      context: ./backend/discovery-server
     container_name: discovery-server
     ports:
       - '8761:8761'
