@@ -107,9 +107,9 @@ const CreateNewUser = () => {
     setSubmitted(false)
   }
 
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    //console.log('bla bla ')
     setLoading(true)
 
     try {

@@ -97,7 +97,6 @@ function NewUserModal(props) {
         setIsError(false)
 
     };
-    //changing input once already entered
 
     const handleSubmit = (e) => {
       e.preventDefault()
