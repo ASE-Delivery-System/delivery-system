@@ -88,7 +88,6 @@ function EditUserModal(props) {
         //console.log(event.target.value);
     };
 
-
     const handleRfidTokenChange = (event) => {
         setNewRfidToken(event.target.value);
             //console.log(event.target.value);
@@ -138,8 +137,6 @@ function EditUserModal(props) {
                     reload()
                 })
                 .catch((error) => {
-                    console.log(error.response.data)
-                    console.log(error)
                     setIsError(true)
                     setMessage(error.message)
                     setLoading(false)
