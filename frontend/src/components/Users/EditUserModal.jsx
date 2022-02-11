@@ -80,6 +80,7 @@ function EditUserModal(props) {
 
     const [loading, setLoading] = useState(false);
     const [role, setRole] = useState(clickedRow.rolesName);
+    const [rfidToken, setRfidToken] = useState(clickedRow.rfidToken);
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
@@ -103,7 +104,6 @@ function EditUserModal(props) {
         const enteredUsername = newUsernameRef.current.value;
         const enteredFirstname = newFirstnameRef.current.value;
         const enteredLastname = newLastnameRef.current.value;
-        const enteredRfidToken = newRfidTokenRef.current.value;
         const enteredAddress = newAddressRef.current.value;
         let bodyToSend = null;
 
@@ -119,7 +119,7 @@ function EditUserModal(props) {
             role: role,
             firstName: enteredFirstname,
             lastName: enteredLastname,
-            rfidToken: enteredRfidToken,
+            rfidToken: rfidToken,
             address: enteredAddress
             }
          }
@@ -222,7 +222,7 @@ function EditUserModal(props) {
                                    helperText="Change the address"
                                    defaultValue={userAddress}
                                    inputRef={newAddressRef}/>
-                        {(!userRole.includes('ROLE_DISPATCHER') && true && (
+                        {(!role.includes('dispatcher') && true && (
                             <TextField
                                 label='New RFID Token'
                                 variant='outlined'
@@ -230,7 +230,6 @@ function EditUserModal(props) {
                                 helperText="Change the RFID token "
                                 defaultValue={userRfidToken}
                                 inputRef={newRfidTokenRef}/>))}
-
                     </Stack>
                 </Paper>
                 {isError && (
